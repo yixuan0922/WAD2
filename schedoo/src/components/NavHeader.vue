@@ -37,6 +37,7 @@ const bgImage =
               <li><a class="dropdown-item" href="#"> CCAs</a></li>
               <li><a class="dropdown-item" href="#"> Meetings</a></li>
               <li><a class="dropdown-item" href="#"> Classes</a></li>
+              <li><a class="dropdown-item" href="#"> Outings</a></li>
             </ul>
           </li>
         </ul>
