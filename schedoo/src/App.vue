@@ -1,18 +1,22 @@
 <template>
-  <HelloWorld/>
-  <img alt="Vue logo" src="./assets/logo.png">
+<NavHeader/>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+// import Header from './components/Header.vue'
+// import NavBar from './components/NavBar.vue'
+import NavHeader from './components/NavHeader.vue';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+// export default {
+//   name: 'App',
+//   components: {
+//     HelloWorld,
+//     NavBar
+//   }
+// }
+
 </script>
+
 
 <style>
 #app {
@@ -21,6 +25,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>
