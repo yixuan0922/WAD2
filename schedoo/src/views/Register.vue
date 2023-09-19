@@ -42,9 +42,11 @@
 
 <script>
 // import * as firebase from "firebase/app";
-import firebase from "firebase/app";
-import "firebase/auth"; // Import auth module here
-import db from "../firebase/firebaseInit";
+// import firebase from "firebase/app";
+// import "firebase/auth"; // Import auth module here
+import { collection, doc, setDoc } from "firebase/firestore";
+import {db, auth} from "../firebase/firebaseInit";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 export default {
     name: 'Register',
     data() {
@@ -69,24 +71,36 @@ export default {
         ) {
         this.error = false;
         this.errorMsg = "";
-        const firebaseAuth = firebase.auth();
-        const createUser = await firebaseAuth.createUserWithEmailAndPassword(this.email, this.password);
-        const result = await createUser;
-        const dataBase = db.collection("users").doc(result.user.uid);
-        await dataBase.set({
-          firstName: this.firstName,
-          lastName: this.lastName,
-          username: this.username,
-          email: this.email,
-        });
-        this.$router.push({ name: "Landing" });
-        return;
-      }
-        this.error = true;
-        this.errorMessage = "Please fill in all fields";
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
+            const user = userCredential.user;
+            // const dataBase = db.collection('user').doc(user.uid);
+            const dataBase = collection(db, "users");
+            const userDoc = doc(dataBase, user.uid);
+            await setDoc.set(userDoc, {
+                firstName: this.firstName,
+                lastName: this.lastName,
+                username: this.username,
+                email: this.email,
+            });
+
+            this.$router.push({ name: "Landing" });
+            return; 
+        } catch (error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        }
+        } else {
+            this.error= true;
+            this.errorMsg = "Please fill in all fields";
+        }
     },
-  },
-}
+    },
+};
+
+
 </script>
 
 <style lang="scss" scoped>
