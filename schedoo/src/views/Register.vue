@@ -3,7 +3,7 @@
         <form class='login'>
             <p class='login-register'>
                 Don't have an account
-                <router-link class='router-link' :to="{name: 'Register'}">Login</router-link>
+                <router-link class='router-link' :to="{name: 'Login'}">Login</router-link>
             </p>
             <h2>Create your Schedoo Account</h2>
             <div class="inputs">
@@ -31,8 +31,8 @@
                     <input type='password' placeholder='Password' v-model='password'/>
                 </div>
             </div>
-            <div v-show='error' class="error">{{this.errorMsg}}</div>
-            <button @click.prevent="register">Sign In</button>
+            <div v-show="error" class="error">{{ this.errorMsg }}</div>
+            <button @click.prevent="register">Sign Up</button>
             <div class="angle"></div>
         </form>
         <div class="background"></div>
@@ -69,33 +69,43 @@ export default {
             this.lastName !== "" &&
             this.username !== ""
         ) {
-        this.error = false;
-        this.errorMsg = "";
+            this.error = false;
+            this.errorMsg = "";
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
-            const user = userCredential.user;
-            // const dataBase = db.collection('user').doc(user.uid);
-            const dataBase = collection(db, "users");
-            const userDoc = doc(dataBase, user.uid);
-            await setDoc.set(userDoc, {
-                firstName: this.firstName,
-                lastName: this.lastName,
-                username: this.username,
-                email: this.email,
-            });
+            createUserWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+                const user = userCredential.user;
+                const database = collection(db, "users");
+                const userDoc = doc(database, user.uid);
+                setDoc(userDoc, {
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    username: this.username,
+                    email: this.email,
+                })
+            }).catch((err) => {
+                this.error = true;
+                this.errorMsg = err.message;
+            })
+            
 
-            this.$router.push({ name: "Landing" });
-            return; 
-        } catch (error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode, errorMessage);
+            
+
+            // const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
+            // const user = userCredential.user;
+            // const dataBase = collection(db, "users");
+            // const userDoc = doc(dataBase, user.uid);
+            // await setDoc(userDoc, {
+            //     firstName: this.firstName,
+            //     lastName: this.lastName,
+            //     username: this.username,
+            //     email: this.email,
+            // });
+            // this.$router.push({ name: "Landing" });
+            // return; 
         }
-        } else {
-            this.error= true;
-            this.errorMsg = "Please fill in all fields";
-        }
+        this.error= true;
+        this.errorMsg = "Please fill in all fields";
+        return;
     },
     },
 };

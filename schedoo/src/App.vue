@@ -6,10 +6,52 @@
   </nav> -->
   <router-view />
 </template>
+<script>
+import {auth} from "./firebase/firebaseInit";
+
+export default {
+  name: "app", 
+  components: {},
+  data() {
+    return {
+      // navigation: null,
+    }
+  },
+  created(){
+    auth.onAuthStateChanged((user) => {
+      //user is a true or false statement to state if user has signed in or not
+      this.$store.commit('updateUser', user);
+      if (user){
+        this.$store.dispatch("getCurrentUser");
+        console.log(this.$store.state.profileEmail);
+      }
+    })
+    this.checkRoute();
+    // console.log(auth.currentUser);
+
+  },
+  mounted(){},
+  methods: {
+    checkRoute() {
+      if (this.$route.name == 'Login' || this.$route.name == 'Register' || this.$route.name == 'ForgetPassword') {
+        this.navigation = true;
+        return;
+      }
+      this.navigation = false;
+    }
+  }, 
+  watch: {
+    $route() {
+      this.checkRoute();
+    }
+  },
+};
+
+</script>
 
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

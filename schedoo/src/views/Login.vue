@@ -16,9 +16,9 @@
                     <input type='password' placeholder='Password' v-model='password'/>
                 </div>
             </div>
-
+            <div v-show="error" class="error">{{ this.errorMsg }}</div>
             <router-link class='forget-password' :to="{ name: 'ForgetPassword'}">Forget Your Password</router-link>
-            <button>Sign In</button>
+            <button @click.prevent="signIn">Sign In</button>
             <div class="angle"></div>
         </form>
         <div class="background"></div>
@@ -27,14 +27,34 @@
 
 
 <script>
+
+import {auth} from "../firebase/firebaseInit";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 export default {
     name: 'Login',
     data() {
         return ({
-            email: null,
-            password: null,
+            email: "",
+            password: "",
+            error: "", 
+            errorMsg: "",
         })
     },
+    methods: {
+      signIn() {
+        signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+          this.error = false;
+          this.errorMessage = '';
+          const user = userCredential.user;
+          console.log(user.uid);
+          this.$router.push({name: 'Landing'});
+        }).catch((err) => {
+          this.error = true;
+          this.errorMsg = err.message
+        });
+      }
+    }
 }
 </script>
 
@@ -111,7 +131,7 @@ export default {
       }
     }
 
-    .forgot-password {
+    .forget-password {
       text-decoration: none;
       color: #000;
       cursor: pointer;

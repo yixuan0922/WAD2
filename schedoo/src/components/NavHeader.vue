@@ -3,8 +3,6 @@
 /* eslint-disable */
 
 import {RouterLink, RouterView} from 'vue-router';
-const bgImage =
-  "https://images.unsplash.com/photo-1520769945061-0a448c463865?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
 </script>
 
 <template>
@@ -46,7 +44,8 @@ const bgImage =
           </li>
         </ul>
 
-        <ul class="nav navbar-nav">
+
+        <!-- <ul class="nav navbar-nav">
           <li class="nav-item">
             <a
               class="nav-link text-dark"
@@ -71,11 +70,20 @@ const bgImage =
               <i class="fab fa-instagram"></i>
             </a>
           </li>
-        </ul>
+        </ul> -->
       </div>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
+          <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
+        </li>
+        <div class="'profile" ref="profile">
+          <span>{{this.$store.state.profileInitials}}</span>
+        </div>
+      </ul>
     </div>
   </nav>
-  <div class="page-header min-vh-100" loading="lazy">
+  <div class="page-header opacity-75 min-vh-100" loading="lazy">
     <span class="mask bg-gradient-dark opacity-5"></span>
     <div class="container">
       <div class="row">

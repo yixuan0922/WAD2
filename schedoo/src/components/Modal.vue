@@ -1,23 +1,10 @@
 <template>
-    <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">{{ this.modalMessage }}</h5>
-              <button type="button" class="close" data-dismiss="modal" @click="closeModal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="modal">
+    <div class="modal-content">
+      <p>{{ this.modalMessage }}</p>
+      <button @click="closeModal">Close</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -27,10 +14,38 @@ export default {
     closeModal() {
       this.$emit("close-modal");
     },
-    }
+  },
 };
 </script>
 
+<style lang="scss" scoped>
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 101;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
 
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 8px;
+    width: 300px;
+    padding: 40px 30px;
+    background-color: #fff;
 
+    p {
+      text-align: center;
+    }
 
+    button {
+      align-self: center;
+    }
+  }
+}
+</style>
