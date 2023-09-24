@@ -77,8 +77,32 @@ import {RouterLink, RouterView} from 'vue-router';
           <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
           <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
         </li>
-        <div class="'profile" ref="profile">
+        <div class="profile" ref="profile">
           <span>{{this.$store.state.profileInitials}}</span>
+          <div class="profile-menu">
+            <div class="info">
+              <p class="initials">{{this.$store.state.profileInitials}}</p>
+              <div class="right">
+                <p>{{this.$store.state.profileLastName}} {{this.$store.state.profileLastName}}</p>
+                <p>{{this.$store.state.profileUsername}} </p>
+                <p>{{this.$store.state.profileEmail}} </p>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <router-link class-="option" to="#">
+                  <userIcon class="icon"/>
+                  <p>Profile</p>
+                </router-link>
+              </div>
+              <div class="option">
+                <router-link class-="option" to="#">
+                  <!-- <userIcon class="icon"/> -->
+                  <p>Sign Out</p>
+                </router-link>
+              </div>
+            </div>
+          </div>
         </div>
       </ul>
     </div>
@@ -144,6 +168,64 @@ a{
 .green-icon {
     color: 'black';
 }
+
+.profile {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #ffff;
+  background-color: #303030;
+
+  .profile-menu {
+    position: absolute;
+    top:60px;
+    right: 0;
+    width:250px;
+    background-color: #303030;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    .info {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #fff;
+
+      .initials {
+        position: initial;
+        width: 40px;
+        height: 40px;
+        background-color: #fff;
+        color: #303030;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+
+      .right {
+        flex: 1;
+        margin-left: 24px;
+
+        p:nth-child(1) {
+          font-size: 14px;
+        }
+
+        p:nth-child(2), 
+        p:nth-child(3) {
+          font-size: 12px;
+        }
+      }
+
+    }
+  }
+}
+
+
 
 
 </style>
