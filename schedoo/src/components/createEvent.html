@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    
+    <!-- Other CSS -->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <!-- Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- For location API -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.css" />
+
+    <style>
+        body {
+            background-image: linear-gradient(140deg, #e2e2e2, #cdcdcd);
+            display: grid;
+            place-items: center;
+            font-family: "Lato", Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #createTask{
+            margin: auto;
+            background-color: #EAECF0; 
+            padding: 50px;
+            border-radius: 15px
+        }
+        input[type=text], select, textarea {
+            width: 100%;
+            padding: 12px;
+            color: darkcyan;
+            /* border-radius: 15px; */
+            border: 1px solid #ccc;
+            resize: vertical;
+        }
+
+        /*the container must be positioned relative:*/
+        .custom-select {
+            position: relative;
+        }
+
+        .custom-select select {
+            display: none; /*hide original SELECT element:*/
+        }
+
+        .select-selected {
+            background-color: DodgerBlue;
+            border-radius: 6px;
+            max-height: 100%;
+            margin-top: 3px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Add code here -->
+    <div class="container col-8 shadow-md" id="createTask"> 
+        <div class="row" style="top:0px; margin-bottom: 20px;">
+            <h3 style="text-align: center;">Create New Task 
+                <button type="button" class="btn-close" style="float: right; margin-right: 0px;" aria-label="Close"></button>
+            </h3>
+        </div><br>
+        <form class="row">
+            <!-- Left column -->
+            <div class="col-lg-6">
+                <div class="row mb-3">
+                    <div class="col-sm-5 custom-select">
+                        <select id="category" name="category">
+                            <option value="category">Select a category</option>
+                            <option value="personal">Personal</option>
+                            <option value="meeting">Meeting</option>
+                            <option value="cca">CCA</option>
+                            <option value="work">Work</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-7">
+                        <input id="taskName" type="text" class="form-control" placeholder="Enter a task name">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="agenda" class="form-label">Agenda</label><br>
+                    <textarea id="agenda" name="agenda" class="form-control" placeholder="Enter agenda of task" style="height:108px; width: 100%;"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location or Video Call</label><br>
+                    <div class="ui icon big input" id="locator-input-section" style="width: 100%;">
+                        <input id="location" type="text" class="form-control" placeholder="Enter Location or Video Call link">
+                        <i aria-hidden="true" class="dot circle outline link icon" id="locator-button"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Right column -->
+            <div class="col-lg-6">
+                <div class="mb-3">
+
+                    <!-- All day toggle -->
+                    <p type="text" class="form-control" style="padding-top: 8.5px">All-day
+                        <label class="switch" style="float: right; margin-right: 16px; padding-bottom: 4px;">
+                            <input id="toggleAllDay" type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </p>
+
+                    <!-- Start Date -->
+                    <div type="text" class="form-control">
+                        <div class="row">
+                            <p class="col-sm-7" style="padding-top: 4px">Start Date</p>
+                            <input class="col-sm-5" type="datetime-local" id="startDate" name="endDate" style="float: right; margin-right: 0px; padding-bottom: 4px;">
+                        </div>
+                    </div>
+
+                    <!-- End Date -->
+                    <div type="text" class="form-control">
+                        <div class="row">
+                            <p class="col-sm-7" style="padding-top: 4px">End Date</p>
+                            <input class="col-sm-5" type="datetime-local" id="endDate" name="endDate" style="float: right; margin-right: 0px; padding-bottom: 4px;">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="mb-3">
+                    <label for="category" class="form-label">Category</label><br>
+                    <select id="category" name="category" >
+                        <option value="category">Select a category</option>
+                        <option value="personal">Personal</option>
+                        <option value="meeting">Meeting</option>
+                        <option value="cca">CCA</option>
+                        <option value="work">Work</option>
+                    </select>
+                </div> -->
+
+                <!-- Repeat toggle -->
+                <p type="text" class="form-control" style="padding-top: 8.5px">Repeat
+                    <label class="switch" style="float: right; margin-right: 16px; padding-bottom: 4px;">
+                        <input id="toggleRepeat" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </p>
+                
+                <!-- Add Invitees -->
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col">
+                            <label for="invitees" class="form-label">Add Invitees</label>
+                        </div>
+                        <div class="col-8 d-flex justify-content-end">
+                            <a><i class="fa-solid fa-user-plus mx-2"></i>Create Group</a>
+                        </div>
+                    </div>
+                    <div id="emails-input"></div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="row" style="justify-content:flex-end; margin-top: 10px;">
+                <button class="col-2 btn cancelBtn" style="margin-right: 10px;">Cancel</button>
+                <button type="Create" class="col-2 btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="js/main.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+    
+    </script>
+</body>
+
+</html>
