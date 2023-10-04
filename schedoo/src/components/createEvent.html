@@ -168,6 +168,54 @@
                         </div>
                     </div>
                     <div id="emails-input"></div>
+
+                    <!-- User suggestion -->
+                    <div id="userSuggestion" class="row" style="display:none; position: absolute; z-index: 99; margin-left: 0px; width: 305px; max-height: 160px; overflow-y: scroll; overflow-x: hidden; background-color: white; border-radius: 5px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: 3px;">
+                        <p style="margin: 2px; margin-top: 7px; margin-bottom: 4px;"">Suggested Contacts</p>
+                        <!-- Group -->
+                        <div class="row my-2">
+                            <div class="col-2">
+                                <div style="width: 35px; height: 35px; margin-top:3px; border-radius: 50%; color: gray; border: 2px solid #7DB8D7; background-color: #AFD4E7; display: flex; align-items: center; justify-content: center;">
+                                    WA
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <p id="name" style="margin-bottom:0px; font-weight: bold;">WAD2 Project</p>
+                                <p id="email" style="color: blue">faithkoh.2022@scis.smu.edu.sg, ivyn.2022@scis.smu.edu.sg ...</p>
+                            </div>
+                        </div>
+                        <!-- Individual -->
+                        <div class="row my-2">
+                            <div class="col-2">
+                                <div style="width: 35px; height: 35px; margin-top:3px; border-radius: 50%; color: gray; border: 2px solid #6EC8BD; background-color: #FEECE1; display: flex; align-items: center; justify-content: center;">
+                                    SF
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <p id="name" style="margin-bottom:0px; font-weight: bold;">Samantha Foo</p>
+                                <p id="email" style="color: blue">samanthafoo.2022@scis.smu.edu.sg</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener("click", (event) => {
+                            var emailInput = document.getElementById('emails-input');
+
+                            let targetEl = event.target; // clicked element      
+                            do {
+                                if(targetEl == emailInput) {
+                                    // user clicks input
+                                    userSuggestion.style.display = 'flex';
+                                    return;
+                                }
+                                // Go up the DOM
+                                targetEl = targetEl.parentNode;
+                            } while (targetEl);
+                                // This is a click outside.      
+                                userSuggestion.style.display = 'none';
+                        });
+                    </script>
                 </div>
             </div>
 
