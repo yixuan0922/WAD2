@@ -3,10 +3,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
 
+    <!-- Add Email input -->
+    <script src="js/lib/utils.js"></script>
+    <script src="js/lib/emails-input.js"></script>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    
-    <!-- Other CSS -->
+    <!-- For new input box -->
     <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -63,8 +67,8 @@
             margin-top: 3px;
         }
 
-         /*style the arrow inside the select element:*/
-         .select-selected:after {
+        /*style the arrow inside the select element:*/
+        .select-selected:after {
             position: absolute;
             content: "";
             top: 18px;
@@ -297,6 +301,7 @@
         .emails.emails-input input:focus {
         outline: none;
         }
+
     </style>
 </head>
 
@@ -425,7 +430,6 @@
                             </div>
                         </div>
                     </div>
-
                     <script>
                         document.addEventListener("click", (event) => {
                             var emailInput = document.getElementById('emails-input');
@@ -462,8 +466,17 @@
     <script src="js/main.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
     
-     <!-- For Category Dropdown -->
-     <script>
+    <!-- For Location API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places"></script>
+    <script src="js/lib/locationAPI.js"></script>
+
+    <!-- For add invitees -->
+    <script src="js/lib/utils.js"></script>
+    <script src="js/lib/emails-input.js"></script>
+    <script src="js/lib/app.js"></script>
+
+    <!-- For Category Dropdown -->
+    <script>
         var x, i, j, l, ll, selElmnt, a, b, c;
         /*look for any elements with the class "custom-select":*/
         x = document.getElementsByClassName("custom-select");
@@ -543,15 +556,6 @@
         then close all select boxes:*/
         document.addEventListener("click", closeAllSelect);
     </script>
-
-    <!-- For Location API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places"></script>
-    <script src="locationAPI.js"></script>
-    
-    <!-- For add invitees -->
-    <script src="js/lib/utils.js"></script>
-    <script src="js/lib/emails-input.js"></script>
-    <script src="js/lib/app.js"></script>
 </body>
 
 </html>
