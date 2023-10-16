@@ -18,7 +18,8 @@
             </div>
             <div v-show="error" class="error">{{ this.errorMsg }}</div>
             <router-link class='forget-password' :to="{ name: 'ForgetPassword'}">Forget Your Password</router-link>
-            <button @click.prevent="signIn">Sign In</button>
+            <button class='mb-2' @click.prevent="signIn">Sign In</button>
+            <!-- <button @click.prevent="signInWithGoogle">Sign In With Google</button> -->
             <div class="angle"></div>
         </form>
         <div class="background"></div>
@@ -29,7 +30,7 @@
 <script>
 
 import {auth} from "../firebase/firebaseInit";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 export default {
     name: 'Login',
@@ -53,8 +54,29 @@ export default {
           this.error = true;
           this.errorMsg = err.message
         });
-      }
+      }, 
+      signInWithGoogle() {
+      const provider = new GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/calendar');
+      signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        console.log("token:",token);
+        // const user = result.user;
+        // console.log("user:",user);
+        this.$router.push({name: 'Landing'});
+      }).catch((error) => {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        // const email = error.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log("error:",errorMessage);
+        console.log("credential:",credential);
+      });
     }
+    }
+
 }
 </script>
 
