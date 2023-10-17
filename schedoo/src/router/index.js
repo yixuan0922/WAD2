@@ -4,6 +4,8 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
+import Login2 from '../views/Login2.vue';
+
 
 
 const routes = [
@@ -40,6 +42,11 @@ const routes = [
     path: "/forget-password",
     name: "ForgetPassword",
     component: ForgetPassword,
+  },
+  {
+    path: "/login-2",
+    name: "Login2",
+    component: Login2,
   },
 ];
 
