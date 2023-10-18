@@ -1,28 +1,29 @@
 <template>
+  <div></div>
 </template>
 
 <script>
 // import { db } from '@/main';
 import { db, auth } from "../firebase/firebaseInit";
 import {collection, doc, getDocs} from 'firebase/firestore';
-import Fullcalendar from '@fullcalendar/vue'
-import DayGridPlugin from '@fullcalendar/daygrid'
-import TimeGridPlugin from '@fullcalendar/timegrid'
-import InteractionPlugin from '@fullcalendar/interaction'
-import ListPlugin from '@fullcalendar/list'
+// import Fullcalendar from '@fullcalendar/vue'
+// import DayGridPlugin from '@fullcalendar/daygrid'
+// import TimeGridPlugin from '@fullcalendar/timegrid'
+// import InteractionPlugin from '@fullcalendar/interaction'
+// import ListPlugin from '@fullcalendar/list'
 
 export default {
     name: 'Calendar',
     data: () => ({
-      components: {
-        Fullcalendar
-      }, 
-      calendarPlugins: [
-            DayGridPlugin,
-            TimeGridPlugin,
-            InteractionPlugin,
-            ListPlugin
-        ], 
+      // components: {
+      //   Fullcalendar
+      // }, 
+      // calendarPlugins: [
+      //       DayGridPlugin,
+      //       TimeGridPlugin,
+      //       InteractionPlugin,
+      //       ListPlugin
+      //   ], 
         // today: new Date().toISOString(0, 10),
         // focus: new Date().toISOString(0, 10),
         // type: "month", 

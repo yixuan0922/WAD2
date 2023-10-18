@@ -1,9 +1,5 @@
 <template>
-    <v-app>
-        <v-main>
-            <Calendar/>
-        </v-main>
-    </v-app>
+    <Calendar/>
   </template>
   
   <script>
