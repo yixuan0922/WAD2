@@ -7,52 +7,51 @@
   <router-view />
 </template>
 <script>
-import {auth} from "./firebase/firebaseInit";
+import { auth } from "./firebase/firebaseInit";
 
 export default {
-  name: "app", 
+  name: "app",
   components: {},
   data() {
     return {
       // navigation: null,
-    }
+    };
   },
-  created(){
+  created() {
     auth.onAuthStateChanged((user) => {
       //user is a true or false statement to state if user has signed in or not
-      this.$store.commit('updateUser', user);
-      if (user){
+      this.$store.commit("updateUser", user);
+      if (user) {
         this.$store.dispatch("getCurrentUser");
         console.log(this.$store.state.profileEmail);
       }
-    })
+    });
     this.checkRoute();
     // console.log(auth.currentUser);
-
   },
-  mounted(){},
+  mounted() {},
   methods: {
     checkRoute() {
-      if (this.$route.name == 'Login' || this.$route.name == 'Register' || this.$route.name == 'ForgetPassword') {
+      if (
+        this.$route.name == "Login" ||
+        this.$route.name == "Register" ||
+        this.$route.name == "ForgetPassword"
+      ) {
         this.navigation = true;
         return;
       }
       this.navigation = false;
-    }
-  }, 
+    },
+  },
   watch: {
     $route() {
       this.checkRoute();
-    }
+    },
   },
 };
-
 </script>
 
-
 <style lang="scss">
-
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import LandingView from '../views/LandingView.vue';
-import Login from '../views/Login.vue';
-import Register from '../views/Register.vue';
-import ForgetPassword from '../views/ForgetPassword.vue';
-import Login2 from '../views/Login2.vue';
-
-
+import LandingView from "../views/LandingView.vue";
+import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
+import ForgetPassword from "../views/ForgetPassword.vue";
+import Login2 from "../views/Login2.vue";
+import CommonLoc from "../views/CommonLoc.vue";
 
 const routes = [
   {
@@ -47,6 +46,11 @@ const routes = [
     path: "/login-2",
     name: "Login2",
     component: Login2,
+  },
+  {
+    path: "/commonloc",
+    name: "CommonLoc",
+    component: CommonLoc,
   },
 ];
 
