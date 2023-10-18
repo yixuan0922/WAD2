@@ -37,8 +37,19 @@ export default createStore({
       const dbResults = await getDoc(userDoc);
       commit('setProfileInfo', dbResults);
       commit('setProfileInitials');
-      console.log(dbResults);
-    }
+      console.log('dbResults', dbResults);
+    },
+
+    // async getCalEvent(){
+    //   const currentUser = auth.currentUser;
+    //   const database = collection(db, "users");
+    //   const userDoc = doc(database, currentUser.uid)
+    //   const calEventCollection = collection(userDoc, "calEvent");
+    //   let snapshot = await getDocs(calEventCollection);
+    //   snapshot.forEach(doc => {
+    //     console.log('doc', doc.data());
+    //   })
+    // }
 
   },
   modules: {},
