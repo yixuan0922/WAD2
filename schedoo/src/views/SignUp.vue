@@ -6,18 +6,27 @@
                     <h2 class="header">Sign Up</h2>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
+                        <input type="text" required>
+                        <label for="">Name</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
                         <input type="email" required>
                         <label for="">Email</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" required>
+                        <input type="password" class="password" required>
                         <label for="">Password</label>
                     </div>
-
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input type="password" class="confirmPassword" required>
+                        <label for="">Confirm Password</label>
+                    </div>
                     <div v-show="error" class="error">{{ this.errorMsg }}</div>
 
-                    <button @click.prevent="signIn">Sign Up</button>
+                    <button @click.prevent="signUp">Sign Up</button>
                 </form>
             </div>
         </div>

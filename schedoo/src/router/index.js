@@ -4,6 +4,7 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
+import SignUp from '../views/SignUp.vue';
 
 
 const routes = [
