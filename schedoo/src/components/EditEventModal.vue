@@ -1,0 +1,74 @@
+<template>
+    <div>
+      <fieldset>
+        <legend>Event details</legend>
+        <b>Title:</b>  {{ event.title }} <br/>
+        <b>Start:</b>  {{ event.start }} <br/>
+        <b>End:</b>  {{ event.end }} <br/>
+        <b>ID:</b>  {{ event.id }} <br/>
+      </fieldset>
+      <fieldset>
+          <legend>Edit event</legend>
+          <div class="container">
+            <div class='row'> 
+              Event Title: <input type="text" v-model="title">
+            </div>
+            <div class="row">
+              <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
+              <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div>
+            </div>
+
+          </div>
+          <button class='buttonSave' @click="deleteEvent">Delete</button>
+          <button class='buttonSave' @click="updateEvent">Save</button>
+      </fieldset>
+    </div>
+  </template>
+  
+  <script>
+  
+  export default {
+      data: () => ({
+          title: "",
+          start: {},
+          end: {}
+      }),
+      methods: {
+          updateEvent () {
+              this.$store.commit("UPDATE_EVENT", {
+                  id: this.event.id,
+                  title: this.title,
+                  start: this.start,
+                  end: this.end,
+              })
+              this.$emit('close-modal');
+          },
+          deleteEvent() {
+            this.$store.commit("DELETE_EVENT", this.event.id)
+            this.$emit('close-modal');
+          }
+      },
+    props: {
+      text: String,
+      event: Object
+    },mounted() {
+        this.title = this.event.title;
+        this.start = formatDate(this.event.start);
+        this.end = formatDate(this.event.end);
+    }
+  };
+  
+  function formatDate(date) {
+      // YYYY-MM-DD 
+      var options = {year: "numeric", month: '2-digit', day: "2-digit"};
+      let string = date.toLocaleDateString("ko-KR", options).replace(/\. /g, "-")
+  
+      return string.substr(0, string.length - 1)
+  }
+  </script>
+  
+  <style>
+  .buttonSave {
+    margin-left: 10px
+  }
+  </style>

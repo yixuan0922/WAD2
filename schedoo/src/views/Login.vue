@@ -32,6 +32,7 @@
 import {auth} from "../firebase/firebaseInit";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
+
 export default {
     name: 'Login',
     data() {
