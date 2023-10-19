@@ -7,7 +7,8 @@ import {RouterLink, RouterView} from 'vue-router';
 
 <template>
   <nav
-    class="navbar navbar-expand-lg navbar-light bg-transparent navbar-absolute shadow-none"
+    class="navbar navbar-expand-lg navbar-light navbar-absolute shadow-none"
+    style="background-color: #e8da8b;"
   >
     <div class="container">
       <a class="navbar-brand" id='navBarLogo' href="#">Schedoo</a>
@@ -114,15 +115,18 @@ import {RouterLink, RouterView} from 'vue-router';
         <div
           class="col-lg-6 col-md-7 d-flex justify-content-center flex-column"
         >
-          <h1 class="text-white mb-4">SCHEDOO</h1>
-          <p class="text-white opacity-8 lead pe-5 me-5">
+          <h1 id="header" class="text-dark mb-4 bold" >SCHEDOO</h1>
+          <p id="subtitle" class="text-dark text-muted lead">
             Fail to Plan, Plan to Fail
           </p>
           <div class="buttons">
-            <button type="button" class="btn btn-light mt-4">
+            <button type="button" class="test">
               Get Started
             </button>
-            <button class="btn btn-dark bg-transparent mt-4">Read more</button>
+            <button 
+            class="test" 
+            style="--c: #373B44;--b: 3px;--s: .15em;;"
+            >Read more</button>
           </div>
         </div>
       </div>
@@ -146,7 +150,12 @@ import {RouterLink, RouterView} from 'vue-router';
   background-size: cover;
   background-position: 50%;
   background-color: 'transparent';
-  background-image: url("https://images.unsplash.com/photo-1520769945061-0a448c463865?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80");
+  @media (min-width: 0) {
+    background-image: url("@/assets/bgimg2.png");
+  }
+  @media (min-width: 768px) {
+    background-image: url("@/assets/bgimg.png");
+  }
 }
 .page-header .container {
   z-index: 1;
@@ -167,6 +176,60 @@ a{
 }
 .green-icon {
     color: 'black';
+}
+#header {
+  font-family: system-ui, sans-serif;
+  font-size:  5em;
+}
+#subtitle {
+  font-family: system-ui;
+  font-weight: bold;
+  font-size: large;
+}
+
+.test {
+  --b: 3px;   /* border thickness */
+  --s: .15em; /* size of the corner */
+  --c: #E6735C;
+  
+  padding: calc(.2em + var(--s)) calc(.6em + var(--s));
+  color: var(--c);
+  --_p: var(--s);
+  background:
+    conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--c) 0)
+    var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+  transition: .3s linear, color 0s, background-color 0s;
+  outline: var(--b) solid #0000;
+  outline-offset: .2em;
+
+}
+.test:hover,
+.test:focus-visible{
+  --_p: 0px;
+  outline-color: var(--c);
+  outline-offset: .05em;
+}
+.test:active {
+  background: var(--c);
+  color: #fff;
+}
+
+body {
+  height: 50vh;
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 20px;
+  place-content: center;
+  background: #DAEDFB;
+}
+.test {
+  font-family: system-ui, sans-serif;
+  font-weight: bold;
+  font-size: large;
+  cursor: pointer;
+  border: none;
+  margin: .2em;
 }
 
 .profile {
