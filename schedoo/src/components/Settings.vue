@@ -70,7 +70,7 @@ export default {
 
             if (overall - 24 != 0) {
                 // making 100
-                this.categories[this.categories.length-1].value = +this.categories[this.categories.length-1].value - (overall - 24)
+                this.categories[0].value = +this.categories[this.categories.length-1].value - (overall - 24)
             }
         },
         save() {
