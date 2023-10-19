@@ -9,7 +9,7 @@
 
                 <div class="row">
                     <p class="subtext col-lg-7 col-8">
-                        Preferred {{ cat.name }} % Time:
+                        Preferred {{ cat.name }} Time:
                     </p>
                     <p id="personalTime" class="subtext col" style="text-align: right; padding-right: 50px;">
                         {{ cat.value }}hr(s)
@@ -21,10 +21,6 @@
 
             <!-- Save into database -->
             <button type="button" onclick="save()" class="btn btn-info rounded-pill mr-md-3 mb-md-2 mt-5">Save</button>
-
-            <!-- Sign out -->
-            &nbsp;
-            <button type="button" onclick="signout()" class="btn btn-dark rounded-pill mr-md-3 mb-md-2 mt-5">Sign Out</button>
         </div>
     </div>
 </template>
@@ -34,6 +30,7 @@ export default {
     data() { 
     return { 
         categories: [
+            // Am assuming personal includes sleep
             {'name': "Personal", 'value': 8},
             {'name': "Study", 'value': 8},
             {'name': "CCA", 'value': 8}],
@@ -72,10 +69,64 @@ export default {
                 // making 100
                 this.categories[this.categories.length-1].value = +this.categories[this.categories.length-1].value - (overall - 24)
             }
-        }
+        },
+        save() {
+            // Save to firebase
+            // able to store same format as categories?
+        },
     }
 }
 </script>
-<style lang="">
+<style scoped>
+/* #main {
+background-color: #f1d1d8;
+}; */
+
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    border-radius: 25px;
+
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+.subtext {
+    /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+    font-weight: bold;
+    font-size: small;
+    /* margin: auto; */
+}
+
+.settings {
+    /* padding-right: 5%;  */
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    border: 2px solid grey;
+    border-radius: 15px;
+    padding-top: 5px;
+}
+
+
+.sliderMain {
+    background-color: whitesmoke;
+    border: 1px transparent black;
+    border-radius: 25px;
+    margin: auto;
+    margin-top: 30px;
+}
+
 
 </style>
