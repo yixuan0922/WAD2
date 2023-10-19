@@ -4,6 +4,7 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
+import Settings from '../components/Settings.vue';
 
 
 const routes = [
@@ -41,6 +42,11 @@ const routes = [
     name: "ForgetPassword",
     component: ForgetPassword,
   },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: Settings,
+  }
 ];
 
 const router = createRouter({
