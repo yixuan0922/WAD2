@@ -35,9 +35,7 @@
 </template>
 
 <script>
-// import RecommendLoc from "./components/RecommendLoc";
 import Modal from "@/components/Modal.vue";
-// import NavHeader from "./components/NavHeader.vue";
 
 export default {
   name: "app",
@@ -66,7 +64,8 @@ export default {
           dist: "800m",
         },
       ],
-      // showModel: false,
+      // lat: '';
+      // long: ''
 
       // midCoord: "",
       // text: "",
