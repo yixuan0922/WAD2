@@ -31,9 +31,12 @@ export default {
     return { 
         categories: [
             // Am assuming personal includes sleep
-            {'name': "Personal", 'value': 8},
-            {'name': "Study", 'value': 8},
-            {'name': "CCA", 'value': 8}],
+            {'name': "Personal", 'value': 4},
+            {'name': "Study", 'value': 4},
+            {'name': "CCA", 'value': 4},
+            {'name': "Classes", 'value': 4},
+            {'name': "Work", 'value': 4},
+            {'name': "Meetings", 'value': 4},],
         };
     }, 
     methods: {
