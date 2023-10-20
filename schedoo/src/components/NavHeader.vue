@@ -24,7 +24,8 @@ import {RouterLink, RouterView} from 'vue-router';
             <!-- <RouterLink class="nav-link text-white" :to="{name: 'dashboard'}">
                 My Calendar
               </RouterLink> -->
-            <a class="nav-link" href="#">My Calendar</a>
+            <router-link class="nav-link" :to="{name: 'Calendar'}">My Calendar</router-link>
+            <!-- <a class="nav-link" href="#">My Calendar</a> -->
           </li>
           <li class="nav-item dropdown">
             <a
