@@ -5,53 +5,37 @@ import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template lang="">
-    <nav
-    class="navbar navbar-expand-lg navbar-light navbar-absolute shadow-none"
-    style="background-color: #e8da8b;"
-    >
-        <div class="container">
-        <a class="navbar-brand" id='navBarLogo' href="#"><img src="@/assets/navschedoo.png" width="125"></a>
-
-        <!-- Nav bar button -->
-        <button 
-            class="navbar-toggler" 
-            type="button" data-bs-toggle="collapse" 
-            data-target="#navbar-header-2" 
-            aria-controls="navbar-header-2" 
-            aria-expanded="false" 
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e8da8b;">
+    <div class="container">
+        <a class="navbar-brand" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbar-header">
-            <ul class="navbar-nav mx-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto">
             <li class="nav-item">
-                <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
-                <a class="nav-link openBar" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item">
-                <!-- <RouterLink class="nav-link text-white" :to="{name: 'dashboard'}">
-                    My Calendar
-                </RouterLink> -->
-                <a class="nav-link openBar" href="#">My Calendar</a>
+            <a class="nav-link active" href="#">My Calendar</a>
             </li>
             <li class="nav-item dropdown">
-                <a
-                class="nav-link dropdown-toggle openBar"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                >Schedule</a
-                >
-                <ul class="dropdown-menu pt-1 pb-1">
-                <li><a class="dropdown-item" href="#"> CCAs</a></li>
-                <li><a class="dropdown-item" href="#"> Meetings</a></li>
-                <li><a class="dropdown-item" href="#"> Classes</a></li>
-                <li><a class="dropdown-item" href="#"> Outings</a></li>
+                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Schedule
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">CCAs</a></li>
+                    <li><a class="dropdown-item" href="#">Meetings</a></li>
+                    <li><a class="dropdown-item" href="#">Classes</a></li>
+                    <li><a class="dropdown-item" href="#">Outings</a></li>
                 </ul>
             </li>
-            </ul>
+        </ul>
+        </div>
+    <!-- </div>
+</nav> -->
+
 
 
             <!-- <ul class="nav navbar-nav">
@@ -80,11 +64,11 @@ import {RouterLink, RouterView} from 'vue-router';
                 </a>
             </li>
             </ul> -->
-        </div>
-        <!-- <ul class="navbar-nav me-auto">
-            <li class="nav-item"> -->
+        <!-- </div> -->
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
             <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
-            <!-- <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
+            <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
             </li>
             <div class="profile" ref="profile">
             <span>{{this.$store.state.profileInitials}}</span>
@@ -105,24 +89,18 @@ import {RouterLink, RouterView} from 'vue-router';
                         </router-link>
                 </div>
                 <div class="option">
-                    <router-link class-="option" to="#"> -->
+                    <router-link class-="option" to="#">
                     <!-- <userIcon class="icon"/> -->
-                    <!-- <p>Sign Out</p>
+                    <p>Sign Out</p>
                     </router-link>
                 </div>
                 </div>
             </div>
             </div>
-        </ul> -->
+        </ul>
         </div>
     </nav>
 </template>
-
-<script>
-export default {
-    
-}
-</script>
 
 <style scoped>
 .navbar {
@@ -131,7 +109,7 @@ export default {
     width: 100%;
     z-index: 10;
 }
-.openBar {
+.nav-link {
   font-weight: bold;
   font-size: large;
   font-family: system-ui;
