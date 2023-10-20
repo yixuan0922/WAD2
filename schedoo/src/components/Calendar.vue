@@ -104,7 +104,16 @@ const handleSelect = (arg) => {
 
 const handleEventClick = (arg) => {
     console.log(arg); 
-    toggleModal(EditEventModal, {text: 'This is from the component', event: arg.event});
+    toggleModal(EditEventModal, {text: 'This is from the component', 
+    // event: arg.event
+    event: {
+      id: arg.event.id,
+      title: arg.event.title,
+      start: arg.event.start, 
+      end: arg.event.end,
+      allDay: arg.allDay
+    }
+  });
     // this.$modal.show(EventModal, {
     //     text: "This is from the component",
     //     event: arg.event

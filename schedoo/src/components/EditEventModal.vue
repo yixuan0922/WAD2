@@ -14,10 +14,18 @@
               Event Title: <input type="text" v-model="title">
             </div>
             <div class="row">
-              <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
-              <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div>
+              <label>All Day:</label><input type="checkbox" v-model="allDay">
             </div>
-
+            <div class="row">
+              <div class='col col-6'>Start: 
+                <input type="date" v-model="start">
+                <input type="time" v-model="startTime" v-show="!allDay">
+              </div>
+              <div class='col col-6'>End: 
+                  <input type="date" v-model="end">
+                  <input type="time" v-model="endTime" v-show="!allDay">
+              </div>
+            </div>
           </div>
           <button class='buttonSave' @click="deleteEvent">Delete</button>
           <button class='buttonSave' @click="updateEvent">Save</button>
@@ -31,16 +39,39 @@
       data: () => ({
           title: "",
           start: {},
-          end: {}
+          end: {}, 
+          startTime: "",
+          endTime: "", 
+          allDay: false,
       }),
       methods: {
           updateEvent () {
-              this.$store.commit("UPDATE_EVENT", {
+              let start = new Date(this.start);
+              let end = new Date(this.end);
+
+              if (!this.allDay) {
+                  let [startHours, startMinutes] = this.startTime.split(':');
+                  let [endHours, endMinutes] = this.endTime.split(':');
+
+                  start.setHours(startHours, startMinutes);
+                  end.setHours(endHours, endMinutes);
+              }
+
+              let event = {
                   id: this.event.id,
                   title: this.title,
-                  start: this.start,
-                  end: this.end,
-              })
+                  start: start,
+                  end: end,
+                  allDay: this.allDay
+              };
+              this.$store.commit("UPDATE_EVENT", event);
+
+              // this.$store.commit("UPDATE_EVENT", {
+              //     id: this.event.id,
+              //     title: this.title,
+              //     start: this.start,
+              //     end: this.end,
+              // })
               this.$emit('close-modal');
           },
           deleteEvent() {
@@ -52,9 +83,12 @@
       text: String,
       event: Object
     },mounted() {
-        this.title = this.event.title;
+        this.id = this.event.id;
         this.start = formatDate(this.event.start);
         this.end = formatDate(this.event.end);
+        this.startTime = formatTime(this.event.start);
+        this.endTime = formatTime(this.event.end);
+        this.allDay = this.event.allDay;
     }
   };
   
@@ -64,6 +98,19 @@
       let string = date.toLocaleDateString("ko-KR", options).replace(/\. /g, "-")
   
       return string.substr(0, string.length - 1)
+  }
+
+  function formatTime(date) {
+     // HH:MM
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    let time = `${hours}:${minutes}`;
+
+    return time
   }
   </script>
   

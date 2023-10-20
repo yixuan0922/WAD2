@@ -21,9 +21,12 @@ export default createStore({
     // Events
     SET_EVENTS(state, events) {
       state.events = events;
+      // console.log(events);
+
     },
     ADD_EVENT: (state, event) => {
       state.events.push(event)
+      console.log(state.events);
     },
     UPDATE_EVENT: (state, {id, title, start, end}) => {
         let index = state.events.findIndex(_event => _event.id == id)
@@ -35,6 +38,7 @@ export default createStore({
     DELETE_EVENT: (state, id) => {
         let index = state.events.findIndex(_event => _event.id == id)
         state.events.splice(index, 1)
+        console.log(state.events);
     },
     // User
     updateUser(state, payload) {

@@ -14,16 +14,16 @@
             </div>
             <div class="row">
               <label>All Day:</label><input type="checkbox" v-model="allDay">
-          </div>
+            </div>
             <div class="row">
               <div class='col col-6'>Start: 
                 <input type="date" v-model="start">
                 <input type="time" v-model="startTime" v-show="!allDay">
-            </div>
-            <div class='col col-6'>End: 
-                <input type="date" v-model="end">
-                <input type="time" v-model="endTime" v-show="!allDay">
-            </div>
+              </div>
+              <div class='col col-6'>End: 
+                  <input type="date" v-model="end">
+                  <input type="time" v-model="endTime" v-show="!allDay">
+              </div>
               <!-- <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
               <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div> -->
             </div>
@@ -94,17 +94,11 @@
       event: Object
     },mounted() {
         this.id = this.event.id;
-        // console.log(this.id);
         this.start = formatDate(this.event.start);
-        // console.log(this.start);
         this.end = formatDate(this.event.end);
-        // console.log(this.end);
         this.startTime = formatTime(this.event.start);
-        // console.log(this.startTime);
         this.endTime = formatTime(this.event.end);
-        // console.log(this.endTime);
         this.allDay = this.event.allDay;
-        // console.log(this.allDay);
     }
   };
   
