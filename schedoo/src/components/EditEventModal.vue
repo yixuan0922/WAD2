@@ -64,7 +64,8 @@
                   end: end,
                   allDay: this.allDay
               };
-              this.$store.commit("UPDATE_EVENT", event);
+              // this.$store.commit("UPDATE_EVENT", event);
+              this.$store.dispatch('updateEvent', event);
 
               // this.$store.commit("UPDATE_EVENT", {
               //     id: this.event.id,
@@ -75,7 +76,8 @@
               this.$emit('close-modal');
           },
           deleteEvent() {
-            this.$store.commit("DELETE_EVENT", this.event.id)
+            this.$store.dispatch('deleteEvent', this.event.id);
+            // this.$store.commit("DELETE_EVENT", this.event.id)
             this.$emit('close-modal');
           }
       },
@@ -88,7 +90,7 @@
         this.end = formatDate(this.event.end);
         this.startTime = formatTime(this.event.start);
         this.endTime = formatTime(this.event.end);
-        this.allDay = this.event.allDay;
+        this.allDay = Boolean(this.event.allDay);
     }
   };
   

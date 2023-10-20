@@ -47,6 +47,7 @@
       }),
       methods: {
         addEvent() {
+
               let start = new Date(this.start);
               let end = new Date(this.end);
 
@@ -66,7 +67,8 @@
                   allDay: this.allDay
               };
 
-              this.$store.commit("ADD_EVENT", event);
+              // this.$store.commit("ADD_EVENT", event);
+              this.$store.dispatch('addEvent', event);
               this.$emit('close-modal');
           }
 
@@ -98,7 +100,7 @@
         this.end = formatDate(this.event.end);
         this.startTime = formatTime(this.event.start);
         this.endTime = formatTime(this.event.end);
-        this.allDay = this.event.allDay;
+        this.allDay = Boolean(this.event.allDay);
     }
   };
   

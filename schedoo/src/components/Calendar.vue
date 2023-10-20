@@ -61,6 +61,7 @@ const newEvent = () => {
         end: date,
         allDay: true,
     }})
+
 };
 
 // const renderEvent = (arg) => {
@@ -80,7 +81,8 @@ const newEvent = () => {
 // };
 
 const updateEvent = (arg) => {
-    store.commit("UPDATE_EVENT", arg.event);
+    // store.commit("UPDATE_EVENT", arg.event);
+    store.dispatch('updateEvent', arg.event);
 };
 
 const handleSelect = (arg) => {

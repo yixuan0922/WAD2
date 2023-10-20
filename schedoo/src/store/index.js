@@ -1,6 +1,6 @@
 import { createStore} from "vuex";
 import { db, auth } from "../firebase/firebaseInit";
-import {collection, doc, getDoc, getDocs} from 'firebase/firestore';
+import {collection, doc, getDoc, getDocs, setDoc, deleteDoc} from 'firebase/firestore';
 
 export default createStore({
   state: {
@@ -22,18 +22,18 @@ export default createStore({
     SET_EVENTS(state, events) {
       state.events = events;
       // console.log(events);
-
     },
     ADD_EVENT: (state, event) => {
       state.events.push(event)
       console.log(state.events);
     },
-    UPDATE_EVENT: (state, {id, title, start, end}) => {
+    UPDATE_EVENT: (state, {id, title, start, end, allDay}) => {
         let index = state.events.findIndex(_event => _event.id == id)
         
         state.events[index].title = title;
         state.events[index].start = start;
         state.events[index].end = end;
+        state.events[index].allDay = allDay; 
     },
     DELETE_EVENT: (state, id) => {
         let index = state.events.findIndex(_event => _event.id == id)
@@ -70,7 +70,6 @@ export default createStore({
       });
       console.log('events', events);
       commit('SET_EVENTS', events);
-      
     }, 
     async getCurrentUser({commit}) {
       const currentUser = auth.currentUser;
@@ -81,20 +80,52 @@ export default createStore({
       commit('setProfileInitials');
       console.log('dbResults', dbResults);
     },
+    async addEvent({commit}, event){
+      const currentUser = auth.currentUser;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUser.uid);
+      const calEventCollection = collection(userDoc, "calEvent");
+      const eventDoc = doc(calEventCollection, String(event.id));
 
+      await setDoc(eventDoc, {
+        title: event.title, 
+        start: String(event.start), 
+        end: String(event.end), 
+        allDay: Boolean(event.allDay),
+      })
 
+      commit("ADD_EVENT", event);
+    },
 
-    // async getCalEvent(){
-    //   const currentUser = auth.currentUser;
-    //   const database = collection(db, "users");
-    //   const userDoc = doc(database, currentUser.uid)
-    //   const calEventCollection = collection(userDoc, "calEvent");
-    //   let snapshot = await getDocs(calEventCollection);
-    //   snapshot.forEach(doc => {
-    //     console.log('doc', doc.data());
-    //   })
-    // }
+    async updateEvent({commit}, event){
+      const currentUser = auth.currentUser;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUser.uid);
+      const calEventCollection = collection(userDoc, "calEvent");
+      const eventDoc = doc(calEventCollection, String(event.id));
+      console.log(event.allDay);
 
+      await setDoc(eventDoc, {
+        title: event.title, 
+        start: String(event.start), 
+        end: String(event.end), 
+        allDay: Boolean(event.allDay),
+      }, {merge: true});
+
+      commit("UPDATE_EVENT", event);
+    },
+
+    async deleteEvent({commit}, id){
+      const currentUser = auth.currentUser;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUser.uid);
+      const calEventCollection = collection(userDoc, "calEvent");
+      const eventDoc = doc(calEventCollection, id);
+
+      await deleteDoc(eventDoc);
+
+      commit("DELETE_EVENT", id);
+    }
   },
   modules: {},
 });
