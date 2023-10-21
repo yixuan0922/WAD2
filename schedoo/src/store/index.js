@@ -13,7 +13,6 @@ export default createStore({
     profileId: null,
     profileInitials: null,
     events: [],
-    eventsTemp: [],
   },
   getters: {
     EVENTS: state => state.events, 
@@ -28,8 +27,6 @@ export default createStore({
       console.log('typeoftitle', typeof(event.start), event.start);
       state.events.push(event)
       console.log('AddEvent',state.events);
-      state.eventsTemp.push(event);
-      console.log('AddEventTemp',state.eventsTemp);
     },
     UPDATE_EVENT: (state, {id, title, start, end, allDay}) => {
         let index = state.events.findIndex(_event => _event.id == id)

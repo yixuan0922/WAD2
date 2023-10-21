@@ -30,7 +30,8 @@
 <script>
 
 import {auth} from "../firebase/firebaseInit";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword,} from 'firebase/auth';
+// import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
 export default {
@@ -56,26 +57,26 @@ export default {
           this.errorMsg = err.message
         });
       }, 
-      signInWithGoogle() {
-      const provider = new GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/calendar');
-      signInWithPopup(auth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        console.log("token:",token);
-        // const user = result.user;
-        // console.log("user:",user);
-        this.$router.push({name: 'Landing'});
-      }).catch((error) => {
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        // const email = error.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log("error:",errorMessage);
-        console.log("credential:",credential);
-      });
-    }
+    //   signInWithGoogle() {
+    //   const provider = new GoogleAuthProvider();
+    //   provider.addScope('https://www.googleapis.com/auth/calendar');
+    //   signInWithPopup(auth, provider)
+    //   .then((result) => {
+    //     const credential = GoogleAuthProvider.credentialFromResult(result);
+    //     const token = credential.accessToken;
+    //     console.log("token:",token);
+    //     // const user = result.user;
+    //     // console.log("user:",user);
+    //     this.$router.push({name: 'Landing'});
+    //   }).catch((error) => {
+    //     // const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     // const email = error.email;
+    //     const credential = GoogleAuthProvider.credentialFromError(error);
+    //     console.log("error:",errorMessage);
+    //     console.log("credential:",credential);
+    //   });
+    // }
     }
 
 }

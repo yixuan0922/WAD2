@@ -57,17 +57,17 @@ export default {
         email: "",
         password: "",
         error: "", 
-        errorMessage: "",
+        errorMsg: "",
         };
     },
   methods: {
     async register(){
         if (
-            this.email !== "" &&
-            this.password !== "" &&
-            this.firstName !== "" &&
-            this.lastName !== "" &&
-            this.username !== ""
+            this.email != "" &&
+            this.password != "" &&
+            this.firstName != "" &&
+            this.lastName != "" &&
+            this.username != ""
         ) {
             this.error = false;
             this.errorMsg = "";
@@ -82,14 +82,12 @@ export default {
                     username: this.username,
                     email: this.email,
                 })
+                this.$router.push({ name: "Login" })
+                // setTimeout(this.$router.push({ name: "Login" }), 3000);
             }).catch((err) => {
                 this.error = true;
                 this.errorMsg = err.message;
             })
-            
-
-            
-
             // const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
             // const user = userCredential.user;
             // const dataBase = collection(db, "users");
@@ -103,8 +101,11 @@ export default {
             // this.$router.push({ name: "Landing" });
             // return; 
         }
+        else {
         this.error= true;
         this.errorMsg = "Please fill in all fields";
+        return;
+        }
         return;
     },
     },
