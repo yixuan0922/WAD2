@@ -29,8 +29,60 @@ import {RouterLink, RouterView} from 'vue-router';
         </div>
       </div>
     </div>
+
+    <div class="navbar-nav me-auto align-bottom">
+      <!-- <li class="nav-item"> -->
+      <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
+      <!-- <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
+      </li> -->
+      <div class="profile pButton" ref="profile">
+      <span @click="toggle">{{this.$store.state.profileInitials}}</span>
+        <div class="profile-menu" id="profileMenu" hidden>
+          <div class="info">
+            <p class="initials">{{this.$store.state.profileInitials}}</p>
+            <div class="right">
+              <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
+              <p>{{this.$store.state.profileUsername}} </p>
+              <p>{{this.$store.state.profileEmail}} </p>
+            </div>
+          </div>
+          <div class="options">
+            <div class="option">
+              <router-link class-="option" to="#">
+              <userIcon class="icon"/>
+              <p>Profile</p>
+              </router-link>
+            </div>
+            <div class="option">
+              <router-link class-="option" to="#">
+              <!-- <userIcon class="icon"/> -->
+              <p>Sign Out</p>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "header",
+  data() {
+    return {
+      hidden: true,
+    }
+  },
+  methods: {
+    toggle() {
+      this.hidden = !this.hidden;
+      document.getElementById("profileMenu").hidden = this.hidden;
+    }
+  }
+};
+
+</script>
 
 <style scoped>
 .page-header {
@@ -124,25 +176,36 @@ body {
   margin: .2em;
 }
 
+.pButton {
+  position: absolute;
+  bottom: 0;
+}
 .profile {
-  position: relative;
+  position: absolute;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
+  right: 25px;
+  bottom: 25px;
+  z-index: 1;
+  font-size: large;
   border-radius: 50%;
   color: #ffff;
   background-color: #303030;
 
   .profile-menu {
     position: absolute;
-    top:60px;
+    bottom: 60px;
     right: 0;
-    width:250px;
-    background-color: #303030;
+    width:260px;
+    background-color: #e3cf62;
+    color: black !important;
+    font-weight: bold;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 5%;
 
     .info {
       display: flex;
@@ -154,17 +217,19 @@ body {
         position: initial;
         width: 40px;
         height: 40px;
-        background-color: #fff;
-        color: #303030;
+        background-color: #303030;
+        color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        font-weight: normal;
       }
 
       .right {
         flex: 1;
         margin-left: 24px;
+        text-decoration: none;
 
         p:nth-child(1) {
           font-size: 14px;
@@ -179,8 +244,5 @@ body {
     }
   }
 }
-
-
-
 
 </style>
