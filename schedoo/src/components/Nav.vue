@@ -4,24 +4,34 @@
 import {RouterLink, RouterView} from 'vue-router';
 </script>
 
-<template lang="">
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e8da8b;">
+<template>
+<nav class="navbar navbar-expand-lg navbar-light" 
+style="background-color: #e8da8b;"
+>
     <div class="container">
-        <a class="navbar-brand" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" id="navBarLogo" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
+        <button class="navbar-toggler" type="button" 
+        data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+        aria-controls="navbarSupportedContent" aria-expanded="false" 
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto">
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" href="#">Home</a>
             </li>
             <li class="nav-item">
             <a class="nav-link active" href="#">My Calendar</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link active dropdown-toggle" 
+                href="#" 
+                id="navbarDropdown" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
                     Schedule
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -32,7 +42,10 @@ import {RouterLink, RouterView} from 'vue-router';
                 </ul>
             </li>
         </ul>
-        </div>
+        <span class="navbar-text">
+            <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
+        </span>
+        <!-- </div> -->
     <!-- </div>
 </nav> -->
 
@@ -64,40 +77,8 @@ import {RouterLink, RouterView} from 'vue-router';
                 </a>
             </li>
             </ul> -->
-        <!-- </div> -->
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-            <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
-            <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
-            </li>
-            <div class="profile" ref="profile">
-            <span>{{this.$store.state.profileInitials}}</span>
-            <div class="profile-menu">
-                <div class="info">
-                <p class="initials">{{this.$store.state.profileInitials}}</p>
-                <div class="right">
-                    <p>{{this.$store.state.profileLastName}} {{this.$store.state.profileLastName}}</p>
-                    <p>{{this.$store.state.profileUsername}} </p>
-                    <p>{{this.$store.state.profileEmail}} </p>
-                </div>
-                </div>
-                <div class="options">
-                <div class="option">
-                    <router-link class-="option" to="#">
-                    <userIcon class="icon"/>
-                        <p>Profile</p>
-                        </router-link>
-                </div>
-                <div class="option">
-                    <router-link class-="option" to="#">
-                    <!-- <userIcon class="icon"/> -->
-                    <p>Sign Out</p>
-                    </router-link>
-                </div>
-                </div>
-            </div>
-            </div>
-        </ul>
+        </div>
+        
         </div>
     </nav>
 </template>
@@ -110,9 +91,9 @@ import {RouterLink, RouterView} from 'vue-router';
     z-index: 10;
 }
 .nav-link {
-  font-weight: bold;
-  font-size: large;
-  font-family: system-ui;
-  letter-spacing: 0.05em;
+    font-weight: bold;
+    font-size: large;
+    font-family: system-ui;
+    letter-spacing: 0.05em;
 }
 </style>
