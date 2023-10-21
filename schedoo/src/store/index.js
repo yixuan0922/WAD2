@@ -13,6 +13,7 @@ export default createStore({
     profileId: null,
     profileInitials: null,
     events: [],
+    eventsTemp: [],
   },
   getters: {
     EVENTS: state => state.events, 
@@ -21,11 +22,14 @@ export default createStore({
     // Events
     SET_EVENTS(state, events) {
       state.events = events;
-      // console.log(events);
+      console.log('SetEvents',state.events);
     },
     ADD_EVENT: (state, event) => {
+      console.log('typeoftitle', typeof(event.start), event.start);
       state.events.push(event)
-      console.log(state.events);
+      console.log('AddEvent',state.events);
+      state.eventsTemp.push(event);
+      console.log('AddEventTemp',state.eventsTemp);
     },
     UPDATE_EVENT: (state, {id, title, start, end, allDay}) => {
         let index = state.events.findIndex(_event => _event.id == id)
@@ -34,11 +38,13 @@ export default createStore({
         state.events[index].start = start;
         state.events[index].end = end;
         state.events[index].allDay = allDay; 
+
+        console.log('updateEvents',state.events);
     },
     DELETE_EVENT: (state, id) => {
         let index = state.events.findIndex(_event => _event.id == id)
         state.events.splice(index, 1)
-        console.log(state.events);
+        console.log('DeleteEvents',state.events);
     },
     // User
     updateUser(state, payload) {
@@ -66,9 +72,15 @@ export default createStore({
       snapshot.forEach(doc => {
           let appData = doc.data();
           appData.id = doc.id;
+          // console.log('appData Before', typeof(appData.start));
+
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+
+          // console.log('appDate after', typeof(appData.start));
           events.push(appData);
+          // console.log('FetchEvents', events);
       });
-      console.log('events', events);
       commit('SET_EVENTS', events);
     }, 
     async getCurrentUser({commit}) {
@@ -90,7 +102,7 @@ export default createStore({
       await setDoc(eventDoc, {
         title: event.title, 
         start: String(event.start), 
-        end: String(event.end), 
+        end: String(event.end),  
         allDay: Boolean(event.allDay),
       })
 
@@ -108,7 +120,7 @@ export default createStore({
       await setDoc(eventDoc, {
         title: event.title, 
         start: String(event.start), 
-        end: String(event.end), 
+        end: String(event.end),  
         allDay: Boolean(event.allDay),
       }, {merge: true});
 

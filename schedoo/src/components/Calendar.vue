@@ -38,7 +38,6 @@ import NewEventModal from '../components/NewEventModal.vue'
 // import { Calendar } from '@fullcalendar/core';
 import Modal from "@/components/ModalView.vue";
 
-
 const store = useStore();
 
 const modalActive = ref(false);
@@ -116,10 +115,6 @@ const handleEventClick = (arg) => {
       allDay: arg.allDay
     }
   });
-    // this.$modal.show(EventModal, {
-    //     text: "This is from the component",
-    //     event: arg.event
-    // });
 };
 
 let calendarOptions = ref({
