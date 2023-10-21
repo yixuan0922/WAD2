@@ -7,7 +7,7 @@
     <p>{{ midCoord }}</p> -->
 
     <Modal
-      modalMessage="Test"
+      :modalMessage="message"
       v-if="isModalOpen"
       @close-modal="closeModal"
     ></Modal>
@@ -17,7 +17,13 @@
         <div class="col-4 side-bar">
           <h2 class="header">Recommended Locations For You:</h2>
           <div v-for="loc in LocObjList" :key="loc.name">
-            <div class="row loc" @click="openModal">
+            <div
+              class="row loc"
+              @click="
+                openModal(loc.name);
+                displayMap(loc.coord, loc.name);
+              "
+            >
               <div class="col-3 loc-img">
                 <img :src="loc.img" />
               </div>
@@ -27,8 +33,12 @@
               </div>
             </div>
           </div>
+          <button @click="setLocation()">Set Location</button>
         </div>
-        <div class="col map"></div>
+
+        <div class="col map">
+          <h3>{{ text }}</h3>
+        </div>
       </div>
     </div>
   </div>
@@ -48,56 +58,63 @@ export default {
         {
           img: "https://eatbook.sg/wp-content/uploads/2022/06/pasta-express-three-dishes.jpg",
           name: "Pasta Express",
-          coord: [],
+          coord: { lat: 1, long: 2 },
           dist: "800m",
         },
         {
           img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVL3loDf1AJuuqkf199J4TYrtQS5m2dDoMPA&usqp=CAU",
           name: "Lazada",
-          coord: [],
+          coord: { lat: 3, long: 4 },
           dist: "800m",
         },
         {
           img: "https://eatbook.sg/wp-content/uploads/2023/08/kuro-kare-don-3.jpg",
           name: "Kurokare",
-          coord: [],
+          coord: { lat: 5, long: 6 },
           dist: "800m",
         },
       ],
-      // lat: '';
-      // long: ''
-
       // midCoord: "",
-      // text: "",
+      text: "Click a location to display the map",
       // status: "",
       isModalOpen: false,
+      message: "",
     };
   },
   methods: {
-    getMidCoord(coordList) {
-      var latCount = 0;
-      var longCount = 0;
-      for (var coord of coordList) {
-        latCount += coord[0];
-        longCount += coord[1];
-      }
+    // getMidCoord(coordList) {
+    //   var latCount = 0;
+    //   var longCount = 0;
+    //   for (var coord of coordList) {
+    //     latCount += coord[0];
+    //     longCount += coord[1];
+    //   }
 
-      var midLat = latCount / coordList.length;
-      var midLong = longCount / coordList.length;
+    //   var midLat = latCount / coordList.length;
+    //   var midLong = longCount / coordList.length;
 
-      this.midCoord = [midLat, midLong];
+    //   this.midCoord = [midLat, midLong];
+    // },
+    // updateCoord() {
+    //   var newCoord = this.text.split(",");
+    //   this.coordList.push(newCoord);
+    //   this.status = "updated!";
+    // },
+    displayMap(coord, name) {
+      this.text = name + `${coord.lat}`;
     },
-    updateCoord() {
-      var newCoord = this.text.split(",");
-      this.coordList.push(newCoord);
-      this.status = "updated!";
-    },
 
-    openModal() {
+    openModal(message) {
+      this.message = message;
       this.isModalOpen = true;
     },
     closeModal() {
       this.isModalOpen = false;
+    },
+
+    setLocation() {
+      // updates common location to backend
+      this.openModal("Location has been set!");
     },
   },
 };
@@ -107,12 +124,16 @@ export default {
 .map {
   border: transparent;
   border-radius: 20px;
-  background-color: transparent;
+  background-color: lightgray;
   width: 500px;
   height: 500px;
   margin: 0px 40px;
   object-fit: contain;
-  background-image: url("https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/w_2560%2Cc_limit/GoogleMapTA.jpg");
+  display: flex;
+}
+
+.map h3 {
+  margin: auto;
 }
 
 .header {
