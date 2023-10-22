@@ -127,7 +127,8 @@ a{
   display: inline-block;
   font-size:  5em;
   line-height: 1.205;
-  color: black
+  color: black;
+  font-family:cursive;
 }
 
 .text__first{
