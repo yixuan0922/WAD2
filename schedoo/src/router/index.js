@@ -4,7 +4,8 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
-
+// import CalendarView from '../views/CalendarView.vue';
+import Calendar from '../components/Calendar.vue';
 
 const routes = [
   {
@@ -41,6 +42,17 @@ const routes = [
     name: "ForgetPassword",
     component: ForgetPassword,
   },
+  // {
+  //   path: "/calendar",
+  //   name: "calendar",
+  //   component: CalendarView,
+  // },
+  {
+    path: "/calendar", 
+    name: 'Calendar', 
+    component: Calendar, 
+  }
+
 ];
 
 const router = createRouter({
