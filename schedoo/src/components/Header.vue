@@ -48,7 +48,7 @@ import {RouterLink, RouterView} from 'vue-router';
 export default {
   name: "header",
   mounted() {
-    var tl = new gsap.timeline({delay: 0.5}),
+    var tl = new gsap.timeline({delay: 0.75}),
     firstBg = document.querySelectorAll('.text__first-bg'),
     secBg = document.querySelectorAll('.text__second-bg'),
     word  = document.querySelectorAll('.text__word');
@@ -108,13 +108,26 @@ a{
   font-family: system-ui;
   font-weight: bold;
   font-size: large;
+  font-style: italic;
+  color: #5A5A5A;
+  margin-bottom: 50px;
+
+  opacity: 0;
+  animation: fadeIn 3s;
+  animation-delay: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .text{
   display: inline-block;
   font-size:  5em;
   line-height: 1.205;
-  
+  color: black
 }
 
 .text__first{
@@ -138,7 +151,7 @@ a{
 }
 
 .text__first-bg{
-  background-color: #6ec8bd;
+  background-color: #9ac86e;
 }
 
 
