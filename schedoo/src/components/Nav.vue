@@ -16,8 +16,8 @@ style="background-color: #e8da8b;"
             <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
             <!-- <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
             </li> -->
-            <div class="profile pButton" ref="profile">
-                <span @click="toggle">{{this.$store.state.profileInitials}}</span>
+            <div class="profile pButton" ref="profile" @click="toggle">
+                <span >{{this.$store.state.profileInitials}}</span>
                 <div class="profile-menu" id="profileMenu" hidden>
                     <div class="info">
                         <p class="initials">{{this.$store.state.profileInitials}}</p>
