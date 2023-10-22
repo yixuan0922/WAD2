@@ -2,6 +2,8 @@
 <script setup>
 /* eslint-disable */
 
+import { gsap } from "gsap";
+import { getAuth, signOut } from "firebase/auth";
 import {RouterLink, RouterView} from 'vue-router';
 </script>
 
@@ -13,7 +15,15 @@ import {RouterLink, RouterView} from 'vue-router';
         <div
           class="col-lg-6 col-md-7 d-flex justify-content-center flex-column"
         >
-          <h1 id="header" class="text-dark mb-4 bold" >SCHEDOO</h1>
+
+        <p id="header" class="text"> 
+          <span class="text__first">
+            <span class="text__word">SCHEDOO</span>
+            <span class="text__first-bg"></span>
+          </span>
+        </p>
+
+          <!-- <h1 id="header" class="text-dark mb-4 bold" >SCHEDOO</h1> -->
           <p id="subtitle" class="text-dark text-muted lead">
             Fail to Plan, Plan to Fail
           </p>
@@ -30,58 +40,27 @@ import {RouterLink, RouterView} from 'vue-router';
       </div>
     </div>
 
-    <div class="navbar-nav me-auto align-bottom">
-      <!-- <li class="nav-item"> -->
-      <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
-      <!-- <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
-      </li> -->
-      <div class="profile pButton" ref="profile">
-      <span @click="toggle">{{this.$store.state.profileInitials}}</span>
-        <div class="profile-menu" id="profileMenu" hidden>
-          <div class="info">
-            <p class="initials">{{this.$store.state.profileInitials}}</p>
-            <div class="right">
-              <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
-              <p>{{this.$store.state.profileUsername}} </p>
-              <p>{{this.$store.state.profileEmail}} </p>
-            </div>
-          </div>
-          <div class="options">
-            <div class="option">
-              <router-link class-="option" to="#">
-              <userIcon class="icon"/>
-              <p>Profile</p>
-              </router-link>
-            </div>
-            <div class="option">
-              <router-link class-="option" to="#">
-              <!-- <userIcon class="icon"/> -->
-              <p>Sign Out</p>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-  </div>
+
   </div>
 </template>
 
 <script>
 export default {
   name: "header",
-  data() {
-    return {
-      hidden: true,
-    }
-  },
-  methods: {
-    toggle() {
-      this.hidden = !this.hidden;
-      document.getElementById("profileMenu").hidden = this.hidden;
-    }
+  mounted() {
+    var tl = new gsap.timeline({delay: 0.5}),
+    firstBg = document.querySelectorAll('.text__first-bg'),
+    secBg = document.querySelectorAll('.text__second-bg'),
+    word  = document.querySelectorAll('.text__word');
+  
+  tl
+    .to(firstBg, 0.2, {scaleX:1})
+    .to(secBg, 0.2, {scaleX:1})
+    .to(word, 0.1, {opacity:1}, "-=0.1")  
+    .to(firstBg, 0.2, {scaleX:0})
+    .to(secBg, 0.2, {scaleX:0});
   }
-};
-
+}
 </script>
 
 <style scoped>
@@ -121,15 +100,47 @@ a{
 .green-icon {
     color: 'black';
 }
-#header {
+/* #header {
   font-family: system-ui, sans-serif;
   font-size:  5em;
-}
+} */
 #subtitle {
   font-family: system-ui;
   font-weight: bold;
   font-size: large;
 }
+
+.text{
+  display: inline-block;
+  font-size:  5em;
+  line-height: 1.205;
+  
+}
+
+.text__first{
+  position: relative;
+}
+
+.text__word{
+  opacity: 0;
+}
+
+.text__first-bg{
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.text__first-bg{
+  background-color: #6ec8bd;
+}
+
 
 .test {
   --b: 3px;   /* border thickness */
@@ -180,69 +191,6 @@ body {
   position: absolute;
   bottom: 0;
 }
-.profile {
-  position: absolute;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  right: 25px;
-  bottom: 25px;
-  z-index: 1;
-  font-size: large;
-  border-radius: 50%;
-  color: #ffff;
-  background-color: #303030;
 
-  .profile-menu {
-    position: absolute;
-    bottom: 60px;
-    right: 0;
-    width:260px;
-    background-color: #e3cf62;
-    color: black !important;
-    font-weight: bold;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border-radius: 5%;
-
-    .info {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-bottom: 1px solid #fff;
-
-      .initials {
-        position: initial;
-        width: 40px;
-        height: 40px;
-        background-color: #303030;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        font-weight: normal;
-      }
-
-      .right {
-        flex: 1;
-        margin-left: 24px;
-        text-decoration: none;
-
-        p:nth-child(1) {
-          font-size: 14px;
-        }
-
-        p:nth-child(2), 
-        p:nth-child(3) {
-          font-size: 12px;
-        }
-      }
-
-    }
-  }
-}
 
 </style>
