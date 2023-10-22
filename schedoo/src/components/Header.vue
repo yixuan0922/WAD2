@@ -48,7 +48,7 @@ import {RouterLink, RouterView} from 'vue-router';
 export default {
   name: "header",
   mounted() {
-    var tl = new gsap.timeline({delay: 0.75}),
+    var tl = new gsap.timeline({delay: 1}),
     firstBg = document.querySelectorAll('.text__first-bg'),
     secBg = document.querySelectorAll('.text__second-bg'),
     word  = document.querySelectorAll('.text__word');
@@ -114,7 +114,7 @@ a{
 
   opacity: 0;
   animation: fadeIn 3s;
-  animation-delay: 1s;
+  animation-delay: 1.5s;
   animation-fill-mode: both;
 }
 
