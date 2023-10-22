@@ -4,6 +4,7 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
+import CreateEvent from '/src/components/CreateEvent.vue';
 
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
     path: "/forget-password",
     name: "ForgetPassword",
     component: ForgetPassword,
+  },
+  {
+    path: "/create-event",
+    name: "CreateEvent",
+    component: CreateEvent,
   },
 ];
 
