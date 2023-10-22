@@ -7,7 +7,17 @@
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
                         <input type="text" required>
-                        <label for="">Name</label>
+                        <label for="">First Name</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="text" required>
+                        <label for="">Last Name</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="text" required>
+                        <label for="">UserName</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
@@ -19,11 +29,7 @@
                         <input type="password" class="password" required>
                         <label for="">Password</label>
                     </div>
-                    <div class="inputbox">
-                        <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" class="confirmPassword" required>
-                        <label for="">Confirm Password</label>
-                    </div>
+    
                     <div v-show="error" class="error">{{ this.errorMsg }}</div>
 
                     <button @click.prevent="signUp">Sign Up</button>
@@ -86,7 +92,7 @@ section {
 .form-box {
     position: relative;
     width: 400px;
-    height: 450px;
+    height: 580px;
     display: flex;
     justify-content: center;
     align-items: center;
