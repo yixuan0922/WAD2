@@ -1,12 +1,12 @@
 <script setup>
 /* eslint-disable */
 
+import { auth } from '@/firebase/firebaseInit';
 import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" 
-style="background-color: #e8da8b;"
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e8da8b;"
 >
     <div class="container">
         <a class="navbar-brand" id="navBarLogo" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
@@ -38,8 +38,8 @@ style="background-color: #e8da8b;"
                                 >Profile</p>
                             </router-link>
                         </div>
-                        <div class="option">
-                            <router-link class-="option" to="#"
+                        <div @click='signOut' class="option">
+                            <router-link class="option" to="#"
                             style="color: black; text-decoration: none"
                             >
                                 <!-- <userIcon class="icon"/> -->
@@ -151,6 +151,12 @@ export default {
       this.hidden = !this.hidden;
       document.getElementById("profileMenu").hidden = this.hidden;
     },
+
+    signOut() {
+      auth.signOut();
+      window.location.reload();
+    }
+
     // signOut() {
     //   const auth = getAuth();
 
@@ -170,7 +176,13 @@ export default {
     //     this.loggedin = false;
     //   }
     // }
+  }, 
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
   }
+
 };
 
 </script>
