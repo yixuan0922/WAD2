@@ -34,12 +34,13 @@ style="background-color: #e8da8b;"
                             >
                                 <userIcon class="icon"/>
                                 <p
+                                style="padding-top: 10px"
                                 >Profile</p>
                             </router-link>
                         </div>
                         <div class="option">
                             <router-link class-="option" to="#"
-                            style="color: black; text-decoration: none;"
+                            style="color: black; text-decoration: none"
                             >
                                 <!-- <userIcon class="icon"/> -->
                                 <p
@@ -207,8 +208,8 @@ export default {
 
   .profile-menu {
     position: absolute;
-    top: 60px;
-    left: 0;
+    top: 70px;
+    left: -110px;
     width:260px;
     background-color: #e3cf62;
     color: black !important;
@@ -219,7 +220,9 @@ export default {
     .info {
       display: flex;
       align-items: center;
-      padding: 15px;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 15px;
       border-bottom: 1px solid #fff;
 
       .initials {
