@@ -7,7 +7,7 @@
     <p>{{ midCoord }}</p> -->
 
     <Modal
-      :modalMessage="message"
+      :modalMessage="modalMessage"
       v-if="isModalOpen"
       @close-modal="closeModal"
     ></Modal>
@@ -21,7 +21,7 @@
               class="row loc"
               @click="
                 openModal(loc.name);
-                displayMap(loc.coord, loc.name);
+                displayMap(loc.coord);
               "
             >
               <div class="col-3 loc-img">
@@ -36,7 +36,7 @@
           <button @click="setLocation()">Set Location</button>
         </div>
 
-        <div class="col map">
+        <div class="col" id="map">
           <h3>{{ text }}</h3>
         </div>
       </div>
@@ -44,84 +44,70 @@
   </div>
 </template>
 
-<script>
+<script setup>
+/* eslint-disable no-undef */
+import { Loader } from "@googlemaps/js-api-loader";
 import Modal from "@/components/Modal.vue";
 
-export default {
-  name: "app",
-  components: {
-    Modal,
+let text = "Click a location to display the map";
+let isModalOpen = false;
+let modalMessage = "";
+
+const LocObjList = [
+  {
+    img: "https://eatbook.sg/wp-content/uploads/2022/06/pasta-express-three-dishes.jpg",
+    name: "Pasta Express",
+    coord: { lat: 1.29558392481369, lng: 103.849331227478 },
+    dist: "800m",
   },
-  data() {
-    return {
-      LocObjList: [
-        {
-          img: "https://eatbook.sg/wp-content/uploads/2022/06/pasta-express-three-dishes.jpg",
-          name: "Pasta Express",
-          coord: { lat: 1, long: 2 },
-          dist: "800m",
-        },
-        {
-          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVL3loDf1AJuuqkf199J4TYrtQS5m2dDoMPA&usqp=CAU",
-          name: "Lazada",
-          coord: { lat: 3, long: 4 },
-          dist: "800m",
-        },
-        {
-          img: "https://eatbook.sg/wp-content/uploads/2023/08/kuro-kare-don-3.jpg",
-          name: "Kurokare",
-          coord: { lat: 5, long: 6 },
-          dist: "800m",
-        },
-      ],
-      // midCoord: "",
-      text: "Click a location to display the map",
-      // status: "",
-      isModalOpen: false,
-      message: "",
-    };
+  {
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVL3loDf1AJuuqkf199J4TYrtQS5m2dDoMPA&usqp=CAU",
+    name: "Lazada",
+    coord: { lat: 1.2979, lng: 103.8502 },
+    dist: "800m",
   },
-  methods: {
-    // getMidCoord(coordList) {
-    //   var latCount = 0;
-    //   var longCount = 0;
-    //   for (var coord of coordList) {
-    //     latCount += coord[0];
-    //     longCount += coord[1];
-    //   }
-
-    //   var midLat = latCount / coordList.length;
-    //   var midLong = longCount / coordList.length;
-
-    //   this.midCoord = [midLat, midLong];
-    // },
-    // updateCoord() {
-    //   var newCoord = this.text.split(",");
-    //   this.coordList.push(newCoord);
-    //   this.status = "updated!";
-    // },
-    displayMap(coord, name) {
-      this.text = name + `${coord.lat}`;
-    },
-
-    openModal(message) {
-      this.message = message;
-      this.isModalOpen = true;
-    },
-    closeModal() {
-      this.isModalOpen = false;
-    },
-
-    setLocation() {
-      // updates common location to backend
-      this.openModal("Location has been set!");
-    },
+  {
+    img: "https://eatbook.sg/wp-content/uploads/2023/08/kuro-kare-don-3.jpg",
+    name: "Kurokare",
+    coord: { lat: 1.2973, lng: 103.8496 },
+    dist: "800m",
   },
+];
+
+const loader = new Loader({
+  // apiKey: "AIzaSyA8_LyjIEQCOnYuV5wy-kwkp7vFf4TSQmA",
+});
+
+const displayMap = async (coord) => {
+  await loader.load();
+  var map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: coord.lat, lng: coord.lng },
+    zoom: 20,
+  });
+
+  var marker = new google.maps.Marker({
+    position: { lat: coord.lat, lng: coord.lng },
+    map: map,
+  });
+  return marker, map;
+};
+
+const openModal = (message) => {
+  modalMessage = message;
+  isModalOpen = true;
+};
+
+const closeModal = () => {
+  isModalOpen = false;
+};
+
+const setLocation = () => {
+  openModal("Location has been set!");
 };
 </script>
 
 <style>
-.map {
+#map {
   border: transparent;
   border-radius: 20px;
   background-color: lightgray;
@@ -132,7 +118,7 @@ export default {
   display: flex;
 }
 
-.map h3 {
+#map h3 {
   margin: auto;
 }
 
