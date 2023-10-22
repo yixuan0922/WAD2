@@ -17,30 +17,36 @@ style="background-color: #e8da8b;"
             <!-- <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
             </li> -->
             <div class="profile pButton" ref="profile">
-            <span @click="toggle">{{this.$store.state.profileInitials}}</span>
+                <span @click="toggle">{{this.$store.state.profileInitials}}</span>
                 <div class="profile-menu" id="profileMenu" hidden>
-                <div class="info">
-                    <p class="initials">{{this.$store.state.profileInitials}}</p>
-                    <div class="right">
-                    <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
-                    <p>{{this.$store.state.profileUsername}} </p>
-                    <p>{{this.$store.state.profileEmail}} </p>
+                    <div class="info">
+                        <p class="initials">{{this.$store.state.profileInitials}}</p>
+                        <div class="right">
+                            <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
+                            <p>{{this.$store.state.profileUsername}} </p>
+                            <p>{{this.$store.state.profileEmail}} </p>
+                        </div>
                     </div>
-                </div>
-                <div class="options">
-                    <div class="option">
-                    <router-link class-="option" to="#">
-                    <userIcon class="icon"/>
-                    <p>Profile</p>
-                    </router-link>
+                    <div class="options">
+                        <div class="option">
+                            <router-link class-="option" to="#"
+                            style="color: black; text-decoration: none;"
+                            >
+                                <userIcon class="icon"/>
+                                <p
+                                >Profile</p>
+                            </router-link>
+                        </div>
+                        <div class="option">
+                            <router-link class-="option" to="#"
+                            style="color: black; text-decoration: none;"
+                            >
+                                <!-- <userIcon class="icon"/> -->
+                                <p
+                                >Sign Out</p>
+                            </router-link>
+                        </div>
                     </div>
-                    <div class="option">
-                    <router-link class-="option" to="#">
-                    <!-- <userIcon class="icon"/> -->
-                    <p>Sign Out</p>
-                    </router-link>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
