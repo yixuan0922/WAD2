@@ -8,7 +8,9 @@ import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-  <div class="page-header opacity-75 min-vh-100" loading="lazy">
+  <main>
+    <section id="pg1">
+  <div class="page-header opacity-75" loading="lazy">
     <span class="mask bg-gradient-dark opacity-5"></span>
     <div class="container">
       <div class="row">
@@ -34,14 +36,19 @@ import {RouterLink, RouterView} from 'vue-router';
             <button 
             class="test" 
             style="--c: #373B44;--b: 3px;--s: .15em;;"
-            >Read more</button>
+            >Read more
+          </button>
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
+  </section>
+
+  <!-- <section id="pg2">
+    <h1>Help</h1>
+  </section> -->
+  </main>
 </template>
 
 <script>
@@ -61,6 +68,10 @@ export default {
 </script>
 
 <style scoped>
+
+/* main {
+  height: 400px !important;
+} */
 .page-header {
   padding: 0;
   position: relative;
@@ -70,6 +81,7 @@ export default {
   background-size: cover;
   background-position: 50%;
   background-color: 'transparent';
+  height: calc(100%-70px);
   @media (min-width: 0) {
     background-image: url("@/assets/bgimg2.png");
   }
@@ -79,6 +91,7 @@ export default {
 }
 .page-header .container {
   z-index: 1;
+  height: calc(100%-70px);
 }
 h3 {
     margin: 40px 0 0;
@@ -180,6 +193,15 @@ a{
   color: #fff;
 }
 
+.test {
+  font-family: system-ui, sans-serif;
+  font-weight: bold;
+  font-size: large;
+  cursor: pointer;
+  border: none;
+  margin: .2em;
+}
+
 body {
   height: 50vh;
   margin: 0;
@@ -196,11 +218,6 @@ body {
   cursor: pointer;
   border: none;
   margin: .2em;
-}
-
-.pButton {
-  position: absolute;
-  bottom: 0;
 }
 
 

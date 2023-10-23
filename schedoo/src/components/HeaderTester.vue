@@ -21,13 +21,15 @@ import {RouterLink, RouterView} from 'vue-router';
                 <div class="circle small shade5"></div>
 
                 <!-- pg1 content -->
-                <div>
-                    <h1>SCHEDOO</h1>
-                    <p id="subtitle">Keep 
-                        <span id="typing">
-
-                        </span>
-                    </p>
+                <div id="pg1-content">
+                    <h1 class="title" 
+                    style="text-shadow: 4px 4px 2px #edc3a3"
+                    >SCHEDOO</h1>
+                    <p class="subtitle">
+                        Keep 
+                        <span id="typing"
+                        style="text-decoration: underline;"
+                        ></span></p>
                     <div class="buttons">
                         <button type="button" class="mainBtn">
                             Get Started
@@ -76,6 +78,11 @@ export default {
 /* Background */
 #home{
   background: #f1d1b8;
+}
+
+.ripple-background {
+    position: relative;
+    z-index: 0;
 }
 
 .circle{
@@ -154,6 +161,24 @@ export default {
   }
 }
 
+/* to made sure that its on top on bkgrnd */
+#pg1-content {
+    position:relative;
+    z-index: 100;
+    transform: translate(0, -50px);
+
+}
+
+/* Title  & Subtitles*/
+.title {
+    font-size: 500%;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: large;
+
+}
 
 /* Scroll aniimation */
 * {
