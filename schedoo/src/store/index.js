@@ -24,9 +24,7 @@ export default createStore({
       console.log('SetEvents',state.events);
     },
     ADD_EVENT: (state, event) => {
-      console.log('typeoftitle', typeof(event.start), event.start);
       state.events.push(event)
-      console.log('AddEvent',state.events);
     },
     UPDATE_EVENT: (state, {id, title, start, end, allDay}) => {
         let index = state.events.findIndex(_event => _event.id == id)
@@ -72,6 +70,7 @@ export default createStore({
           // console.log('appData Before', typeof(appData.start));
 
           appData.start = new Date(appData.start);
+          console.log('appData.start', appData.start);
           appData.end = new Date(appData.end);
 
           // console.log('appDate after', typeof(appData.start));

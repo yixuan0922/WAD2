@@ -11,6 +11,8 @@
     <div class="calendar-app-sidebar">
         <div class="calendar-app-sidebr-section">
             <button class='newEventButton' @click="newEvent">New Event</button>
+            <input type="file" id="myFile"/>
+            <button class='newEventButton' @click="upload">Upload</button>
             <div class="container">
                 <Fullcalendar class='app-calendar-sidebar' v-bind:options="calendarSidebarOptions" />
             </div>
@@ -161,6 +163,185 @@ let calendarSidebarOptions = ref({
 onMounted(() => {
     store.dispatch('fetchEvents');
 });
+
+const upload = () => {
+  csvConverter().then(async schClasses => {
+    console.log(schClasses);
+
+    let weeklyClasses = [];
+    let examSchedules = [];
+    // let classes = result;
+    for(var schClass in schClasses) {
+      const monthNames = {
+        "Jan": 0,
+        "Feb": 1,
+        "Mar": 2,
+        "Apr": 3,
+        "May": 4,
+        "Jun": 5,
+        "Jul": 6,
+        "Aug": 7,
+        "Sep": 8,
+        "Oct": 9,
+        "Nov": 10,
+        "Dec": 11,
+      };
+
+      console.log(schClasses[schClass]['Description'], schClasses[schClass]['Start Date'], schClasses[schClass]['End Date'], schClasses[schClass]['Day(s)'])
+      //lastDayClass Date
+      const endDateParts = schClasses[schClass]["End Date"].split('-');
+      const endDay = parseInt(endDateParts[0], 10);
+      const endMonthAbbreviation = endDateParts[1];
+      const endYear = parseInt(endDateParts[2], 10);
+      const endMonth = monthNames[endMonthAbbreviation];
+
+      //firstDayClass Date
+      const startDateParts = schClasses[schClass]["Start Date"].split('-');
+      const startDay = parseInt(startDateParts[0], 10);
+      const startMonthAbbreviation = startDateParts[1];
+      const startYear = parseInt(startDateParts[2], 10);
+      const startMonth = monthNames[startMonthAbbreviation];
+
+      // firstDayClass End Time
+      const endTimeParts = schClasses[schClass]["End Time"].split(':');
+      const endHours = parseInt(endTimeParts[0], 10);
+      const endMinutes = parseInt(endTimeParts[1], 10);
+
+      // firstDayClass Start Time
+      const startTimeParts = schClasses[schClass]["Start Time"].split(':');
+      const startHours = parseInt(startTimeParts[0], 10);
+      const startMinutes = parseInt(startTimeParts[1], 10);
+
+      // firstDayClass: Date, Start Time 
+      const startFormattedDate = new Date(startYear, startMonth, startDay, startHours, startMinutes, 0, 0);
+      // firstDayClass: Date, End Time 
+      const endFormattedDate = new Date(startYear, startMonth, startDay, endHours, endMinutes, 0, 0);
+      // lastDayClass: Date
+      const endClassDate = new Date(endYear, endMonth, endDay, 0, 0, 0, 0);
+
+      // if (schClasses[schClass]['Meeting Type'] === 'Exam') {
+      //   let examSession = { 
+      //     title: schClasses[schClass]['Description'],
+      //     start: new Date (startFormattedDate),
+      //     end: new Date (endFormattedDate),
+      //   }
+      //   examSchedules.push(examSession);
+      // }
+      // else {
+
+      // console.log('startFormattedDate',schClasses[schClass]['Start Date'],schClasses[schClass]['Start Time'],startFormattedDate);
+      // console.log('endFormattedDate',schClasses[schClass]['Start Date'], schClasses[schClass]['End Time'], endFormattedDate);
+      // console.log('endClassDate',schClasses[schClass]['End Date'], endClassDate);
+
+      let classStartDate = new Date(startFormattedDate);
+      let classEndDate = new Date(endFormattedDate);
+      const finalClassDate = new Date(endClassDate);
+
+      const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const classDay = daysOfWeek.indexOf(schClasses[schClass]["Day(s)"]);
+      if (classStartDate.getDay() !== classDay) {
+          // Add the number of days until the next class day
+          classStartDate.setDate(classStartDate.getDate() + ((classDay + 7 - classStartDate.getDay()) % 7));
+          classEndDate.setDate(classEndDate.getDate() + ((classDay + 7 - classEndDate.getDay()) % 7));
+      }
+
+      while (classStartDate <= finalClassDate) {
+        let classSession = {
+          title: schClasses[schClass]['Description'],
+          start: new Date (classStartDate), 
+          end: new Date (classEndDate),
+          allDay: false,
+        }
+        console.log(classSession);
+        weeklyClasses.push(classSession);
+        classStartDate.setDate(classStartDate.getDate() + 7);
+        classEndDate.setDate(classEndDate.getDate() + 7);
+      }
+    }
+  // }
+    console.log('Weekly Classes', weeklyClasses);
+    console.log('Exam Schedules', examSchedules);
+    await processClasses(weeklyClasses);
+  }).catch(err => {
+    console.error(err);
+  });
+}
+
+async function processClasses(weeklyClasses) {
+  for (let eachClass of weeklyClasses) {
+    console.log('eachClass', eachClass);
+    let start = new Date(eachClass.start);
+    let end = new Date(eachClass.end);
+
+    let event = {
+      id: (new Date()).getTime(),
+      title: eachClass.title,
+      start: start,
+      end: end,
+      allDay: eachClass.allDay
+    }
+    store.dispatch('addEvent', event);
+
+    // Wait for 1 millisecond before next iteration
+    await new Promise(resolve => setTimeout(resolve, 1));
+  }
+}
+
+
+
+const csvConverter = () => {
+  return new Promise((resolve, reject) => {
+    let csvFile = document.getElementById('myFile').files[0];
+    let reader = new FileReader(); 
+
+    reader.onload = (event) => {
+      let csvText = event.target.result;
+      // console.log(csvText);
+
+      var lines = csvText.split('\n');
+      var result = [];
+
+      var headers = lines[0].split(',');
+      // remove the double quotation marks on headers
+      headers = headers.map(header => {
+        return header.replace(/"/g, "");
+      });
+      
+      for (var i=1; i< lines.length -1; i++ ){
+        var obj = {};
+        var currentline=lines[i].split(",");
+
+        for(var j=0;j<headers.length-1;j++){
+          obj[headers[j]] = currentline[j].replace(/"/g, "");
+
+        }
+
+        result.push(obj);
+      }
+      
+      console.log('result', result);
+      console.log('result', typeof(result[0]['Start Time']));
+      resolve(result); // Resolve the promise with the result
+    }
+
+    reader.onerror = (error) => reject(error); // Reject the promise if there's an error
+
+    reader.readAsText(csvFile);
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 
