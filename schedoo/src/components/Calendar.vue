@@ -166,6 +166,9 @@ onMounted(() => {
 
 
 <style lang="css">
+body {
+  padding-top: 70px;
+}
 
 h2 {
     margin: 0;
