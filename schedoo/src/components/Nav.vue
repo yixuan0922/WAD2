@@ -6,7 +6,7 @@ import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e8da8b; height: 70px;"
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9b58d; height: 70px; "
 >
     <div class="container">
         <a class="navbar-brand" id="navBarLogo" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
