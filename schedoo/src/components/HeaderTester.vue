@@ -28,7 +28,8 @@ import {RouterLink, RouterView} from 'vue-router';
                     <p class="subtitle">
                         Keep 
                         <span id="typing"
-                        style="text-decoration: underline;"
+                        style="text-decoration: underline;
+                            font-family: 'Poppins', sans-serif;"
                         ></span></p>
                     <div class="buttons">
                         <button type="button" class="mainBtn">
@@ -47,11 +48,35 @@ import {RouterLink, RouterView} from 'vue-router';
                 </div>
             </div>
         </section>
-        <section id="about-us">
-            <div>
-                <h2>Section 2</h2>
-                <p>Lorem ipsum howdy</p>
-            </div>
+        <section id="about-us"
+        style="background-color: #79C1CB;"
+        >
+          <div id="pg2-content" class="row col-4 offset-1">
+              <h1 style="font-family: 'Poppins', sans-serif;">About Us</h1>
+            
+              <p class="subtitle">Lorem ipsum howdy</p>
+          </div>
+          <div id="icon-float" class="col-4 offset-2">
+            <img class="floating3" src="../assets/icons/icon6.png" width="30%"
+            style="position: relative; margin-bottom: -125px; margin-left: 150px"
+            >
+            <img class="floating1" src="../assets/icons/icon5.png" width="30%"
+            style="position: relative; margin-bottom: -100px; margin-left: 0px"
+            >
+            <img class="floating4" src="../assets/icons/cloudicon.png" width="50%"
+            style="position: relative; margin-top: -100px; margin-left: 100px"
+              >
+            <img class="floating3 " src="../assets/icons/cloudicon.png" width="50%"
+            style="position: relative; margin-top: -150px; margin-left: -300px"
+            >
+            <img class="floating3" src="../assets/icons/icon3Bottom.png" width="90%"
+            style="position: relative; margin-bottom: 0px; margin-left: 0px"
+            >
+            <!-- <img class="floating3" src="../assets/icons/icon6.png" width="150px"
+            style="margin-top: -300px; margin-left: 100px"
+            > -->
+            
+          </div>
         </section>
     </main>
 </template>
@@ -74,6 +99,9 @@ export default {
 </script>
 
 <style>
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
 /* Background */
 #home{
@@ -166,17 +194,25 @@ export default {
     position:relative;
     z-index: 100;
     transform: translate(0, -50px);
+}
 
+#pg2-content {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin-top:auto;
 }
 
 /* Title  & Subtitles*/
 .title {
     font-size: 500%;
     font-weight: bold;
+    font-family: 'Poppins', sans-serif;;
 }
 
 .subtitle {
     font-size: large;
+    font-family: 'Poppins', sans-serif;;
 
 }
 
@@ -185,7 +221,7 @@ export default {
     margin: 0;
     line-height: 1.5;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 main {
@@ -245,11 +281,54 @@ body {
 }
 
 .mainBtn {
-  font-family: system-ui, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: bold;
   font-size: large;
   cursor: pointer;
   border: none;
   margin: .2em;
+}
+
+/* Floating animation */
+.floating1 {  
+    animation-name: floating;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+
+.floating2 {  
+    animation-name: floating;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+
+.floating3 {  
+    animation-name: floating;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+ 
+.floating4 {  
+    animation-name: floating;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+
+@keyframes floating {
+    0% { transform: translate(0,  0px); }
+    50%  { transform: translate(0, 15px); }
+    100%   { transform: translate(0, -0px); }    
 }
 </style>
