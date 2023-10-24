@@ -6,6 +6,7 @@ import Register from "../views/Register.vue";
 import ForgetPassword from "../views/ForgetPassword.vue";
 import Login2 from "../views/Login2.vue";
 import CommonLoc from "../views/CommonLoc.vue";
+import test from "../views/test.vue";
 
 const routes = [
   {
@@ -51,6 +52,11 @@ const routes = [
     path: "/commonloc",
     name: "CommonLoc",
     component: CommonLoc,
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: test,
   },
 ];
 
