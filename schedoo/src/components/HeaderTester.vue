@@ -58,19 +58,19 @@ import {RouterLink, RouterView} from 'vue-router';
           </div>
           <div id="icon-float" class="col-4 offset-2">
             <img class="floating3" src="../assets/icons/icon6.png" width="30%"
-            style="position: relative; margin-bottom: -125px; margin-left: 150px"
+            style="position: relative; bottom: -250px; margin-left: 150px"
             >
             <img class="floating1" src="../assets/icons/icon5.png" width="30%"
-            style="position: relative; margin-bottom: -100px; margin-left: 0px"
+            style="position: relative; bottom: -125px; margin-right: 50px"
             >
             <img class="floating4" src="../assets/icons/cloudicon.png" width="50%"
-            style="position: relative; margin-top: -100px; margin-left: 100px"
+            style="position: relative; bottom: 125px; margin-right: 100px"
               >
             <img class="floating3 " src="../assets/icons/cloudicon.png" width="50%"
-            style="position: relative; margin-top: -150px; margin-left: -300px"
+            style="position: relative; bottom: 225px; margin-right: -100px"
             >
             <img class="floating3" src="../assets/icons/icon3Bottom.png" width="90%"
-            style="position: relative; margin-bottom: 0px; margin-left: 0px"
+            style="position: relative; bottom: 200px; margin-left: 0px"
             >
             <!-- <img class="floating3" src="../assets/icons/icon6.png" width="150px"
             style="margin-top: -300px; margin-left: 100px"
