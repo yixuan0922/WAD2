@@ -10,11 +10,21 @@
     </div>
     <div class="calendar-app-sidebar">
         <div class="calendar-app-sidebr-section">
+            <!-- Your calendar component here -->
             <button class='newEventButton' @click="newEvent">New Event</button>
             <input type="file" id="myFile"/>
             <button class='newEventButton' @click="upload">Upload</button>
+            <button class='newEventButton' @click="deleteCol">Delete</button>
             <div class="container">
                 <Fullcalendar class='app-calendar-sidebar' v-bind:options="calendarSidebarOptions" />
+                <div class="mt-3">
+                  <input type="checkbox" id="event" value="Event" v-model="state.checkedCategories">
+                  <label for="event">Event</label>
+                  <input type="checkbox" id="exam" value="Exam" v-model="state.checkedCategories">
+                  <label for="exam">Exam</label>
+                  <input type="checkbox" id="class" value="Class" v-model="state.checkedCategories">
+                  <label for="class">Class</label>
+                </div>
             </div>
         </div>
     </div>
@@ -24,7 +34,7 @@
 
 <script setup>
 import {ref} from 'vue';
-import {markRaw} from 'vue';
+import {markRaw, reactive, watch} from 'vue';
 import { onMounted, computed} from 'vue';
 import { useStore } from 'vuex';
 import Fullcalendar from '@fullcalendar/vue3'
@@ -44,6 +54,10 @@ const store = useStore();
 
 const modalActive = ref(false);
 const modalContent = ref(markRaw({component: null, props: {}}));
+
+const state = reactive({
+  checkedCategories: ['Event', 'Exam', 'Class'],
+});
 
 const toggleModal = (component, props) => {
     modalContent.value = markRaw({component, props});
@@ -161,8 +175,12 @@ let calendarSidebarOptions = ref({
 });
 
 onMounted(() => {
-    store.dispatch('fetchEvents');
+    store.dispatch('fetchEvents', state.checkedCategories);
 });
+
+const deleteCol = () => {
+    store.dispatch('deleteCol');
+}
 
 const upload = () => {
   csvConverter().then(async schClasses => {
@@ -187,89 +205,113 @@ const upload = () => {
         "Dec": 11,
       };
 
-      console.log(schClasses[schClass]['Description'], schClasses[schClass]['Start Date'], schClasses[schClass]['End Date'], schClasses[schClass]['Day(s)'])
-      //lastDayClass Date
-      const endDateParts = schClasses[schClass]["End Date"].split('-');
-      const endDay = parseInt(endDateParts[0], 10);
-      const endMonthAbbreviation = endDateParts[1];
-      const endYear = parseInt(endDateParts[2], 10);
-      const endMonth = monthNames[endMonthAbbreviation];
+      if (schClasses[schClass]['Status'] == 'Enrolled'){
 
-      //firstDayClass Date
-      const startDateParts = schClasses[schClass]["Start Date"].split('-');
-      const startDay = parseInt(startDateParts[0], 10);
-      const startMonthAbbreviation = startDateParts[1];
-      const startYear = parseInt(startDateParts[2], 10);
-      const startMonth = monthNames[startMonthAbbreviation];
+        //lastDayClass Date
+        const endDateParts = schClasses[schClass]["End Date"].split('-');
+        const endDay = parseInt(endDateParts[0], 10);
+        const endMonthAbbreviation = endDateParts[1];
+        const endYear = parseInt(endDateParts[2], 10);
+        const endMonth = monthNames[endMonthAbbreviation];
 
-      // firstDayClass End Time
-      const endTimeParts = schClasses[schClass]["End Time"].split(':');
-      const endHours = parseInt(endTimeParts[0], 10);
-      const endMinutes = parseInt(endTimeParts[1], 10);
+        //firstDayClass Date
+        const startDateParts = schClasses[schClass]["Start Date"].split('-');
+        const startDay = parseInt(startDateParts[0], 10);
+        const startMonthAbbreviation = startDateParts[1];
+        const startYear = parseInt(startDateParts[2], 10);
+        const startMonth = monthNames[startMonthAbbreviation];
 
-      // firstDayClass Start Time
-      const startTimeParts = schClasses[schClass]["Start Time"].split(':');
-      const startHours = parseInt(startTimeParts[0], 10);
-      const startMinutes = parseInt(startTimeParts[1], 10);
+        // firstDayClass End Time
+        const endTimeParts = schClasses[schClass]["End Time"].split(':');
+        const endHours = parseInt(endTimeParts[0], 10);
+        const endMinutes = parseInt(endTimeParts[1], 10);
 
-      // firstDayClass: Date, Start Time 
-      const startFormattedDate = new Date(startYear, startMonth, startDay, startHours, startMinutes, 0, 0);
-      // firstDayClass: Date, End Time 
-      const endFormattedDate = new Date(startYear, startMonth, startDay, endHours, endMinutes, 0, 0);
-      // lastDayClass: Date
-      const endClassDate = new Date(endYear, endMonth, endDay, 0, 0, 0, 0);
+        // firstDayClass Start Time
+        const startTimeParts = schClasses[schClass]["Start Time"].split(':');
+        const startHours = parseInt(startTimeParts[0], 10);
+        const startMinutes = parseInt(startTimeParts[1], 10);
 
-      // if (schClasses[schClass]['Meeting Type'] === 'Exam') {
-      //   let examSession = { 
-      //     title: schClasses[schClass]['Description'],
-      //     start: new Date (startFormattedDate),
-      //     end: new Date (endFormattedDate),
-      //   }
-      //   examSchedules.push(examSession);
-      // }
-      // else {
+        // firstDayClass: Date, Start Time 
+        const startFormattedDate = new Date(startYear, startMonth, startDay, startHours, startMinutes, 0, 0);
+        // firstDayClass: Date, End Time 
+        const endFormattedDate = new Date(startYear, startMonth, startDay, endHours, endMinutes, 0, 0);
+        // lastDayClass: Date
+        const endClassDate = new Date(endYear, endMonth, endDay, 0, 0, 0, 0);
 
-      // console.log('startFormattedDate',schClasses[schClass]['Start Date'],schClasses[schClass]['Start Time'],startFormattedDate);
-      // console.log('endFormattedDate',schClasses[schClass]['Start Date'], schClasses[schClass]['End Time'], endFormattedDate);
-      // console.log('endClassDate',schClasses[schClass]['End Date'], endClassDate);
-
-      let classStartDate = new Date(startFormattedDate);
-      let classEndDate = new Date(endFormattedDate);
-      const finalClassDate = new Date(endClassDate);
-
-      const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      const classDay = daysOfWeek.indexOf(schClasses[schClass]["Day(s)"]);
-      if (classStartDate.getDay() !== classDay) {
-          // Add the number of days until the next class day
-          classStartDate.setDate(classStartDate.getDate() + ((classDay + 7 - classStartDate.getDay()) % 7));
-          classEndDate.setDate(classEndDate.getDate() + ((classDay + 7 - classEndDate.getDay()) % 7));
-      }
-
-      while (classStartDate <= finalClassDate) {
-        let classSession = {
-          title: schClasses[schClass]['Description'],
-          start: new Date (classStartDate), 
-          end: new Date (classEndDate),
-          allDay: false,
+        if (schClasses[schClass]['Meeting Type'] === 'EXAM') {
+          let examSession = { 
+            title: schClasses[schClass]['Description'],
+            start: new Date (startFormattedDate),
+            end: new Date (endFormattedDate),
+            allDay: false, 
+          }
+          examSchedules.push(examSession);
         }
-        console.log(classSession);
-        weeklyClasses.push(classSession);
-        classStartDate.setDate(classStartDate.getDate() + 7);
-        classEndDate.setDate(classEndDate.getDate() + 7);
+        else {
+
+        // console.log('startFormattedDate',schClasses[schClass]['Start Date'],schClasses[schClass]['Start Time'],startFormattedDate);
+        // console.log('endFormattedDate',schClasses[schClass]['Start Date'], schClasses[schClass]['End Time'], endFormattedDate);
+        // console.log('endClassDate',schClasses[schClass]['End Date'], endClassDate);
+
+        let classStartDate = new Date(startFormattedDate);
+        let classEndDate = new Date(endFormattedDate);
+        const finalClassDate = new Date(endClassDate);
+
+        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const classDay = daysOfWeek.indexOf(schClasses[schClass]["Day(s)"]);
+        if (classStartDate.getDay() !== classDay) {
+            // Add the number of days until the next class day
+            classStartDate.setDate(classStartDate.getDate() + ((classDay + 7 - classStartDate.getDay()) % 7));
+            classEndDate.setDate(classEndDate.getDate() + ((classDay + 7 - classEndDate.getDay()) % 7));
+        }
+
+        while (classStartDate <= finalClassDate) {
+          let classSession = {
+            title: schClasses[schClass]['Description'],
+            start: new Date (classStartDate), 
+            end: new Date (classEndDate),
+            allDay: false,
+          }
+          // console.log(classSession);
+          weeklyClasses.push(classSession);
+          classStartDate.setDate(classStartDate.getDate() + 7);
+          classEndDate.setDate(classEndDate.getDate() + 7);
+        }
       }
     }
-  // }
+  }
     console.log('Weekly Classes', weeklyClasses);
     console.log('Exam Schedules', examSchedules);
     await processClasses(weeklyClasses);
+    await processExams(examSchedules);
   }).catch(err => {
     console.error(err);
   });
 }
 
+async function processExams(examSchedules) {
+  for (let eachExam of examSchedules) {
+    // console.log('eachClass', eachClass);
+    let start = new Date(eachExam.start);
+    let end = new Date(eachExam.end);
+
+    let exam = {
+      id: (new Date()).getTime(),
+      title: eachExam.title,
+      start: start,
+      end: end,
+      allDay: false,
+    }
+    store.dispatch('addExam', exam);
+
+    // Wait for 1 millisecond before next iteration
+    await new Promise(resolve => setTimeout(resolve, 1));
+  }
+}
+
 async function processClasses(weeklyClasses) {
   for (let eachClass of weeklyClasses) {
-    console.log('eachClass', eachClass);
+    // console.log('eachClass', eachClass);
     let start = new Date(eachClass.start);
     let end = new Date(eachClass.end);
 
@@ -280,7 +322,7 @@ async function processClasses(weeklyClasses) {
       end: end,
       allDay: eachClass.allDay
     }
-    store.dispatch('addEvent', event);
+    store.dispatch('addClass', event);
 
     // Wait for 1 millisecond before next iteration
     await new Promise(resolve => setTimeout(resolve, 1));
@@ -329,6 +371,12 @@ const csvConverter = () => {
     reader.readAsText(csvFile);
   });
 }
+
+watch(state, () => {
+  store.dispatch('fetchEvents', state.checkedCategories);
+}, {immediate: true});
+
+
 
 
 
