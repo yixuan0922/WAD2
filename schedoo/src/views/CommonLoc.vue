@@ -75,7 +75,8 @@ const LocObjList = [
 ];
 
 const loader = new Loader({
-  // apiKey: "AIzaSyA8_LyjIEQCOnYuV5wy-kwkp7vFf4TSQmA",
+  apiKey: process.env.VUE_APP_GOOGLE_API_KEY,
+  libraries: ["places"],
 });
 
 const displayMap = async (coord) => {
