@@ -24,10 +24,16 @@
                   <input type="date" v-model="end">
                   <input type="time" v-model="endTime" v-show="!allDay">
               </div>
+              <div>
+                Invitees: <input type="text" v-model="newInvitee" @input="clearError"><button @click="addInvitee">+</button>
+                <ul>
+                  <li v-for="(invitee, index) in this.$store.state.invitees" :key="index">{{invitee.email}}</li>
+                </ul>
+                <p>{{addInviteeErr}}</p>
+              </div>
               <!-- <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
               <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div> -->
             </div>
-
           </div>
           <button class='button' @click="this.$emit('close-modal')">Cancel</button>
           <button class='buttonSave' @click="addEvent">Add</button>
@@ -36,6 +42,8 @@
   </template>
   
   <script>
+// import { Store } from 'vuex';
+
   export default {
       data: () => ({
           title: "",
@@ -44,8 +52,32 @@
           startTime: "", 
           endTime: "",
           allDay: false,
+          newInvitee: '',
+          addInviteeErr: '',
       }),
       methods: {
+        clearError() {
+          this.addInviteeErr = '';
+        },
+        async addInvitee () {
+          if (this.newInvitee) {
+          // console.log(this.newInvitee);
+          // this.invitees.push(this.newInvitee);
+            console.log(this.$store.state.invitees);
+            if (this.$store.state.invitees.includes(this.newInvitee)) 
+            {
+              console.log(this.$store.state.invitee_exist);
+              this.addInviteeErr = "Invitee already added";
+            }
+            else 
+            {
+              await this.$store.dispatch('checkInvitee', this.newInvitee);
+              if (this.$store.state.invitee_exist == false) 
+              {
+                this.addInviteeErr = "Invitee does not exist";
+              }
+            }
+        }},
         addEvent() {
 
               let start = new Date(this.start);
@@ -101,6 +133,7 @@
         this.startTime = formatTime(this.event.start);
         this.endTime = formatTime(this.event.end);
         this.allDay = Boolean(this.event.allDay);
+        this.$store.state.invitees = [];
     }
   };
   
