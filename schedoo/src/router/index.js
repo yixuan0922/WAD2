@@ -4,8 +4,8 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
-// import CalendarView from '../views/CalendarView.vue';
-import Calendar from '../components/Calendar.vue';
+import CalendarView from '../views/CalendarView.vue';
+// import Calendar from '../components/Calendar.vue';
 import FocusTracker from '../components/FocusTracker.vue';
 
 const routes = [
@@ -51,7 +51,7 @@ const routes = [
   {
     path: "/calendar", 
     name: 'Calendar', 
-    component: Calendar, 
+    component: CalendarView, 
   },
   {
     path: "/focus-tracker", 

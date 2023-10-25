@@ -1,12 +1,12 @@
 <script setup>
 /* eslint-disable */
 
+import { auth } from '@/firebase/firebaseInit';
 import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" 
-style="background-color: #e8da8b;"
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e8da8b;"
 >
     <div class="container">
         <a class="navbar-brand" id="navBarLogo" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
@@ -16,7 +16,7 @@ style="background-color: #e8da8b;"
             <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
             <!-- <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
             </li> -->
-            <div class="profile pButton" ref="profile" @click="toggle">
+            <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle">
                 <span >{{this.$store.state.profileInitials}}</span>
                 <div class="profile-menu" id="profileMenu" hidden>
                     <div class="info">
@@ -38,8 +38,8 @@ style="background-color: #e8da8b;"
                                 >Profile</p>
                             </router-link>
                         </div>
-                        <div class="option">
-                            <router-link class-="option" to="#"
+                        <div @click='signOut' class="option">
+                            <router-link class="option" to="#"
                             style="color: black; text-decoration: none"
                             >
                                 <!-- <userIcon class="icon"/> -->
@@ -59,42 +59,49 @@ style="background-color: #e8da8b;"
         <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mx-auto">
-            <li class="nav-item">
-            <a class="nav-link active" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link active" href="#">My Calendar</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link active dropdown-toggle" 
-                href="#" 
-                id="navbarDropdown" 
-                role="button" 
-                data-bs-toggle="dropdown" 
-                aria-expanded="false">
-                    Schedule
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">CCAs</a></li>
-                    <li><a class="dropdown-item" href="#">Meetings</a></li>
-                    <li><a class="dropdown-item" href="#">Classes</a></li>
-                    <li><a class="dropdown-item" href="#">Outings</a></li>
-                </ul>
-            </li>
-        </ul>
-        <span class="navbar-text" style="right: 5%">
-            <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
-        </span>
-        
+        <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto">
+              <li class="nav-item">
+              <a class="nav-link active" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+              <!-- <a class="nav-link active">My Calendar</a> -->
+              <router-link class="nav-link" :to="{name: 'Calendar'}">My Calendar</router-link>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link active dropdown-toggle" 
+                  href="#" 
+                  id="navbarDropdown" 
+                  role="button" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false">
+                      Schedule
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">CCAs</a></li>
+                      <li><a class="dropdown-item" href="#">Meetings</a></li>
+                      <li><a class="dropdown-item" href="#">Classes</a></li>
+                      <li><a class="dropdown-item" href="#">Outings</a></li>
+                  </ul>
+              </li>
+          </ul>
+          <span class="navbar-text" style="right: 5%">
+              <router-link @click='signOut' class="nav-link" to="#">Sign Out</router-link>
+          </span>
+        </div>
 
-        
+        <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto">
+              <li class="nav-item">
+              <a class="nav-link active" href="#">About Us</a>
+              </li>
+          </ul>
+          <span  class="navbar-text" style="right: 5%">
+              <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
+          </span>
         </div>
     </div>
 </nav>
-
-
 
             <!-- <ul class="nav navbar-nav">
             <li class="nav-item">
@@ -151,6 +158,13 @@ export default {
       this.hidden = !this.hidden;
       document.getElementById("profileMenu").hidden = this.hidden;
     },
+
+    signOut() {
+      auth.signOut();
+      // window.location.reload();
+      window.location.href = "/login";
+    }
+
     // signOut() {
     //   const auth = getAuth();
 
@@ -170,7 +184,13 @@ export default {
     //     this.loggedin = false;
     //   }
     // }
+  }, 
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
   }
+
 };
 
 </script>
