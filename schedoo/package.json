@@ -25,6 +25,8 @@
     "vue": "^3.2.13",
     "vue-final-modal": "^4.4.5",
     "vue-router": "^4.0.3",
+    "vue-timer-hook": "^1.0.84",
+    "vue3-flip-countdown": "^0.1.6",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

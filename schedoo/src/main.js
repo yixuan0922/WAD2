@@ -8,7 +8,6 @@ import store from "./store";
 import "bootstrap/dist/css/bootstrap.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-
 let app; 
 
 const auth = getAuth();
