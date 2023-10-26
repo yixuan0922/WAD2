@@ -51,26 +51,26 @@ import {RouterLink, RouterView} from 'vue-router';
         <section id="about-us"
         style="background-color: #79C1CB;"
         >
-          <div id="pg2-content" class="row col-4 offset-1">
+          <div id="pg2-content" class="row col-sm-4 offset-1 col-10">
               <h1 style="font-family: 'Poppins', sans-serif;">About Us</h1>
             
               <p class="subtitle">Lorem ipsum howdy</p>
           </div>
-          <div id="icon-float" class="col-4 offset-2">
+          <div id="icon-float" class="col-4 offset-2 d-none d-sm-block" style="position: relative;">
             <img class="floating3" src="../assets/icons/icon6.png" width="30%"
-            style="position: relative; bottom: -250px; margin-left: 150px"
+            style="position: absolute; top: -160px; right: 0px"
             >
             <img class="floating1" src="../assets/icons/icon5.png" width="30%"
-            style="position: relative; bottom: -125px; margin-right: 50px"
+            style="position: absolute; top: -150px; right: 150px"
             >
             <img class="floating4" src="../assets/icons/cloudicon.png" width="50%"
-            style="position: relative; bottom: 125px; margin-right: 100px"
+            style="position: absolute; top: -280px; right:125px"
               >
             <img class="floating3 " src="../assets/icons/cloudicon.png" width="50%"
-            style="position: relative; bottom: 225px; margin-right: -100px"
+            style="position: absolute; top: -270px; right: -25px;"
             >
-            <img class="floating3" src="../assets/icons/icon3Bottom.png" width="90%"
-            style="position: relative; bottom: 200px; margin-left: 0px"
+            <img class="floating3" src="../assets/icons/icon3Bottom.png" width="80%"
+            style="position: absolute; top: -80px; right: 0px;"
             >
             <!-- <img class="floating3" src="../assets/icons/icon6.png" width="150px"
             style="margin-top: -300px; margin-left: 100px"
@@ -226,6 +226,8 @@ export default {
 
 main {
     height: 100vh;
+    width: 100%;
+    
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
 }
@@ -237,10 +239,10 @@ main > section {
     scroll-snap-align: start;
     scroll-snap-stop: always;
 }
-
+/* 
 main > section:nth-child(odd) {
     background: #ddd;
-}
+} */
 
 main > section > div {
     margin: auto;
