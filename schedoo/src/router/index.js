@@ -7,6 +7,8 @@ import ForgetPassword from '../views/ForgetPassword.vue';
 import CalendarView from '../views/CalendarView.vue';
 // import Calendar from '../components/Calendar.vue';
 
+import MusicPlayer from '../components/MusicPlayer.vue'
+
 const routes = [
   {
     path: "/",
@@ -51,6 +53,12 @@ const routes = [
     path: "/calendar", 
     name: 'Calendar', 
     component: CalendarView, 
+  },
+
+  {
+    path: "/player",
+    name: "MusicPlayer",
+    component: MusicPlayer,
   }
 
 ];
