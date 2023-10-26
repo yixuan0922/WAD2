@@ -1,6 +1,6 @@
 import { createStore} from "vuex";
 import { db, auth } from "../firebase/firebaseInit";
-import {collection, doc, getDoc, getDocs, setDoc, deleteDoc, writeBatch, query, where} from 'firebase/firestore';
+import {collection, doc, getDoc, getDocs, setDoc, deleteDoc, writeBatch, query, where,} from 'firebase/firestore';
 
 export default createStore({
   state: {
@@ -15,6 +15,7 @@ export default createStore({
     events: [],
     invitees: [],
     invitee_exist: true,
+    pendingEvents: [], 
   },
   getters: {
     EVENTS: state => state.events, 
@@ -28,13 +29,14 @@ export default createStore({
     ADD_EVENT: (state, event) => {
       state.events.push(event)
     },
-    UPDATE_EVENT: (state, {id, title, start, end, allDay}) => {
+    UPDATE_EVENT: (state, {id, title, start, end, allDay, invitees}) => {
         let index = state.events.findIndex(_event => _event.id == id)
         
         state.events[index].title = title;
         state.events[index].start = start;
         state.events[index].end = end;
-        state.events[index].allDay = allDay; 
+        state.events[index].allDay = allDay;
+        state.events[index].invitees = invitees;
 
         console.log('updateEvents',state.events);
     },
@@ -55,6 +57,9 @@ export default createStore({
       state.invitee_exist = bool;
       console.log('InviteeExist',state.invitee_exist);
     },
+    SET_PENDING_INVITES(state, pendingEvents){
+      state.pendingEvents = pendingEvents;
+    },
 
     // User
     updateUser(state, payload) {
@@ -70,6 +75,8 @@ export default createStore({
     setProfileInitials(state){
       state.profileInitials = state.profileFirstName.match(/(\b\S)?/g).join("") + state.profileLastName.match(/(\b\S)?/g).join("");
     }, 
+
+
 
     
 
@@ -138,11 +145,14 @@ export default createStore({
       const calEventCollection = collection(userDoc, "calEvent");
       const eventDoc = doc(calEventCollection, String(event.id));
 
+      
+
       await setDoc(eventDoc, {
         title: event.title, 
         start: String(event.start), 
         end: String(event.end),  
         allDay: Boolean(event.allDay),
+        invitees: event.invitees,
       })
 
       commit("ADD_EVENT", event);
@@ -317,9 +327,97 @@ export default createStore({
         inviteeObj['events'] = events;
         console.log('InvteeObject', inviteeObj);
         commit('SET_INVITEES', inviteeObj);
+      } 
+    }, 
+    async getPendingEvents({commit}) {
+      const currentUserId = auth.currentUser.uid;
+      const usersRef = collection(db, 'users');
+      const usersSnapshot = await getDocs(usersRef);
+      let pendingEvents = [];
+      for (const userDoc of usersSnapshot.docs) {
+        const eventsRef = collection(userDoc.ref, 'calEvent');
+        const InvitorId = userDoc.id;
+        const eventsSnapshot = await getDocs(eventsRef);
+    
+        for (const eventDoc of eventsSnapshot.docs) {
+          const event = eventDoc.data();
+          event.id = eventDoc.id;
+          const invitees = event.invitees || [];
+          for (const invitee of invitees) {
+            if (invitee.id == currentUserId && invitee.status == 'pending') {
+              event.invitorId = InvitorId;
+              event.invitorEmail = userDoc.data().email;
+              pendingEvents.push(event);
+              break;
+            }
+          }
+        }
       }
+      console.log(pendingEvents);
+      commit('SET_PENDING_INVITES', pendingEvents);
+    }, 
+
+    async acceptInvite(_,event) {
+      console.log(event);
+      console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId)
+      const currentUserId = auth.currentUser.uid;
       
-    }
+      const database = collection(db, "users");
+      const invitorDoc = doc(database, event.invitorId);
+      const calEventCollection = collection(invitorDoc, "calEvent");
+      const eventDoc = doc(calEventCollection, String(event.id));
+    
+      await setDoc(eventDoc, {
+        title: event.title, 
+        start: String(event.start), 
+        end: String(event.end),  
+        allDay: Boolean(event.allDay),
+        invitees: event.invitees.map(invitee => {
+          if (invitee.id == currentUserId) {
+            console.log(invitee.id, currentUserId);
+            invitee.status = 'accepted';
+          }
+          return invitee;
+        })
+      }, {merge: true});
+     
+      const docAfterSet = await getDoc(eventDoc);
+      console.log(docAfterSet.data());
+      console.log(event);
+    },
+
+    async declineInvite(_,event) {
+      console.log(event);
+      console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId)
+      const currentUserId = auth.currentUser.uid;
+      
+      const database = collection(db, "users");
+      const invitorDoc = doc(database, event.invitorId);
+      const calEventCollection = collection(invitorDoc, "calEvent");
+      const eventDoc = doc(calEventCollection, String(event.id));
+    
+      await setDoc(eventDoc, {
+        title: event.title, 
+        start: String(event.start), 
+        end: String(event.end),  
+        allDay: Boolean(event.allDay),
+        invitees: event.invitees.map(invitee => {
+          if (invitee.id == currentUserId) {
+            console.log(invitee.id, currentUserId);
+            invitee.status = 'declined';
+          }
+          return invitee;
+        })
+      }, {merge: true});
+     
+      const docAfterSet = await getDoc(eventDoc);
+      console.log(docAfterSet.data());
+      console.log(event);
+    },
+
+    
+    
+      
     
   },
   modules: {},

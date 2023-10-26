@@ -10,6 +10,7 @@
 // import HelloWorld from "@/components/HelloWorld.vue";
 import Header from "@/components/Header.vue";
 import Nav from "@/components/Nav.vue";
+import { useStore } from "vuex";
 
 export default {
   name: "LandingView",
@@ -17,6 +18,12 @@ export default {
     // HelloWorld,
     Nav,
     Header,
+  },
+  mounted () {
+    const store = useStore();
+    store.dispatch('getPendingEvents').then(result => {
+      console.log('getPendingEvents', result);
+    })
   },
 };
 </script>

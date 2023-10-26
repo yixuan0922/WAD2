@@ -79,7 +79,6 @@
             }
         }},
         addEvent() {
-
               let start = new Date(this.start);
               let end = new Date(this.end);
 
@@ -96,8 +95,20 @@
                   title: this.title,
                   start: start,
                   end: end,
-                  allDay: this.allDay
+                  allDay: this.allDay,
+                  invitees: [],
               };
+
+              for (let invitee of this.$store.state.invitees) {
+                let inviteeData = {
+                  id: invitee.id, 
+                  email: invitee.email,
+                  status: 'pending',
+                }
+                event.invitees.push(inviteeData);
+              }
+              console.log('invitees', event.invitees);
+              console.log('event', event);
 
               // this.$store.commit("ADD_EVENT", event);
               this.$store.dispatch('addEvent', event);

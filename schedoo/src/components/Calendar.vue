@@ -25,6 +25,16 @@
                   <input type="checkbox" id="class" value="Class" v-model="state.checkedCategories">
                   <label for="class">Class</label>
                 </div>
+                <div>
+                  <h2>Pending Invites</h2>
+                  <ul>
+                    <li v-for="(event, index) in this.$store.state.pendingEvents" :key="index">
+                        {{ event.title }} {{ event.id }} {{ event.start }} {{ event.end }}
+                        <button @click="acceptInvite(event)">Accept</button>
+                        <button @click="declineInvite(event)">Decline</button>
+                    </li>
+                  </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -64,16 +74,19 @@ const toggleModal = (component, props) => {
     modalActive.value = !modalActive.value;
 }
 
-
 const newEvent = () => {
     let timestamp = new Date().getTime();
-    let date = new Date(timestamp);
-    console.log('newEvent', typeof(newStart));
+    let start = new Date(timestamp);
+    let end = new Date(timestamp);
+
+    end.setDate(start.getDate() + 1);
+  
+    // console.log('newEvent', typeof(newStart));
     toggleModal(NewEventModal, {text: 'This is from the component', 
     event: {
         id: (new Date()).getTime(),
-        start: date, 
-        end: date,
+        start: new Date(start), 
+        end: new Date(end),
         allDay: true,
     }})
 
@@ -176,7 +189,8 @@ let calendarSidebarOptions = ref({
 
 onMounted(() => {
     store.dispatch('fetchEvents', state.checkedCategories);
-});
+    store.dispatch('getPendingEvents');
+})
 
 const deleteCol = () => {
     store.dispatch('deleteCol');
@@ -289,6 +303,17 @@ const upload = () => {
   });
 }
 
+
+const acceptInvite = (event) => {
+  console.log('acceptInvite', event);
+  store.dispatch('acceptInvite', event);
+}
+
+const declineInvite = (event) => {
+  console.log('declineInvite', event);
+  store.dispatch('declineInvite', event);
+}
+
 async function processExams(examSchedules) {
   for (let eachExam of examSchedules) {
     // console.log('eachClass', eachClass);
@@ -328,7 +353,6 @@ async function processClasses(weeklyClasses) {
     await new Promise(resolve => setTimeout(resolve, 1));
   }
 }
-
 
 
 const csvConverter = () => {
@@ -375,21 +399,6 @@ const csvConverter = () => {
 watch(state, () => {
   store.dispatch('fetchEvents', state.checkedCategories);
 }, {immediate: true});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </script>
 
