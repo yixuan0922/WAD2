@@ -8,9 +8,9 @@
                     <div>
                         <h4 style="position: relative; font-weight: bold; text-align: start; margin-top: 60px">Welcome to your deep focus tracker.</h4>
                         <p style="position: relative; text-align: start; margin-bottom: 5px;">There is no better time to start than now. You got this!</p>
-                        <img style="position: absolute; right: -13px; top: 4px; width: 34%; height: auto;" src="@/assets/focusTrackerHeader.png">
+                        <img style="position: absolute; right: -13px; top: 25px; max-width: 34%; height: auto;" src="@/assets/focusTrackerHeader.png">
                     </div>
-                    <div id="focusTrackerHeader" class="row">
+                    <div id="focusTrackerHeader" class="row" style="position: absolute; z-index: 1; position: relative">
                         <div class="row d-flex justify-content-start align-items-center" style="margin-bottom: 10px;">
                             Select a category to focus on: 
                             <select id="category" name="category" v-on:change="categoryClick()" v-model="category">
@@ -35,7 +35,7 @@
                                 <option v-for="min in 60" :key="min"> {{ min - 1 }}</option>
                             </select>  min
                         </div>
-                        <button class="btn btn-primary" id="readyBtn" v-on:click="startTimer()">I'm ready to begin!</button>
+                        <button class="btn btn-primary" id="readyBtn" v-on:click="clickReadyBtn()">I'm ready to begin!</button>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -76,7 +76,13 @@
                 </div>
             </div>
         </div>
-        
+        <!-- Check if all fields are filled-->
+        <div class="focusTrackerValidation">
+            <button type="button" class="btn-close" @click="closeDialog()" style="float: right; margin-right: 0px;" aria-label="Close"></button><br>
+            <h4 style="text-align: start;">Just a second!</h4>
+            <p style="text-align: start;">Please ensure all fields are filled</p>
+            <button class="btn btn-primary" style="float: right; margin-right: 0px;" @click="closeDialog()">Ok</button>
+        </div>
     </div>
   </template>
   
@@ -119,9 +125,22 @@
                 categories.removeChild(categories.getElementsByTagName('option')[0]);
             }
         },
+        clickReadyBtn(){
+            if (this.taskName == "" || this.category == "Select a category" || (this.minsSet == 0 && this.hoursSet == 0)){
+              document.getElementsByClassName('focusTrackerValidation')[0].style.display = 'block';
+              // make these fields disabled
+              document.getElementById('category').setAttribute('disabled', '');
+              document.getElementById('taskName').setAttribute('disabled', '');
+              document.getElementById('minsSet').setAttribute('disabled', '');
+              document.getElementById('hoursSet').setAttribute('disabled', '');
+              document.getElementById('readyBtn').setAttribute('disabled', '');
+            } else{
+              this.startTimer();
+            }
+        },
         startTimer() {
-            alert('Are you ready to begin?');
             document.getElementById('focusTrackerHeader').style.backgroundColor = '#E8F0FE';
+            document.getElementById('focusTrackerHeader').style.height = '240px';
             document.getElementById('readyBtn').style.display = 'none';
             document.getElementById('focusBtns').style.display = 'flex';
 
@@ -170,6 +189,17 @@
         updateTime() {
             this.currentTime = Date.now() - this.startTime;
         },
+        
+        closeDialog() {
+            var dialog = document.getElementsByClassName('focusTrackerValidation')[0];
+            dialog.style.display = 'none';
+            // make these fields abled
+            document.getElementById('category').removeAttribute('disabled');
+            document.getElementById('taskName').removeAttribute('disabled');
+            document.getElementById('minsSet').removeAttribute('disabled');
+            document.getElementById('hoursSet').removeAttribute('disabled');
+            document.getElementById('readyBtn').removeAttribute('disabled');
+        }
     },
     beforeUnmount() {
       clearInterval(this.timerInterval);
@@ -181,7 +211,21 @@
     });
   </script>
   <style>
-    
+    .focusTrackerValidation {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        border-radius: 10px;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        width: 450px;
+        background: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+    }
+
     #hour, #minute, #second, #millisecond{
         width: 100px;
         height: 70px;
@@ -200,6 +244,7 @@
   #focusTrackerHeader{
       background-color: #ffffff;
       color: black;
+      height: 270px;
       text-align: start;
       padding-top: 30px;
       padding-bottom: 30px;
