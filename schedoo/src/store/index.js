@@ -1,6 +1,6 @@
 import { createStore} from "vuex";
 import { db, auth } from "../firebase/firebaseInit";
-import {collection, doc, getDoc, getDocs, setDoc, deleteDoc, writeBatch, query} from 'firebase/firestore';
+import {collection, doc, getDoc, getDocs, setDoc, deleteDoc, writeBatch, query, where} from 'firebase/firestore';
 
 export default createStore({
   state: {
@@ -13,6 +13,8 @@ export default createStore({
     profileId: null,
     profileInitials: null,
     events: [],
+    invitees: [],
+    invitee_exist: true,
   },
   getters: {
     EVENTS: state => state.events, 
@@ -44,6 +46,15 @@ export default createStore({
     DELETE_COLLECTION: (state) => {
       state.events = [];
     },
+    // Invitees
+    SET_INVITEES(state, inviteeObj) {
+      state.invitees.push(inviteeObj);
+      console.log('SetInvitees',state.invitees);
+    },
+    INVITEE_EXIST(state, bool) {
+      state.invitee_exist = bool;
+      console.log('InviteeExist',state.invitee_exist);
+    },
 
     // User
     updateUser(state, payload) {
@@ -58,7 +69,11 @@ export default createStore({
     }, 
     setProfileInitials(state){
       state.profileInitials = state.profileFirstName.match(/(\b\S)?/g).join("") + state.profileLastName.match(/(\b\S)?/g).join("");
-    }
+    }, 
+
+    
+
+    
   },
   actions: {
     async fetchEvents({commit}, checkedCategories) {
@@ -106,74 +121,7 @@ export default createStore({
     
       commit('SET_EVENTS', events);
     },
-    
-    // async fetchEvents({commit}, checkedCategories) {
-    //   const currentUser = auth.currentUser;
-    //   const database = collection(db, "users");
-    //   const userDoc = doc(database, currentUser.uid);
-    //   // const calEventCollection = collection(userDoc, "calEvent");
-    //   // const calClassCollection = collection(userDoc, "calClass");
-    //   // const calExamCollection = collection(userDoc, "calExam");
-    //   // let snapshot = await getDocs(calEventCollection);
-    //   let events = [];
-
-    //   if(checkedCategories.includes('Event')){
-    //   const calEventCollection = collection(userDoc, "calEvent");
-    //   let snapshot = await getDocs(calEventCollection);
-    //   snapshot.forEach(doc => {
-    //       let appData = doc.data();
-    //       appData.id = doc.id;
-    //       // console.log('appData Before', typeof(appData.start));
-
-    //       appData.start = new Date(appData.start);
-    //       // console.log('appData.start', appData.start);
-    //       appData.end = new Date(appData.end);
-
-    //       // console.log('appDate after', typeof(appData.start));
-    //       events.push(appData);
-    //       // console.log('FetchEvents', events);
-        
-    //   });
-    // }
-
-    // if (checkedCategories.includes('Exam')) {
-    //   const calExamCollection = collection(userDoc, "calExam");
-    //   let snapshotExams = await getDocs(calExamCollection);
-    //   snapshotExams.forEach(doc => {
-    //       let appData = doc.data();
-    //       appData.id = doc.id;
-    //       // console.log('appData Before', typeof(appData.start));
-    //       appData.start = new Date(appData.start);
-    //       // console.log('appData.start', appData.start);
-    //       appData.end = new Date(appData.end);
-
-    //       // console.log('appDate after', typeof(appData.start));
-    //       events.push(appData);
-    //       // console.log('FetchEvents', events);
-    //   });
-    // }
-
-    // if (checkedCategories.includes('Class')) {
-    //   const calClassCollection = collection(userDoc, "calClass");
-    //   let snapshotClass = await getDocs(calClassCollection);
-    //   snapshotClass.forEach(doc => {
-    //       let appData = doc.data();
-    //       appData.id = doc.id;
-    //       // console.log('appData Before', typeof(appData.start));
-    //       appData.start = new Date(appData.start);
-    //       // console.log('appData.start', appData.start);
-    //       appData.end = new Date(appData.end);
-
-    //       // console.log('appDate after', typeof(appData.start));
-    //       events.push(appData);
-    //       // console.log('FetchEvents', events);
-    //   });
-    // }
-
-    //   commit('SET_EVENTS', events);
-    // }, 
-    
-
+  
     async getCurrentUser({commit}) {
       const currentUser = auth.currentUser;
       const database = collection(db, "users");
@@ -302,7 +250,77 @@ export default createStore({
       await batch.commit();
     
       commit("DELETE_COLLECTION");
+    }, 
+
+    // check invitee
+    async checkInvitee({commit},invitee) {
+      invitee = invitee.toLowerCase();
+      const database = collection(db, "users");
+      // check for user with invitee email and check if exists
+      const qInvitee = query(database, where("email", "==", invitee));
+      const inviteeDocs = await getDocs(qInvitee);
+      
+      if (inviteeDocs.empty) {
+        // this.state.invitee_exist = false;
+        // console.log(this.state.invitee_exist);
+        commit('INVITEE_EXIST', false);
+      } else {
+        const userId = inviteeDocs.docs[0].id;
+        console.log(userId);
+        
+        let inviteeObj = {};
+        inviteeDocs.forEach((inviteeDoc) => {
+          inviteeObj['id'] = inviteeDoc.id;
+          inviteeObj['email'] = inviteeDoc.data().email;
+        });
+
+
+        const userDoc = doc(database, userId);
+        const calEventCollection = collection(userDoc, "calEvent");
+        const calClassCollection = collection(userDoc, "calClass");
+        const calExamCollection = collection(userDoc, "calExam");
+
+        let events = [];
+
+        const qEvent = query(calEventCollection);
+        const querySnapshotEvent = await getDocs(qEvent);
+        querySnapshotEvent.forEach((doc) => {
+          let appData = doc.data();
+          appData.id = doc.id;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+
+        });
+        const qClass = query(calClassCollection);
+        const querySnapshotClass = await getDocs(qClass);
+        querySnapshotClass.forEach((doc) => {
+          let appData = doc.data();
+          appData.id = doc.id;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+        });
+
+
+        const qExam = query(calExamCollection);
+        const querySnapshotExam = await getDocs(qExam);
+        querySnapshotExam.forEach((doc) => {
+          let appData = doc.data();
+          appData.id = doc.id;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+        });
+
+        console.log(events);
+        inviteeObj['events'] = events;
+        console.log('InvteeObject', inviteeObj);
+        commit('SET_INVITEES', inviteeObj);
+      }
+      
     }
+    
   },
   modules: {},
 });
