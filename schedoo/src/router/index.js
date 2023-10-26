@@ -52,8 +52,7 @@ const routes = [
     path: "/calendar", 
     name: 'Calendar', 
     component: CalendarView, 
-  }
-
+  },
   {
     path: "/create-event",
     name: "CreateEvent",
