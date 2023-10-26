@@ -5,7 +5,8 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
 import CalendarView from '../views/CalendarView.vue';
-// import Calendar from '../components/Calendar.vue';import CreateEvent from '../components/createEvent.vue';
+// import Calendar from '../components/Calendar.vue';
+import CreateEvent from '../components/createEvent.vue';
 
 
 const routes = [
