@@ -2,7 +2,7 @@
   <section>
     <div class="form-box">
       <div class="form-value">
-        <form action="">
+        <form action="" autocomplete="off">
           <h2 class="header">Login</h2>
           <div class="inputbox">
             <ion-icon name="mail-outline"></ion-icon>
@@ -19,7 +19,7 @@
 
           <div class="forget">
             <label for="">
-              <input type="checkbox" /> Remember Me
+              <!-- <input type="checkbox" /> Remember Me -->
               <router-link
                 class="forget-password"
                 :to="{ name: 'ForgetPassword' }"
@@ -150,7 +150,7 @@ input:valid ~ label {
 .inputbox input {
   width: 100%;
   height: 50px;
-  background: transparent;
+  background-color: transparent !important;
   border: none;
   outline: none;
   font-size: 1em;
