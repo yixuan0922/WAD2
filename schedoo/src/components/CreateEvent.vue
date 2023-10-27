@@ -160,12 +160,8 @@
     async mounted() {
         // Load your external scripts dynamically when the component is mounted
         this.loadScripts([
-        'js/lib/utils.js',
-        'js/lib/emails-input.js',
         'https://www.googletagmanager.com/gtag/js?id=UA-23581568-13',
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places',
-        'js/lib/app.js',
-        'vendor/jquery/jquery-3.2.1.min.js',
+        'https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places&callback=Function.prototype'
         ]);
 
         // Load your stylesheets dynamically
