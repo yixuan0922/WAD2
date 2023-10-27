@@ -31,7 +31,8 @@ export default {
     // console.log(auth.currentUser);
 
   },
-  mounted(){},
+  mounted(){
+  },
   methods: {
     checkRoute() {
       if (this.$route.name == 'Login' || this.$route.name == 'Register' || this.$route.name == 'ForgetPassword') {

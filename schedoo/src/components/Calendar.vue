@@ -12,40 +12,33 @@
       </Modal>
     </div>
     <div class="calendar-app-sidebar">
-      <div class="calendar-app-sidebr-section">
-        <!-- Your calendar component here -->
-        <button class="newEventButton" @click="newEvent">New Event</button>
-        <input type="file" id="myFile" />
-        <button class="newEventButton" @click="upload">Upload</button>
-        <button class="newEventButton" @click="deleteCol">Delete</button>
-        <div class="container">
-          <Fullcalendar
-            class="app-calendar-sidebar"
-            v-bind:options="calendarSidebarOptions"
-          />
-          <div class="mt-3">
-            <input
-              type="checkbox"
-              id="event"
-              value="Event"
-              v-model="state.checkedCategories"
-            />
-            <label for="event">Event</label>
-            <input
-              type="checkbox"
-              id="exam"
-              value="Exam"
-              v-model="state.checkedCategories"
-            />
-            <label for="exam">Exam</label>
-            <input
-              type="checkbox"
-              id="class"
-              value="Class"
-              v-model="state.checkedCategories"
-            />
-            <label for="class">Class</label>
-          </div>
+        <div class="calendar-app-sidebr-section">
+            <!-- Your calendar component here -->
+            <button class='newEventButton' @click="newEvent">New Event</button>
+            <input type="file" id="myFile"/>
+            <button class='newEventButton' @click="upload">Upload</button>
+            <button class='newEventButton' @click="deleteCol">Delete</button>
+            <div class="container">
+                <Fullcalendar class='app-calendar-sidebar' v-bind:options="calendarSidebarOptions" />
+                <div class="mt-3">
+                  <input type="checkbox" id="event" value="Event" v-model="state.checkedCategories">
+                  <label for="event">Event</label>
+                  <input type="checkbox" id="exam" value="Exam" v-model="state.checkedCategories">
+                  <label for="exam">Exam</label>
+                  <input type="checkbox" id="class" value="Class" v-model="state.checkedCategories">
+                  <label for="class">Class</label>
+                </div>
+                <div>
+                  <h2>Pending Invites</h2>
+                  <ul>
+                    <li v-for="(event, index) in this.$store.state.pendingEvents" :key="index">
+                        {{ event.title }} {{ event.id }} {{ event.start }} {{ event.end }}
+                        <button @click="acceptInvite(event)">Accept</button>
+                        <button @click="declineInvite(event)">Decline</button>
+                    </li>
+                  </ul>
+                </div>
+            </div>
         </div>
       </div>
     </div>
@@ -83,23 +76,26 @@ const state = reactive({
 });
 
 const toggleModal = (component, props) => {
-  modalContent.value = markRaw({ component, props });
-  modalActive.value = !modalActive.value;
-};
+    modalContent.value = markRaw({component, props});
+    modalActive.value = !modalActive.value;
+}
 
 const newEvent = () => {
-  let timestamp = new Date().getTime();
-  let date = new Date(timestamp);
-  console.log("newEvent", typeof newStart);
-  toggleModal(NewEventModal, {
-    text: "This is from the component",
+    let timestamp = new Date().getTime();
+    let start = new Date(timestamp);
+    let end = new Date(timestamp);
+
+    end.setDate(start.getDate() + 1);
+  
+    // console.log('newEvent', typeof(newStart));
+    toggleModal(NewEventModal, {text: 'This is from the component', 
     event: {
-      id: new Date().getTime(),
-      start: date,
-      end: date,
-      allDay: true,
-    },
-  });
+        id: (new Date()).getTime(),
+        start: new Date(start), 
+        end: new Date(end),
+        allDay: true,
+    }})
+
 };
 
 // const renderEvent = (arg) => {
@@ -204,8 +200,9 @@ let calendarSidebarOptions = ref({
 });
 
 onMounted(() => {
-  store.dispatch("fetchEvents", state.checkedCategories);
-});
+    store.dispatch('fetchEvents', state.checkedCategories);
+    store.dispatch('getPendingEvents');
+})
 
 const deleteCol = () => {
   store.dispatch("deleteCol");
@@ -347,6 +344,17 @@ const upload = () => {
     });
 };
 
+
+const acceptInvite = (event) => {
+  console.log('acceptInvite', event);
+  store.dispatch('acceptInvite', event);
+}
+
+const declineInvite = (event) => {
+  console.log('declineInvite', event);
+  store.dispatch('declineInvite', event);
+}
+
 async function processExams(examSchedules) {
   for (let eachExam of examSchedules) {
     // console.log('eachClass', eachClass);
@@ -425,48 +433,13 @@ const csvConverter = () => {
 
     reader.readAsText(csvFile);
   });
-};
+}
 
-watch(
-  state,
-  () => {
-    store.dispatch("fetchEvents", state.checkedCategories);
-  },
-  { immediate: true }
-);
+watch(state, () => {
+  store.dispatch('fetchEvents', state.checkedCategories);
+}, {immediate: true});
+
 </script>
-
-<style lang="css">
-h2 {
-  margin: 0;
-  font-size: 16px;
-}
-
-ul {
-  margin: 0;
-  padding: 0 0 0 1.5em;
-}
-
-li {
-  margin: 1.5em 0;
-  padding: 0;
-}
-
-b {
-  /* used for event dates/times */
-  margin-right: 3px;
-}
-
-.app-calendar {
-  height: 86vh;
-}
-
-.calendar-app {
-  display: flex;
-  min-height: 80%;
-  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-  font-size: 14px;
-}
 
 .calendar-app-sidebar {
   width: 300px;
