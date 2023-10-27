@@ -50,7 +50,7 @@ const routes = [
   },
   {
     path: "/calendar",
-    name: "CalendarView",
+    name: "Calendar",
     component: CalendarView,
   }
 ];

@@ -29,7 +29,7 @@
                   <h2>Pending Invites</h2>
                   <ul>
                     <li v-for="(event, index) in this.$store.state.pendingEvents" :key="index">
-                        {{ event.title }} {{ event.id }} {{ event.start }} {{ event.end }}
+                        {{ event.title }} <br> {{ event.invitorEmail }} <br> {{ event.start }} <br> {{ event.end }}
                         <button @click="acceptInvite(event)">Accept</button>
                         <button @click="declineInvite(event)">Decline</button>
                     </li>
