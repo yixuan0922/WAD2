@@ -1,6 +1,7 @@
 <template>
   <div class="calendar-app">
     <div class="calendar-app-main">
+
       <Fullcalendar class="app-calendar" v-bind:options="calendarOptions" />
       <Modal @close="toggleModal" :modalActive="modalActive">
         <component
@@ -457,7 +458,7 @@ b {
 }
 
 .app-calendar {
-  height: 85vh;
+  height: 86vh;
 }
 
 .calendar-app {
@@ -480,7 +481,10 @@ b {
 
 .calendar-app-main {
   flex-grow: 1;
-  padding: 3em;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 1.5em;
+  padding-top: 1.3em;
 }
 
 .fc {

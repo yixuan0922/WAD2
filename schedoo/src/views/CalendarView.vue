@@ -23,6 +23,6 @@ export default {
 </script>
 <style>
 .calendar {
-  margin-top: 90px;
+  margin-top: 70px;
 }
 </style>
