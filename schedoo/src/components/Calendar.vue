@@ -14,19 +14,31 @@
       <div class="calendar-app-sidebar-section">
         <!-- Your calendar component here -->
         <button class="newEventButton" @click="newEvent">+ New Event</button>
-        <label for="myFile" class="file-box">
-          <p class="file-content">Upload your timetable</p>
-          <input type="file" id="myFile" class="file-content input" />
-        </label>
-        <button class="newEventButton" @click="upload">Upload</button>
-        <button class="newEventButton" @click="deleteCol">Delete</button>
+        <div class="timetable-header">
+          <p class="header">Upload Timetable</p>
+          <button class="newEventButton" @click="deleteCol">Delete</button>
+        </div>
+        <div class="container">
+          <DropZone
+            class="m-auto"
+            @drop.prevent="drop"
+            @change="selectedFile"
+            :my-file="myFile"
+          ></DropZone>
+          <div class="file-info m-auto p-2">File: {{ myFile.name }}</div>
+          <button class="newEventButton m-auto" @click="upload">Upload</button>
+        </div>
+        <hr />
+        <!-- <button class="newEventButton m-auto" @click="upload">Upload</button> -->
+
         <div class="container">
           <Fullcalendar
             class="app-calendar-sidebar"
             v-bind:options="calendarSidebarOptions"
           />
-          <div class="mt-3 mb-3 category">
-            <h2 class="category-title">Filter Categories</h2>
+          <hr />
+          <div class="mb-3 category">
+            <h2 class="header">Filter Categories</h2>
             <div class="form-check event">
               <label for="event">
                 <input
@@ -66,8 +78,9 @@
               >
             </div>
           </div>
+          <hr />
           <div class="invite-container">
-            <h2 class="invite-title">Pending Invites</h2>
+            <h2 class="header">Pending Invites</h2>
             <ul>
               <li
                 v-for="(event, index) in this.$store.state.pendingEvents"
@@ -108,6 +121,7 @@ import NewEventModal from "../components/NewEventModal.vue";
 // import CommentsModal from '../components/CommentsModal.vue'
 // import { Calendar } from '@fullcalendar/core';
 import Modal from "@/components/ModalView.vue";
+import DropZone from "@/components/DropZone.vue";
 
 const store = useStore();
 
@@ -441,7 +455,10 @@ async function processClasses(weeklyClasses) {
 
 const csvConverter = () => {
   return new Promise((resolve, reject) => {
-    let csvFile = document.getElementById("myFile").files[0];
+    // let csvFile = document.getElementById("myFile").files[0];
+    let csvFile = myFile.value;
+
+    console.log(csvFile)
     let reader = new FileReader();
 
     reader.onload = (event) => {
@@ -486,6 +503,27 @@ watch(
   },
   { immediate: true }
 );
+
+// dropzone code
+var myFile = ref("");
+
+const drop = (e) => {
+  myFile.value = e.dataTransfer.files[0];
+  console.log(myFile.value);
+};
+
+const selectedFile = () => {
+  myFile.value = document.querySelector(".myFile").files[0];
+};
+
+// function deleteFile() {
+//   myFile = ref('')
+// }
+
+// const deleteBtn = () => {
+//   deleteCol;
+//   deleteFile();
+// }
 </script>
 
 <style>
@@ -521,8 +559,10 @@ watch(
 }
 
 .newEventButton {
+  margin-top: 3px;
   margin-bottom: 10px;
   border-radius: 10px;
+  padding: 6px 10px;
 }
 
 .calendar-app {
@@ -537,7 +577,7 @@ watch(
   background-color: rgb(234 249 255);
 }
 
-.file-box {
+/* .file-box {
   height: 200px;
   width: 200px;
   background-color: whitesmoke;
@@ -552,16 +592,30 @@ watch(
 
 .input {
   display: none;
+} */
+
+hr {
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
-.invite-title,
-.category-title,
+.header,
 #fc-dom-86 {
   font-size: 23px;
   text-align: left;
   margin-bottom: 5px;
   font-weight: bold;
 }
+
+.timetable-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* .timetable-box {
+  display: flex;
+} */
 
 .container {
   padding: 0;
