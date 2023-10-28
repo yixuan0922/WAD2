@@ -11,33 +11,77 @@
       </Modal>
     </div>
     <div class="calendar-app-sidebar">
-        <div class="calendar-app-sidebar-section">
-            <!-- Your calendar component here -->
-            <button class='newEventButton' @click="newEvent">New Event</button>
-            <input type="file" id="myFile"/>
-            <button class='newEventButton' @click="upload">Upload</button>
-            <button class='newEventButton' @click="deleteCol">Delete</button>
-            <div class="container">
-                <Fullcalendar class='app-calendar-sidebar' v-bind:options="calendarSidebarOptions" />
-                <div class="mt-3">
-                  <input type="checkbox" id="event" value="Event" v-model="state.checkedCategories">
-                  <label for="event">Event</label>
-                  <input type="checkbox" id="exam" value="Exam" v-model="state.checkedCategories">
-                  <label for="exam">Exam</label>
-                  <input type="checkbox" id="class" value="Class" v-model="state.checkedCategories">
-                  <label for="class">Class</label>
-                </div>
-                <div>
-                  <h2>Pending Invites</h2>
-                  <ul>
-                    <li v-for="(event, index) in this.$store.state.pendingEvents" :key="index">
-                        {{ event.title }} <br> {{ event.invitorEmail }} <br> {{ event.start }} <br> {{ event.end }}
-                        <button @click="acceptInvite(event)">Accept</button>
-                        <button @click="declineInvite(event)">Decline</button>
-                    </li>
-                  </ul>
-                </div>
+      <div class="calendar-app-sidebar-section">
+        <!-- Your calendar component here -->
+        <button class="newEventButton" @click="newEvent">+ New Event</button>
+        <label for="myFile" class="file-box">
+          <p class="file-content">Upload your timetable</p>
+          <input type="file" id="myFile" class="file-content input" />
+        </label>
+        <button class="newEventButton" @click="upload">Upload</button>
+        <button class="newEventButton" @click="deleteCol">Delete</button>
+        <div class="container">
+          <Fullcalendar
+            class="app-calendar-sidebar"
+            v-bind:options="calendarSidebarOptions"
+          />
+          <div class="mt-3 mb-3 category">
+            <h2 class="category-title">Filter Categories</h2>
+            <div class="form-check event">
+              <label for="event">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="event"
+                  value="Event"
+                  v-model="state.checkedCategories"
+                />
+                Event</label
+              >
             </div>
+
+            <div class="form-check exam">
+              <label for="exam">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="exam"
+                  value="Exam"
+                  v-model="state.checkedCategories"
+                />
+                Exam</label
+              >
+            </div>
+
+            <div class="form-check class">
+              <label for="class">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="class"
+                  value="Class"
+                  v-model="state.checkedCategories"
+                />
+                Class</label
+              >
+            </div>
+          </div>
+          <div class="invite-container">
+            <h2 class="invite-title">Pending Invites</h2>
+            <ul>
+              <li
+                v-for="(event, index) in this.$store.state.pendingEvents"
+                :key="index"
+              >
+                {{ event.title }} <br />
+                {{ event.invitorEmail }} <br />
+                {{ event.start }} <br />
+                {{ event.end }}
+                <button @click="acceptInvite(event)">Accept</button>
+                <button @click="declineInvite(event)">Decline</button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -446,14 +490,14 @@ watch(
 
 <style>
 .calendar-app-sidebar {
-  width: 300px;
+  width: 350px;
   line-height: 1.5;
   background: #ededed;
   border-right: 1px solid #d3e2e8;
 }
 
 .calendar-app-sidebar-section {
-  padding: 2em;
+  padding: 1.1em;
 }
 
 .calendar-app-main {
@@ -462,6 +506,8 @@ watch(
   padding-right: 2em;
   padding-bottom: 1.5em;
   padding-top: 1.3em;
+  position: sticky;
+  top: 30px;
 }
 
 .fc {
@@ -475,7 +521,6 @@ watch(
 }
 
 .newEventButton {
-  margin-top: 20px;
   margin-bottom: 10px;
   border-radius: 10px;
 }
@@ -507,5 +552,43 @@ watch(
 
 .input {
   display: none;
+}
+
+.invite-title,
+.category-title,
+#fc-dom-86 {
+  font-size: 23px;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.container {
+  padding: 0;
+}
+
+.fc .fc-list-table td {
+  padding: 8px 12px;
+}
+
+.container .fc .fc-toolbar.fc-header-toolbar {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: left;
+  font-size: 23px;
+  font-weight: bold;
+}
+.form-check-input {
+  margin-right: 15px !important;
+}
+
+.form-check label {
+  text-align: left;
+  padding-left: 8px;
+  width: 100%;
+}
+
+.form-check:hover {
+  background-color: #d3e2e8;
 }
 </style>
