@@ -80,25 +80,6 @@ import {RouterLink, RouterView} from 'vue-router';
         <img class="float floating3" src="../assets/icons/icon3Bottom.png" width="80%" 
         style="position: absolute;  transform: translate(-50%, -20%);">
       </div>
-      <!-- <div id="icon-float" class="col-4 offset-2 d-none d-sm-block" style="position: relative;">
-        <img class="float floating3" src="../assets/icons/icon6.png" width="30%"
-        style=""
-        >
-        <img class="float floating1" src="../assets/icons/icon5.png" width="30%"
-        style=""
-        >
-        <img class="float floating4" src="../assets/icons/cloudicon.png" width="50%"
-        style=""
-          >
-        <img class="float floating3 " src="../assets/icons/cloudicon.png" width="50%"
-        style=""
-        >
-        <img class="float floating3" src="../assets/icons/icon3Bottom.png" width="80%"
-        style=""
-        >
-
-        
-      </div> -->
     </section>
   </main>
 </template>
