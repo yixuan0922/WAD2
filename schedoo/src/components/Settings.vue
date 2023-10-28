@@ -1,6 +1,6 @@
 <template lang="">
-    <div class="sliders col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
-        <div class="container-fluid settings sliderMain">
+    <div class="">
+        <div class="container-fluid sliderMain">
 
             <!-- Goal setting for each category -->
             <p class="subtext">Time Percentage for Each Category</p>
@@ -8,7 +8,7 @@
             <div :key="cat.name" v-for="cat in categories">
 
                 <div class="row">
-                    <p class="subtext col-lg-7 col-8">
+                    <p class="subtext col-lg-6 col-8">
                         Preferred {{ cat.name }} Time:
                     </p>
                     <p id="personalTime" class="subtext col" style="text-align: right; padding-right: 50px;">
@@ -19,8 +19,11 @@
 
             </div>
 
-            <!-- Save into database -->
-            <button type="button" onclick="save()" class="btn btn-info rounded-pill mr-md-3 mb-md-2 mt-5">Save</button>
+            <div class="save"
+            >
+                <!-- Save into database -->
+                <button type="button" onclick="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2">Save</button>
+            </div>
         </div>
     </div>
 </template>
@@ -41,7 +44,7 @@ export default {
     }, 
     methods: {
         update(catName) {
-            // overall total to make sure adds up to 100
+            // overall total to make sure adds up to 24
 
             var val = catName.value;
             var overall = +val;
@@ -62,15 +65,35 @@ export default {
                 // if not changed cat
                 if (cat2.name != catName.name) {
                     // get % of total * new total
-                    cat2.value = Math.floor(cat2.value/prev * total);
-                    overall = overall + cat2.value;
+                    if (cat2.value != 0) {
+                        cat2.value = Math.floor(cat2.value/prev * total);
+                        overall = overall + cat2.value;
+                    }
+                    else {
+                        cat2.value = Math.floor(total/5);
+                        overall = overall + cat2.value;
+                    }
 
                 }
             }
 
-            if (overall - 24 != 0) {
-                // making 100
-                this.categories[0].value = +this.categories[this.categories.length-1].value - (overall - 24)
+            var valCheck = overall - 24;
+            if (valCheck != 0) {
+                // making 24
+
+                // not enough hrs
+                if (valCheck < 0) {
+                    this.categories[0].value = +this.categories[0].value - (overall - 24)
+                }
+                // run through, edit next cat w/ enough hrs
+                else {
+                    for (cat2 of this.categories) {
+                        if (cat2.value >= valCheck) {
+                            cat2.value -= valCheck;
+                            break;
+                        }
+                    }
+                }
             }
         },
         save() {
@@ -85,6 +108,16 @@ export default {
 background-color: #f1d1d8;
 }; */
 
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+html {
+    background-color: #f1d1b8;
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+}
 .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
@@ -111,16 +144,16 @@ background-color: #f1d1d8;
     /* margin: auto; */
 }
 
-.settings {
+/* .settings { */
     /* padding-right: 5%;  */
-    width: 80%;
+    /* width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
     border: 2px solid grey;
     border-radius: 15px;
     padding-top: 5px;
-}
+} */
 
 
 .sliderMain {
@@ -129,6 +162,20 @@ background-color: #f1d1d8;
     border-radius: 25px;
     margin: auto;
     margin-top: 30px;
+
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    border: 2px solid grey;
+    border-radius: 15px;
+    padding-top: 5px;
+}
+
+@media (max-width:576px) {
+    .sliderMain {
+        width:80%;
+    }
 }
 
 
