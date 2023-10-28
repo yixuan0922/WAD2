@@ -11,59 +11,33 @@
       </Modal>
     </div>
     <div class="calendar-app-sidebar">
-      <div class="calendar-app-sidebar-section">
-        <!-- Your calendar component here -->
-        <button class="newEventButton" @click="newEvent">New Event</button>
-        <div class="file-box">
-          <label for="myFile" class="file-content"
-            >Upload your timetable</label
-          >
-          <input type="file" id="myFile" class="file-content input" />
-        </div>
-        <button class="newEventButton" @click="upload">Upload</button>
-        <button class="newEventButton" @click="deleteCol">Delete</button>
-        <div class="container">
-          <Fullcalendar
-            class="app-calendar-sidebar"
-            v-bind:options="calendarSidebarOptions"
-          />
-          <div class="mt-3">
-            <input
-              type="checkbox"
-              id="event"
-              value="Event"
-              v-model="state.checkedCategories"
-            />
-            <label for="event">Event</label>
-            <input
-              type="checkbox"
-              id="exam"
-              value="Exam"
-              v-model="state.checkedCategories"
-            />
-            <label for="exam">Exam</label>
-            <input
-              type="checkbox"
-              id="class"
-              value="Class"
-              v-model="state.checkedCategories"
-            />
-            <label for="class">Class</label>
-          </div>
-          <div>
-            <h2>Pending Invites</h2>
-            <ul>
-              <li
-                v-for="(event, index) in this.$store.state.pendingEvents"
-                :key="index"
-              >
-                {{ event.title }} {{ event.id }} {{ event.start }}
-                {{ event.end }}
-                <button @click="acceptInvite(event)">Accept</button>
-                <button @click="declineInvite(event)">Decline</button>
-              </li>
-            </ul>
-          </div>
+        <div class="calendar-app-sidebar-section">
+            <!-- Your calendar component here -->
+            <button class='newEventButton' @click="newEvent">New Event</button>
+            <input type="file" id="myFile"/>
+            <button class='newEventButton' @click="upload">Upload</button>
+            <button class='newEventButton' @click="deleteCol">Delete</button>
+            <div class="container">
+                <Fullcalendar class='app-calendar-sidebar' v-bind:options="calendarSidebarOptions" />
+                <div class="mt-3">
+                  <input type="checkbox" id="event" value="Event" v-model="state.checkedCategories">
+                  <label for="event">Event</label>
+                  <input type="checkbox" id="exam" value="Exam" v-model="state.checkedCategories">
+                  <label for="exam">Exam</label>
+                  <input type="checkbox" id="class" value="Class" v-model="state.checkedCategories">
+                  <label for="class">Class</label>
+                </div>
+                <div>
+                  <h2>Pending Invites</h2>
+                  <ul>
+                    <li v-for="(event, index) in this.$store.state.pendingEvents" :key="index">
+                        {{ event.title }} <br> {{ event.invitorEmail }} <br> {{ event.start }} <br> {{ event.end }}
+                        <button @click="acceptInvite(event)">Accept</button>
+                        <button @click="declineInvite(event)">Decline</button>
+                    </li>
+                  </ul>
+                </div>
+            </div>
         </div>
       </div>
     </div>
