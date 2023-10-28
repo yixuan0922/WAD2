@@ -4,7 +4,7 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
-import Settings from '../components/Settings.vue';
+import Settings from '../views/SettingsView.vue';
 
 
 const routes = [
