@@ -6,7 +6,7 @@ import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e8da8b;"
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9b58d; height: 70px; "
 >
     <div class="container">
         <a class="navbar-brand" id="navBarLogo" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
@@ -86,7 +86,9 @@ import {RouterLink, RouterView} from 'vue-router';
               </li>
           </ul>
           <span class="navbar-text" style="right: 5%">
-              <router-link @click='signOut' class="nav-link" to="#">Sign Out</router-link>
+              <router-link @click='signOut' class="nav-link" to="#"
+              style="color: black; text-decoration: none;"
+              >Sign Out</router-link>
           </span>
         </div>
 
@@ -97,7 +99,9 @@ import {RouterLink, RouterView} from 'vue-router';
               </li>
           </ul>
           <span  class="navbar-text" style="right: 5%">
-              <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
+              <router-link class="nav-link" :to="{name: 'Login'}"
+              style="color: black; text-decoration: none;"
+              >Login</router-link>
           </span>
         </div>
     </div>
@@ -208,6 +212,11 @@ export default {
     font-size: large;
     font-family: system-ui;
     letter-spacing: 0.05em;
+}
+
+li {
+  margin: 0 !important;
+  margin-top: 5px !important;
 }
 
 .profile {

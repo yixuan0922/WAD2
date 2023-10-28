@@ -538,6 +538,10 @@ const selectedFile = () => {
   padding: 1.1em;
 }
 
+body {
+  padding-top: 70px;
+}
+
 .calendar-app-main {
   flex-grow: 1;
   padding-left: 2em;
