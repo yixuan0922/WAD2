@@ -165,7 +165,8 @@ export default {
 
     signOut() {
       auth.signOut();
-      window.location.reload();
+      // window.location.reload();
+      window.location.href = "/login";
     }
 
     // signOut() {

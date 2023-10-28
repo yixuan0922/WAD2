@@ -2,7 +2,7 @@
     <div>
       <Nav/>
       <div class="calendar-content">  
-        <Calendar/>
+        <Calendar class="calendar"/>
       </div>
     </div>
   </template>
@@ -22,5 +22,9 @@
   };
   </script>
   <style>
+
+  .calendar{
+    margin-top: 70px;
+  }
   </style>
   

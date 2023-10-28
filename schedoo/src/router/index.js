@@ -4,6 +4,7 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
+import CreateEvent from '/src/components/CreateEvent.vue';
 import CalendarView from '../views/CalendarView.vue';
 // import Calendar from '../components/Calendar.vue';
 
@@ -42,17 +43,16 @@ const routes = [
     name: "ForgetPassword",
     component: ForgetPassword,
   },
-  // {
-  //   path: "/calendar",
-  //   name: "calendar",
-  //   component: CalendarView,
-  // },
   {
-    path: "/calendar", 
-    name: 'Calendar', 
-    component: CalendarView, 
+    path: "/create-event",
+    name: "CreateEvent",
+    component: CreateEvent,
+  },
+  {
+    path: "/calendar",
+    name: "Calendar",
+    component: CalendarView,
   }
-
 ];
 
 const router = createRouter({
