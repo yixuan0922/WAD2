@@ -1,7 +1,6 @@
 <template>
   <div class="calendar-app">
     <div class="calendar-app-main">
-
       <Fullcalendar class="app-calendar" v-bind:options="calendarOptions" />
       <Modal @close="toggleModal" :modalActive="modalActive">
         <component
@@ -12,33 +11,59 @@
       </Modal>
     </div>
     <div class="calendar-app-sidebar">
-        <div class="calendar-app-sidebr-section">
-            <!-- Your calendar component here -->
-            <button class='newEventButton' @click="newEvent">New Event</button>
-            <input type="file" id="myFile"/>
-            <button class='newEventButton' @click="upload">Upload</button>
-            <button class='newEventButton' @click="deleteCol">Delete</button>
-            <div class="container">
-                <Fullcalendar class='app-calendar-sidebar' v-bind:options="calendarSidebarOptions" />
-                <div class="mt-3">
-                  <input type="checkbox" id="event" value="Event" v-model="state.checkedCategories">
-                  <label for="event">Event</label>
-                  <input type="checkbox" id="exam" value="Exam" v-model="state.checkedCategories">
-                  <label for="exam">Exam</label>
-                  <input type="checkbox" id="class" value="Class" v-model="state.checkedCategories">
-                  <label for="class">Class</label>
-                </div>
-                <div>
-                  <h2>Pending Invites</h2>
-                  <ul>
-                    <li v-for="(event, index) in this.$store.state.pendingEvents" :key="index">
-                        {{ event.title }} {{ event.id }} {{ event.start }} {{ event.end }}
-                        <button @click="acceptInvite(event)">Accept</button>
-                        <button @click="declineInvite(event)">Decline</button>
-                    </li>
-                  </ul>
-                </div>
-            </div>
+      <div class="calendar-app-sidebar-section">
+        <!-- Your calendar component here -->
+        <button class="newEventButton" @click="newEvent">New Event</button>
+        <div class="file-box">
+          <label for="myFile" class="file-content"
+            >Upload your timetable</label
+          >
+          <input type="file" id="myFile" class="file-content input" />
+        </div>
+        <button class="newEventButton" @click="upload">Upload</button>
+        <button class="newEventButton" @click="deleteCol">Delete</button>
+        <div class="container">
+          <Fullcalendar
+            class="app-calendar-sidebar"
+            v-bind:options="calendarSidebarOptions"
+          />
+          <div class="mt-3">
+            <input
+              type="checkbox"
+              id="event"
+              value="Event"
+              v-model="state.checkedCategories"
+            />
+            <label for="event">Event</label>
+            <input
+              type="checkbox"
+              id="exam"
+              value="Exam"
+              v-model="state.checkedCategories"
+            />
+            <label for="exam">Exam</label>
+            <input
+              type="checkbox"
+              id="class"
+              value="Class"
+              v-model="state.checkedCategories"
+            />
+            <label for="class">Class</label>
+          </div>
+          <div>
+            <h2>Pending Invites</h2>
+            <ul>
+              <li
+                v-for="(event, index) in this.$store.state.pendingEvents"
+                :key="index"
+              >
+                {{ event.title }} {{ event.id }} {{ event.start }}
+                {{ event.end }}
+                <button @click="acceptInvite(event)">Accept</button>
+                <button @click="declineInvite(event)">Decline</button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -76,26 +101,27 @@ const state = reactive({
 });
 
 const toggleModal = (component, props) => {
-    modalContent.value = markRaw({component, props});
-    modalActive.value = !modalActive.value;
-}
+  modalContent.value = markRaw({ component, props });
+  modalActive.value = !modalActive.value;
+};
 
 const newEvent = () => {
-    let timestamp = new Date().getTime();
-    let start = new Date(timestamp);
-    let end = new Date(timestamp);
+  let timestamp = new Date().getTime();
+  let start = new Date(timestamp);
+  let end = new Date(timestamp);
 
-    end.setDate(start.getDate() + 1);
-  
-    // console.log('newEvent', typeof(newStart));
-    toggleModal(NewEventModal, {text: 'This is from the component', 
+  end.setDate(start.getDate() + 1);
+
+  // console.log('newEvent', typeof(newStart));
+  toggleModal(NewEventModal, {
+    text: "This is from the component",
     event: {
-        id: (new Date()).getTime(),
-        start: new Date(start), 
-        end: new Date(end),
-        allDay: true,
-    }})
-
+      id: new Date().getTime(),
+      start: new Date(start),
+      end: new Date(end),
+      allDay: true,
+    },
+  });
 };
 
 // const renderEvent = (arg) => {
@@ -184,6 +210,7 @@ let calendarOptions = ref({
   eventClick: handleEventClick,
   eventResize: updateEvent,
   eventDrop: updateEvent,
+  aspectRatio: 2,
   // eventContent: renderEvent
 });
 
@@ -200,9 +227,9 @@ let calendarSidebarOptions = ref({
 });
 
 onMounted(() => {
-    store.dispatch('fetchEvents', state.checkedCategories);
-    store.dispatch('getPendingEvents');
-})
+  store.dispatch("fetchEvents", state.checkedCategories);
+  store.dispatch("getPendingEvents");
+});
 
 const deleteCol = () => {
   store.dispatch("deleteCol");
@@ -344,16 +371,15 @@ const upload = () => {
     });
 };
 
-
 const acceptInvite = (event) => {
-  console.log('acceptInvite', event);
-  store.dispatch('acceptInvite', event);
-}
+  console.log("acceptInvite", event);
+  store.dispatch("acceptInvite", event);
+};
 
 const declineInvite = (event) => {
-  console.log('declineInvite', event);
-  store.dispatch('declineInvite', event);
-}
+  console.log("declineInvite", event);
+  store.dispatch("declineInvite", event);
+};
 
 async function processExams(examSchedules) {
   for (let eachExam of examSchedules) {
@@ -433,18 +459,22 @@ const csvConverter = () => {
 
     reader.readAsText(csvFile);
   });
-}
+};
 
-watch(state, () => {
-  store.dispatch('fetchEvents', state.checkedCategories);
-}, {immediate: true});
-
+watch(
+  state,
+  () => {
+    store.dispatch("fetchEvents", state.checkedCategories);
+  },
+  { immediate: true }
+);
 </script>
 
+<style>
 .calendar-app-sidebar {
   width: 300px;
   line-height: 1.5;
-  background: #eaf9ff;
+  background: #ededed;
   border-right: 1px solid #d3e2e8;
 }
 
@@ -470,9 +500,38 @@ watch(state, () => {
   height: 30px;
 }
 
-
 .newEventButton {
   margin-top: 20px;
   margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.calendar-app {
+  display: flex;
+}
+
+.app-calendar {
+  height: 86vh;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: rgb(234 249 255);
+}
+
+.file-box {
+  height: 200px;
+  width: 200px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  display: flex;
+  margin: auto;
+}
+
+.file-content {
+  margin: auto;
+}
+
+.input {
+  display: none;
 }
 </style>
