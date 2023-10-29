@@ -1,11 +1,11 @@
-<template lang="">
-    <div class="">
-        <div class="ripple-background" style="background-color: #508fb9;">
+<template>
+    <body class="main">
+        <div class="ripple-background">
             <!-- bkgrnd animations -->
             <div class="circle xxlarge shade1"></div>
             <div class="circle xlarge shade2"></div>
             <div class="circle large shade3"></div>
-            <div class="circle mediun shade4"></div>
+            <div class="circle medium shade4"></div>
             <div class="circle small shade5"></div>
         </div>
         <div class="card sliderMain" style="background-color: white">
@@ -33,7 +33,7 @@
                 <button type="button" onclick="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2">Save</button>
             </div>
         </div>
-    </div>
+    </body>
 </template>
 <script>
 export default {
@@ -112,12 +112,14 @@ export default {
 }
 </script>
 <style scoped>
-/* #main {
-background-color: #f1d1d8;
-}; */
-
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+body {
+    min-height: 100vh;
+    background-color: #F1D1B8;
+    overflow: hidden;
+}
 
 p {
     font-family: 'Poppins', sans-serif;
@@ -153,16 +155,16 @@ p {
     border: 1px transparent black;
     border-radius: 25px;
     margin: auto;
-    margin-top: 30px;
 
     /* original settings style */
     width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
+    margin: auto;
+    /* margin-top: 30px; */
+    transform: translate(0,30px);
     border: 2px solid grey;
     border-radius: 15px;
     padding-top: 5px;
+    background-color: #508fb9;
 }
 
 /* breakpts */
@@ -172,13 +174,16 @@ p {
     }
 }
 
-html {
-    background-color: #508fb9 !important;
+@media (min-width:992px) {
+    .sliderMain {
+        width:40%;
+    }
 }
 
 .ripple-background {
     position: relative;
-    z-index: -1;
+    z-index: 0;
+
 }
 
 .circle{
@@ -186,7 +191,7 @@ html {
   border-radius: 50%;
   background: white;
   animation: ripple 15s infinite;
-  box-shadow: 0px 0px 1px 0px #508fb9;
+  box-shadow: 0px 0px 1px 0px #F1D1B8;
 }
 
 .small{
@@ -228,19 +233,19 @@ html {
   opacity: 0.2;
 }
 .shade2{
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .shade3{
-  opacity: 0.7;
+  opacity: 0.4;
 }
 
 .shade4{
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .shade5{
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
 @keyframes ripple{
