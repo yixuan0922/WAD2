@@ -5,7 +5,10 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
 import Settings from '../views/SettingsView.vue';
-
+// import CreateEvent from '/src/components/CreateEvent.vue';
+import CalendarView from '../views/CalendarView.vue';
+import CrEvent from '../components/CrEvent.vue';
+// import Calendar from '../components/Calendar.vue';
 
 const routes = [
   {
@@ -41,6 +44,16 @@ const routes = [
     path: "/forget-password",
     name: "ForgetPassword",
     component: ForgetPassword,
+  },
+  {
+    path: "/calendar",
+    name: "Calendar",
+    component: CalendarView,
+  }, 
+  {
+    path: "/create-event",
+    name: "CrEvent",
+    component: CrEvent,
   },
   {
     path: "/settings",
