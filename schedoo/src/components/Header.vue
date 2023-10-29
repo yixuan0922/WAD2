@@ -252,10 +252,10 @@ main > section > div {
     text-align: center;
 }
 
-html,
+/* html,
 body {
     overflow: hidden;
-}
+} */
 
 /* Button animations */
 .mainBtn {
