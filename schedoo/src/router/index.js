@@ -4,8 +4,9 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
-import CreateEvent from '/src/components/CreateEvent.vue';
+// import CreateEvent from '/src/components/CreateEvent.vue';
 import CalendarView from '../views/CalendarView.vue';
+import CrEvent from '../components/CrEvent.vue';
 // import Calendar from '../components/Calendar.vue';
 import Login2 from '../views/Login2.vue';
 import CommonLoc from '../views/CommonLoc.vue';
@@ -67,10 +68,15 @@ const routes = [
     component: CalendarView,
   },
   {
+    path: "/calendar",
+    name: "Calendar",
+    component: CalendarView,
+  }, 
+  {
     path: "/create-event",
-    name: "CreateEvent",
-    component: CreateEvent,
-  }
+    name: "CrEvent",
+    component: CrEvent,
+  },
 ];
 
 const router = createRouter({
