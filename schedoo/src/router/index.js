@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import LandingView from "../views/LandingView.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
-import ForgetPassword from "../views/ForgetPassword.vue";
-import Login2 from "../views/Login2.vue";
-import CommonLoc from "../views/CommonLoc.vue";
-import test from "../views/test.vue";
+import LandingView from '../views/LandingView.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import ForgetPassword from '../views/ForgetPassword.vue';
+import CreateEvent from '/src/components/CreateEvent.vue';
+import CalendarView from '../views/CalendarView.vue';
+// import Calendar from '../components/Calendar.vue';
+import Login2 from '../views/Login2.vue';
+import CommonLoc from '../views/CommonLoc.vue';
+import test from '../views/test.vue';
 
 const routes = [
   {
@@ -58,6 +61,16 @@ const routes = [
     name: "test",
     component: test,
   },
+  {
+    path: "/calendar",
+    name: "Calendar",
+    component: CalendarView,
+  },
+  {
+    path: "/create-event",
+    name: "CreateEvent",
+    component: CreateEvent,
+  }
 ];
 
 const router = createRouter({
