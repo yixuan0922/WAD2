@@ -119,6 +119,10 @@ const setLocation = () => {
 </script>
 
 <style>
+body {
+  padding-top: 0 !important;
+}
+
 #map {
   border: transparent;
   border-radius: 20px;
