@@ -11,24 +11,27 @@
         <div class="card sliderMain" style="background-color: white">
 
             <!-- Goal setting for each category -->
-            <p class="subtext">Time Percentage for Each Category</p>
+            <p class="subtext" style="font-size: small; text-decoration: underline;">Time Percentage for Each Category</p>
 
             <div :key="cat.name" v-for="cat in categories">
 
-                <div class="row">
-                    <p class="subtext col-lg-6 col-8">
-                        Preferred {{ cat.name }} Time:
-                    </p>
-                    <p id="personalTime" class="subtext col" style="text-align: right; padding-right: 50px;">
-                        {{ cat.value }}hr(s)
-                    </p>
+                <div class="category-container">
+                    <div class="row">
+                        <p class="subtext col-lg-6 col-8">
+                            Preferred {{ cat.name }} Time:
+                        </p>
+                        <p id="personalTime" class="subtext col" style="text-align: right; padding-right: 50px;">
+                            {{ cat.value }}hr(s)
+                        </p>
+                    </div>
+                    <div class="row">
+                        <input type="range" min="1" max="24" v-model="cat.value" class="slider" @click="update(cat)" style="margin-left:5%; margin-right:5%; width: 90%">
+                    </div>
                 </div>
-                <input type="range" min="1" max="24" v-model="cat.value" class="slider" @click="update(cat)" style="margin-left:5%; margin-right:5%; width: 90%">
 
             </div>
 
-            <div class="save"
-            >
+            <div class="save">
                 <!-- Save into database -->
                 <button type="button" onclick="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2">Save</button>
             </div>
@@ -119,6 +122,7 @@ body {
     min-height: 100vh;
     background-color: #F1D1B8;
     overflow: hidden;
+    display: flex;
 }
 
 p {
@@ -135,7 +139,7 @@ p {
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
     border-radius: 25px;
-
+    
 }
 
 /* Mouse-over effects */
@@ -146,8 +150,8 @@ p {
 .subtext {
     /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
     font-weight: bold;
-    font-size: small;
-    /* margin: auto; */
+    font-size: 12px;
+    margin-bottom: 10px;
 }
 
 .sliderMain {
@@ -164,7 +168,7 @@ p {
     border: 2px solid grey;
     border-radius: 15px;
     padding-top: 5px;
-    background-color: #508fb9;
+    height: auto;
 }
 
 /* breakpts */
@@ -178,6 +182,11 @@ p {
     .sliderMain {
         width:40%;
     }
+}
+
+.category-container {
+    display: block; /* Display as a block element */
+    margin-bottom: 30px; /* Add some spacing between category containers */
 }
 
 .ripple-background {
@@ -262,5 +271,10 @@ p {
   }
 }
 
+/* Remove the ::before pseudo-element content */
+input.slider::before {
+    content: none; /* or use content: ""; to remove it */
+    background: transparent;
+}
 
 </style>
