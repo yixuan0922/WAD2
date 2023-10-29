@@ -528,7 +528,7 @@ const selectedFile = () => {
 
 <style>
 .calendar-app-sidebar {
-  width: 350px;
+  width: 360px;
   line-height: 1.5;
   background: #ededed;
   border-right: 1px solid #d3e2e8;
@@ -536,10 +536,7 @@ const selectedFile = () => {
 
 .calendar-app-sidebar-section {
   padding: 1.1em;
-}
-
-body {
-  padding-top: 70px;
+  
 }
 
 .calendar-app-main {
@@ -626,7 +623,11 @@ hr {
 }
 
 .fc .fc-list-table td {
-  padding: 8px 12px;
+  padding: 8px 8px;
+}
+
+.fc .fc-list-day-cushion {
+  padding: 8px 18px 8px 8px;
 }
 
 .container .fc .fc-toolbar.fc-header-toolbar {
