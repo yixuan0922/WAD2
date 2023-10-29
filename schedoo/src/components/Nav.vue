@@ -62,7 +62,7 @@ import {RouterLink, RouterView} from 'vue-router';
         <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item">
-              <a class="nav-link active" href="#">Home</a>
+              <a class="nav-link active" href="#">Insights</a>
               </li>
               <li class="nav-item">
               <!-- <a class="nav-link active">My Calendar</a> -->
@@ -240,7 +240,7 @@ li {
     top: 70px;
     left: -110px;
     width:260px;
-    background-color: #e3cf62;
+    background-color: #e9b58d;
     color: black !important;
     font-weight: bold;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
