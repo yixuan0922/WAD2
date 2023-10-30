@@ -131,6 +131,7 @@ import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 // import Modal from '../components/ModalView.vue'
 import EditEventModal from "../components/EditEventModal.vue";
 import NewEventModal from "../components/NewEventModal.vue";
+import AcceptInvite from '../components/AcceptInvite.vue';
 // import CommentsModal from '../components/CommentsModal.vue'
 // import { Calendar } from '@fullcalendar/core';
 import Modal from "@/components/ModalView.vue";
@@ -140,6 +141,7 @@ const store = useStore();
 
 const modalActive = ref(false);
 const modalContent = ref(markRaw({ component: null, props: {} }));
+
 
 const state = reactive({
   checkedCategories: ["Event", "Exam", "Class", "Invites"],
@@ -213,6 +215,7 @@ const handleSelect = (arg) => {
 
 const handleEventClick = (arg) => {
   console.log(arg.event.extendedProps.invitees);
+  console.log(arg.event.start);
   toggleModal(EditEventModal, {
     text: "This is from the component",
     // event: arg.event
@@ -418,8 +421,24 @@ const upload = () => {
 };
 
 const acceptInvite = (event) => {
-  console.log("acceptInvite", event);
-  store.dispatch("acceptInvite", event);
+  console.log("acceptInvite", event.start);
+  toggleModal(AcceptInvite, {
+    text: "This is from the component",
+    // event: arg.event
+    event: {
+      id: event.id,
+      title: event.title,
+      start: new Date(event.start),
+      end: new Date(event.end),
+      allDay: event.allDay,
+      invitees: event.invitees,
+
+      invitorId: event.invitorId, 
+      invitorEmail: event.invitorEmail,
+    },
+  });
+
+  // store.dispatch("acceptInvite", event);
 };
 
 const declineInvite = (event) => {
