@@ -356,47 +356,48 @@ export default createStore({
         });
 
 
-        // const userDoc = doc(database, userId);
-        // const calEventCollection = collection(userDoc, "calEvent");
-        // const calClassCollection = collection(userDoc, "calClass");
-        // const calExamCollection = collection(userDoc, "calExam");
+        // fetch user's timeslots to find common timeslots
+        const userDoc = doc(database, userId);
+        const calEventCollection = collection(userDoc, "calEvent");
+        const calClassCollection = collection(userDoc, "calClass");
+        const calExamCollection = collection(userDoc, "calExam");
 
-        // let events = [];
+        let events = [];
 
-        // const qEvent = query(calEventCollection);
-        // const querySnapshotEvent = await getDocs(qEvent);
-        // querySnapshotEvent.forEach((doc) => {
-        //   let appData = doc.data();
-        //   appData.id = doc.id;
-        //   appData.start = new Date(appData.start);
-        //   appData.end = new Date(appData.end);
-        //   events.push(appData);
+        const qEvent = query(calEventCollection);
+        const querySnapshotEvent = await getDocs(qEvent);
+        querySnapshotEvent.forEach((doc) => {
+          let appData = doc.data();
+          appData.id = doc.id;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
 
-        // });
-        // const qClass = query(calClassCollection);
-        // const querySnapshotClass = await getDocs(qClass);
-        // querySnapshotClass.forEach((doc) => {
-        //   let appData = doc.data();
-        //   appData.id = doc.id;
-        //   appData.start = new Date(appData.start);
-        //   appData.end = new Date(appData.end);
-        //   events.push(appData);
-        // });
+        });
+        const qClass = query(calClassCollection);
+        const querySnapshotClass = await getDocs(qClass);
+        querySnapshotClass.forEach((doc) => {
+          let appData = doc.data();
+          appData.id = doc.id;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+        });
 
 
-        // const qExam = query(calExamCollection);
-        // const querySnapshotExam = await getDocs(qExam);
-        // querySnapshotExam.forEach((doc) => {
-        //   let appData = doc.data();
-        //   appData.id = doc.id;
-        //   appData.start = new Date(appData.start);
-        //   appData.end = new Date(appData.end);
-        //   events.push(appData);
-        // });
+        const qExam = query(calExamCollection);
+        const querySnapshotExam = await getDocs(qExam);
+        querySnapshotExam.forEach((doc) => {
+          let appData = doc.data();
+          appData.id = doc.id;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+        });
 
-        // console.log(events);
-        // inviteeObj['events'] = events;
-        // console.log('InvteeObject', inviteeObj);
+        console.log(events);
+        inviteeObj['events'] = events;
+        console.log('InvteeObject', inviteeObj);
         commit('SET_INVITEES', inviteeObj);
       } 
     }, 
