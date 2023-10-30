@@ -1,12 +1,5 @@
 <template>
   <div id="app">
-    <Modal
-      :modalMessage="message"
-      v-if="isModalOpen"
-      @close-modal="closeModal"
-      v-model="message"
-    ></Modal>
-
     <div class="outer-container">
       <div class="inner-container">
         <div class="col-4 side-bar">
@@ -15,27 +8,32 @@
             <div
               class="row loc"
               @click="
-                openModal(place.name);
-                recenterMap(place.geometry.location, map);
+                recenterMap(
+                  place.geometry.location,
+                  place.name,
+                  place.vicinity,
+                  map
+                );
+                selectPlace(place)
               "
             >
-              <div class="col-3 loc-img">
+              <div class="col-3 loc-img" id="img">
                 <img
-                  src="https://eatbook.sg/wp-content/uploads/2022/06/pasta-express-three-dishes.jpg"
+                  :src="
+                    place.photos[0].getUrl({ maxWidth: 100, maxHeight: 100 })
+                  "
                 />
               </div>
               <div class="col loc-details">
                 <p class="loc-name">{{ place.name }}</p>
-                <p class="loc-dist">{{ text }}</p>
+                <p class="loc-address">{{ place.vicinity }}</p>
               </div>
             </div>
           </div>
-          <button @click="setLocation()">Set Location</button>
+          <button @click="setLocation(selectedPlace)">Set Location</button>
         </div>
 
-        <div class="col" id="map">
-          <h3>{{ text }}</h3>
-        </div>
+        <div class="col" id="map"></div>
       </div>
     </div>
   </div>
@@ -44,18 +42,15 @@
 <script setup>
 /* eslint-disable no-undef */
 import { Loader } from "@googlemaps/js-api-loader";
-import Modal from "@/components/Modal.vue";
 import { onMounted, ref } from "vue";
 
-let text = "Click a location to display the map";
-let isModalOpen = false;
-let message = "";
 let placesList = ref([]);
 let map = ref("");
+let selectedPlace = {}
 
 const loader = new Loader({
   apiKey: process.env.VUE_APP_GOOGLE_API_KEY,
-  libraries: ["places"],
+  libraries: ["places", "marker"],
 });
 
 onMounted(async () => {
@@ -65,6 +60,7 @@ onMounted(async () => {
   const gmap = new google.maps.Map(document.getElementById("map"), {
     center: midCoord,
     zoom: 20,
+    mapId: "10ea632fd8840396",
   });
 
   map = gmap;
@@ -82,40 +78,67 @@ onMounted(async () => {
     if (status !== "OK" || !results) return;
     placesList.value = results;
     console.log(placesList.value);
-
-    // addPlaces(results, map);
-    // moreButton.disabled = !pagination || !pagination.hasNextPage;
-    // if (pagination && pagination.hasNextPage) {
-    //   getNextPage = () => {
-    //     // Note: nextPage will call the same handler function as the initial call
-    //     pagination.nextPage();
-    //   };
-    // }
   });
+
+  return setMarker(midCoord, map);
 });
 
-function recenterMap(coord, map) {
+function recenterMap(coord, name, address, map) {
   map.setCenter({ lat: coord.lat(), lng: coord.lng() });
-
+  const infoWindow = new google.maps.InfoWindow();
   var marker = new google.maps.Marker({
     position: { lat: coord.lat(), lng: coord.lng() },
     map: map,
+    title: name,
+    content:
+      '<div><h6 style="font-weight:bold">' +
+      name +
+      "</h6><p>" +
+      address +
+      "</p>",
   });
+
+  marker.addListener("click", () => {
+    map.setCenter(marker.position);
+    infoWindow.close();
+    infoWindow.setContent(marker.content);
+    infoWindow.open(marker.map, marker);
+  });
+
+  return marker, selectedPlace;
+}
+
+function setMarker(coord, map) {
+  const infoWindow = new google.maps.InfoWindow();
+  const pinBackground = new google.maps.marker.PinElement({
+    background: "#FFA500",
+  });
+
+  var marker = new google.maps.marker.AdvancedMarkerElement({
+    position: coord,
+    map: map,
+    title: "Current Position",
+    content: pinBackground.element,
+  });
+
+  marker.addListener("click", () => {
+    map.setCenter(marker.position);
+    infoWindow.close();
+    infoWindow.setContent(marker.title);
+    infoWindow.open(marker.map, marker);
+  });
+
   return marker;
 }
 
-const openModal = (msg) => {
-  message = msg;
-  isModalOpen = true;
-};
+function selectPlace(place) {
+  selectedPlace = place
+}
 
-const closeModal = () => {
-  isModalOpen = false;
-};
-
-const setLocation = () => {
-  openModal("Location has been set!");
-};
+// set location in database
+function setLocation(place) {
+  console.log(place)
+}
 </script>
 
 <style>
@@ -145,6 +168,7 @@ body {
   font-weight: bold;
   margin-top: 0px;
   padding-top: 25px !important;
+  padding-bottom: 10px !important;
   color: rgb(55, 51, 51);
   margin-bottom: 20px;
   position: fixed;
@@ -155,7 +179,7 @@ body {
 }
 
 .side-bar {
-  margin-top: 28px;
+  margin-top: 28px !important;
   margin-left: 40px;
 }
 
@@ -171,9 +195,9 @@ body {
 .loc-img {
   border: transparent;
   border-radius: 20px;
-  background-color: pink;
-  width: 200px;
-  height: 100px;
+  background-color: transparent !important;
+  width: 100px !important;
+  height: 100px !important;
   margin-bottom: 10px;
   object-fit: contain;
   overflow: hidden;
