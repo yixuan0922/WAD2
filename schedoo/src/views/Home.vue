@@ -112,7 +112,7 @@ export default{
 
 }; 
 
-const apiKey="0448f72af4824d5ad3d358a845efaa01";
+const apiKey="";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=Singapore";
 
 async function checkWeather(){
