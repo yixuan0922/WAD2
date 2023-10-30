@@ -6,7 +6,7 @@ import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9b58d; height: 70px; "
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9b58d; height: 50px; "
 >
     <div class="container">
         <a class="navbar-brand" id="navBarLogo" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
@@ -71,22 +71,6 @@ import {RouterLink, RouterView} from 'vue-router';
               <li class="nav-item">
               <a class="nav-link active" href="#">Focus</a>
               </li>
-              <!-- <li class="nav-item dropdown">
-                  <a class="nav-link active dropdown-toggle" 
-                  href="#" 
-                  id="navbarDropdown" 
-                  role="button" 
-                  data-bs-toggle="dropdown" 
-                  aria-expanded="false">
-                      Schedule
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">CCAs</a></li>
-                      <li><a class="dropdown-item" href="#">Meetings</a></li>
-                      <li><a class="dropdown-item" href="#">Classes</a></li>
-                      <li><a class="dropdown-item" href="#">Outings</a></li>
-                  </ul>
-              </li> -->
           </ul>
           <span class="navbar-text" style="right: 5%">
               <router-link @click='signOut' class="nav-link" to="#"
@@ -98,7 +82,7 @@ import {RouterLink, RouterView} from 'vue-router';
         <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item">
-              <a class="nav-link active" href="#">About Us</a>
+              <a class="nav-link active" @click="toAbout">About Us</a>
               </li>
           </ul>
           <span  class="navbar-text" style="right: 5%">
@@ -110,36 +94,6 @@ import {RouterLink, RouterView} from 'vue-router';
     </div>
 </nav>
 
-            <!-- <ul class="nav navbar-nav">
-            <li class="nav-item">
-                <a
-                class="nav-link text-dark"
-                href="https://twitter.com"
-                >
-                <i class="fab fa-twitter"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                class="nav-link text-dark mx-2"
-                href="https://www.facebook.com"
-                >
-                <i class="fab fa-facebook"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                class="nav-link"
-                href="https://www.instagram.com"
-                >
-                <i class="fab fa-instagram"></i>
-                </a>
-            </li>
-            </ul> -->
-        <!-- </div>
-        
-    </div>
-</nav> -->
 </template>
 
 <script>
@@ -170,7 +124,14 @@ export default {
       auth.signOut();
       // window.location.reload();
       window.location.href = "/login";
-    }
+    },
+
+
+    toAbout() {
+      console.log("Button clicked"); // Check if this message is logged
+      const about = document.getElementById("about-us");
+      about.scrollIntoView({ behavior: "smooth" });
+    },
 
     // signOut() {
     //   const auth = getAuth();
@@ -212,7 +173,7 @@ export default {
 }
 .nav-link {
     font-weight: bold;
-    font-size: large;
+    font-size: medium;
     font-family: system-ui;
     letter-spacing: 0.05em;
 }
@@ -228,13 +189,13 @@ li {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   /* right: 2%;
   top: 10px; */
   margin-left: 20px;
   z-index: 1;
-  font-size: large;
+  font-size: small;
   border-radius: 50%;
   color: #ffff;
   background-color: #303030;

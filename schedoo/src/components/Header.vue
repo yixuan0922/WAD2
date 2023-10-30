@@ -37,11 +37,11 @@ import {RouterLink, RouterView} from 'vue-router';
             </button>
             <button 
             class="mainBtn" 
-            href
+            @click="toAbout"
             style="--c: #373B44;--b: 3px;--s: .15em; margin-left: 15px;"
             >
             <!-- <a href="#section-2" style="text-decoration: none;"> -->
-              Read more
+              About Us
             <!-- </a> -->
             </button>
           </div>
@@ -97,7 +97,14 @@ export default {
             backSpeed: 100,
             loop: true
         });
-    }
+    },
+    methods: {
+      toAbout() {
+        console.log("Button clicked"); // Check if this message is logged
+        const about = document.getElementById("about-us");
+        about.scrollIntoView({ behavior: "smooth" });
+      },
+    },
 }
 </script>
 
@@ -196,7 +203,7 @@ export default {
 #pg1-content {
     position:relative;
     z-index: 100;
-    transform: translate(0, -50px);
+    transform: translate(0, 30px);
 }
 
 #pg2-content {
@@ -204,6 +211,8 @@ export default {
   justify-content: center;
   align-items: center;
   margin-top:auto;
+  transform: translate(0, 70px);
+
 }
 
 /* Title  & Subtitles*/
