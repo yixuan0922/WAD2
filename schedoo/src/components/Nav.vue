@@ -68,7 +68,10 @@ import {RouterLink, RouterView} from 'vue-router';
               <!-- <a class="nav-link active">My Calendar</a> -->
               <router-link class="nav-link" :to="{name: 'Calendar'}">My Calendar</router-link>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item">
+              <a class="nav-link active" href="#">Focus</a>
+              </li>
+              <!-- <li class="nav-item dropdown">
                   <a class="nav-link active dropdown-toggle" 
                   href="#" 
                   id="navbarDropdown" 
@@ -83,7 +86,7 @@ import {RouterLink, RouterView} from 'vue-router';
                       <li><a class="dropdown-item" href="#">Classes</a></li>
                       <li><a class="dropdown-item" href="#">Outings</a></li>
                   </ul>
-              </li>
+              </li> -->
           </ul>
           <span class="navbar-text" style="right: 5%">
               <router-link @click='signOut' class="nav-link" to="#"
