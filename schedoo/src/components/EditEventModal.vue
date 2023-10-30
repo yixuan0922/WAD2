@@ -6,6 +6,10 @@
         <b>Start:</b>  {{ event.start }} <br/>
         <b>End:</b>  {{ event.end }} <br/>
         <b>ID:</b>  {{ event.id }} <br/>
+        <b>Invitees</b> 
+        <ul>
+          <li v-for="(invitee, index) in event.invitees" :key="index">{{invitee.email + "(" + invitee.status + ")"}}</li>
+        </ul><br/>
       </fieldset>
       <fieldset>
           <legend>Edit event</legend>
@@ -43,6 +47,7 @@
           startTime: "",
           endTime: "", 
           allDay: false,
+          invitees: [],
       }),
       methods: {
           updateEvent () {
@@ -62,7 +67,8 @@
                   title: this.title,
                   start: start,
                   end: end,
-                  allDay: this.allDay
+                  allDay: this.allDay,
+                  invitees: this.invitees,
               };
               // this.$store.commit("UPDATE_EVENT", event);
               this.$store.dispatch('updateEvent', event);
@@ -91,6 +97,7 @@
         this.startTime = formatTime(this.event.start);
         this.endTime = formatTime(this.event.end);
         this.allDay = Boolean(this.event.allDay);
+        this.invitees = this.event.invitees;
     }
   };
   

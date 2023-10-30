@@ -77,6 +77,19 @@
                 Class</label
               >
             </div>
+
+            <div class="form-check invites">
+              <label for="invites">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="invites"
+                  value="Invites"
+                  v-model="state.checkedCategories"
+                />
+                Invites</label
+              >
+            </div>
           </div>
           <hr />
           <div class="invite-container">
@@ -129,7 +142,7 @@ const modalActive = ref(false);
 const modalContent = ref(markRaw({ component: null, props: {} }));
 
 const state = reactive({
-  checkedCategories: ["Event", "Exam", "Class"],
+  checkedCategories: ["Event", "Exam", "Class", "Invites"],
 });
 
 const toggleModal = (component, props) => {
@@ -199,7 +212,7 @@ const handleSelect = (arg) => {
 };
 
 const handleEventClick = (arg) => {
-  console.log(arg);
+  console.log(arg.event.extendedProps.invitees);
   toggleModal(EditEventModal, {
     text: "This is from the component",
     // event: arg.event
@@ -209,6 +222,7 @@ const handleEventClick = (arg) => {
       start: arg.event.start,
       end: arg.event.end,
       allDay: arg.allDay,
+      invitees: arg.event.extendedProps.invitees,
     },
   });
 };
