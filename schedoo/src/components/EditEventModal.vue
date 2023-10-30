@@ -82,7 +82,13 @@
               this.$emit('close-modal');
           },
           deleteEvent() {
-            this.$store.dispatch('deleteEvent', this.event.id);
+            console.log(this.event.id);
+            console.log(this.invitees);
+            let event = {
+              id : this.event.id, 
+              invitees: this.invitees,
+            }
+            this.$store.dispatch('deleteEvent', event);
             // this.$store.commit("DELETE_EVENT", this.event.id)
             this.$emit('close-modal');
           }
