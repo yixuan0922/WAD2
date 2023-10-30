@@ -14,14 +14,12 @@
                   place.vicinity,
                   map
                 );
-                selectPlace(place)
+                selectPlace(place);
               "
             >
-              <div class="col-3 loc-img" id="img">
+              <div class="col-3 loc-img" id="img" v-if="checkPhoto(place)">
                 <img
-                  :src="
-                    place.photos[0].getUrl({ maxWidth: 100, maxHeight: 100 })
-                  "
+                  :src="imageSource"
                 />
               </div>
               <div class="col loc-details">
@@ -46,7 +44,8 @@ import { onMounted, ref } from "vue";
 
 let placesList = ref([]);
 let map = ref("");
-let selectedPlace = {}
+let selectedPlace = {};
+let imageSource = ''
 
 const loader = new Loader({
   apiKey: process.env.VUE_APP_GOOGLE_API_KEY,
@@ -54,7 +53,7 @@ const loader = new Loader({
 });
 
 onMounted(async () => {
-  var midCoord = { lat: 1.2952, lng: 103.8496 };
+  var midCoord = { lat: 1.3005, lng: 103.8522 };
 
   await loader.load();
   const gmap = new google.maps.Map(document.getElementById("map"), {
@@ -132,12 +131,26 @@ function setMarker(coord, map) {
 }
 
 function selectPlace(place) {
-  selectedPlace = place
+  selectedPlace = place;
 }
 
 // set location in database
 function setLocation(place) {
-  console.log(place)
+  console.log(place);
+}
+
+function checkPhoto(place) {
+  if (place.photos == null) {
+    imageSource =
+      "https://cdn.vectorstock.com/i/preview-1x/48/06/image-preview-icon-picture-placeholder-vector-31284806.jpg";
+  } else {
+    imageSource = place.photos[0].getUrl({
+      maxWidth: 100,
+      maxHeight: 100,
+    });
+  }
+
+  return imageSource
 }
 </script>
 
