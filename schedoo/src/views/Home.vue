@@ -1,131 +1,85 @@
 <template>
-    
-
-<div class="surface-ground px-4 py-5 md:px-6 lg:px-8 scrollable-container">
+  <div class="surface-ground px-4 py-5 md:px-6 lg:px-8 scrollable-container">
     <div class="grid">
-        <div class="col-12 md:col-6 lg:col-12">
-            <div class="surface-card shadow-2 p-3 border-round" style="height:150px; content-justify: center; align-items:center;">
-                <div class="flex justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 font-medium mb-3"></span>
-                        <div class="text-900 font-medium text-xl"></div>
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
-                        <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
-                    </div>
-                </div>
-                <div id="datetime" class="datetime">{{updateDateTime}}</div>
+      <div class="col-12 md:col-6 lg:col-12">
+        <div
+          class="surface-card shadow-2 p-3 border-round"
+          style="height: 150px; content-justify: center; align-items: center"
+        >
+          <div id="current-time" class="datetime">{{ runningTime }}</div>
 
-                    
-
+          <div>
+            <div class="weather">
+              <h1 class="temp">22°C</h1>
             </div>
+          </div>
         </div>
+      </div>
     </div>
     <div class="grid">
-        <div class="col-4 md:col-6 lg:col-4">
-            <div class="surface-card shadow-2 p-3 border-round">
-                <div class="flex justify-content-between mb-3">
-                    <div>
-                            <div class="weather">
-                                <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fheavy-rain_3937493&psig=AOvVaw3A5bh3xNt6VxnPI11WYlCM&ust=1698761041803000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMCW8ZX4nYIDFQAAAAAdAAAAABAE" class="weather-icon">
-                                <h1 class="temp">22°C</h1>
-                                <h2 class="city">Singapore</h2>
-                                <div class="details">
-                                    <div class="col">
-                                        <img src = "https://www.google.com/url?sa=i&url=https%3A%2F%2Ficonduck.com%2Ficons%2F300028%2Fhumidity&psig=AOvVaw1fP3taLW4SFpjLgeV8iwpE&ust=1698761839434000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCJCKlZL7nYIDFQAAAAAdAAAAABAE">
-                                        <div>
-                                            <p class="humidity">50%</p>
-                                            <p>Humidity</p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <img src = "https://www.google.com/url?sa=i&url=https%3A%2F%2Ficonduck.com%2Ficons%2F300028%2Fhumidity&psig=AOvVaw1fP3taLW4SFpjLgeV8iwpE&ust=1698761839434000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCJCKlZL7nYIDFQAAAAAdAAAAABAE">
-                                        <div>                                       
-                                            <p class="wind">15 km/h</p>
-                                            <p>Wind Speed</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                
-                            </div>
-                        
-                    </div>
-                </div>
-            </div>
+      <div class="col-4 md:col-6 lg:col-4">
+        <div class="surface-card shadow-2 p-3 border-round"></div>
+      </div>
+      <div class="col-4 md:col-6 lg:col-4">
+        <div class="surface-card shadow-2 p-3 border-round">
+          <div class="flex justify-content-between mb-3"></div>
         </div>
-        <div class="col-4 md:col-6 lg:col-4">
-            <div class="surface-card shadow-2 p-3 border-round">
-                <div class="flex justify-content-between mb-3">
-                    
-                </div>
-                <span class="text-green-500 font-medium"></span>
-                <span class="text-500"></span>
-            </div>
+      </div>
+      <div class="col-4 md:col-6 lg:col-4">
+        <div class="surface-card shadow-2 p-3 border-round">
+          <div class="flex justify-content-between mb-3"></div>
+          <span class="text-green-500 font-medium"> </span>
+          <span class="text-500"></span>
         </div>
-        <div class="col-4 md:col-6 lg:col-4">
-            <div class="surface-card shadow-2 p-3 border-round">
-                <div class="flex justify-content-between mb-3">
-                    <div>
-                        
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" style="width:2.5rem;height:2.5rem">
-                        <i class="pi pi-inbox text-cyan-500 text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-green-500 font-medium">  </span>
-                <span class="text-500"></span>
-            </div>
-        </div>
+      </div>
     </div>
-    
-</div>
+  </div>
 </template>
 
 <script>
+export default {
+  data() {
+    return {
+      date: new Date(),
+      weather: {
+        temp: null, // Initialize with null or a default value
+      },
+    };
+  },
 
-export default{
-    data(){
-        return{
-            date : new Date(),
-        }
+  methods: {
+    async checkWeather() {
+      const apiKey = "0448f72af4824d5ad3d358a845efaa01";
+      const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=Singapore";
+
+      try {
+        const response = await fetch(apiUrl + `&appid=${apiKey}`);
+        const data = await response.json();
+
+        this.weather.temp = data.main.temp;
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
     },
+  },
 
-    computed: {
-        updateDateTime() {
-            let options = {
-                day: "numeric",
-                month: "long", 
-                year: "numeric", 
-                hour: "numeric", 
-                minute: "numeric",
-                weekday: "long",
-            };
+  mounted() {
+    this.checkWeather();
 
-            let locale = navigator.language;
-            console.log(locale);
-
-            let formattedUS = Intl.DateTimeFormat(locale, options).format(this.date);
-            return formattedUS;
-
-            
-        },
-    },
-}; 
-
-
-
-
-
-
+    let time = document.getElementById("current-time");
+    setInterval(() => {
+      let d = new Date();
+      time.innerHTML = d.toLocaleTimeString();
+    }, 1000);
+  },
+};
 </script>
 
-
-
 <style lang="scss">
-    @import "~primeflex/primeflex.css";
+@import "~primeflex/primeflex.css";
 
-    body {
+body {
   // background: #e1e7ec;
   background: #ffffff;
   font-family: "Bitter", serif;
@@ -416,7 +370,7 @@ export default{
   padding-right: 60px;
   user-select: none;
 
-  @media screen and (max-width: 576px), (max-height: 500px)  {
+  @media screen and (max-width: 576px), (max-height: 500px) {
     padding-right: 30px;
   }
 
@@ -436,7 +390,7 @@ export default{
     opacity: 0.7;
     line-height: 1.3em;
     min-height: 52px;
-    @media screen and (max-width: 576px), (max-height: 500px)  {
+    @media screen and (max-width: 576px), (max-height: 500px) {
       font-size: 18px;
       min-height: 50px;
     }
@@ -456,7 +410,7 @@ export default{
   font-weight: bold;
   letter-spacing: 1px;
   font-size: 16px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 
   @media screen and (min-width: 500px) {
     &:hover {
@@ -481,13 +435,13 @@ export default{
 //scale out
 
 .scale-out-enter-active {
-  transition: all .35s ease-in-out;
+  transition: all 0.35s ease-in-out;
 }
 .scale-out-leave-active {
-  transition: all .35s ease-in-out;
+  transition: all 0.35s ease-in-out;
 }
 .scale-out-enter {
-  transform: scale(.55);
+  transform: scale(0.55);
   pointer-events: none;
   opacity: 0;
 }
@@ -497,14 +451,13 @@ export default{
   opacity: 0;
 }
 
-
 //scale in
 
 .scale-in-enter-active {
-  transition: all .35s ease-in-out;
+  transition: all 0.35s ease-in-out;
 }
 .scale-in-leave-active {
-  transition: all .35s ease-in-out;
+  transition: all 0.35s ease-in-out;
 }
 .scale-in-enter {
   transform: scale(1.2);
@@ -512,81 +465,54 @@ export default{
   opacity: 0;
 }
 .scale-in-leave-to {
-  transform: scale(.55);
+  transform: scale(0.55);
   pointer-events: none;
   opacity: 0;
 }
 
 //others
 
-.datetime{
-    font-family: 'Poppins', sans-serif;
-    font-size: x-large;
-    display:flex;
-    align-items:left;
+.datetime {
+  font-family: "Poppins", sans-serif;
+  font-size: xxx-large;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
 }
 
-.card{
-    width:90%;
-    max-width:470px;
-    color: #fff;
-    margin: 100px auto 0;
-    border-radius: 20px;
-    padding: 40px 35px;
-    text-align:center;
+.card {
+  width: 90%;
+  max-width: 470px;
+  color: #fff;
+  margin: 100px auto 0;
+  border-radius: 20px;
+  padding: 40px 35px;
+  text-align: center;
 }
-.search{
-    width: 100%;
-    display: flex;
-    align-items:center;
-    justify-content: space-between;
+.scrollable-container {
+  height: 100vh;
+  overflow-y: auto;
 }
-.search input{
-    border: 0;
-    outline: 0;
-    color: #555;
-    padding: 10px 25px;
-    height: 60px;
-    border-radius: 30px;
-    flex: 1;
-    margin-right:16px;
+.weather {
+  height: auto;
+  top: 50%;
 }
-.scrollable-container{
-    height: 100vh;
-    overflow-y: auto;
+.weather h1 {
+  font-size: 60px;
+  font-weight: 500;
+  text-align: right;
+  margin: auto;
 }
-.weather h1{
-    font-size: 60px;
-    font-weight: 500;
+.weather h2 {
+  font-size: 35px;
+  font-weight: 400;
+  margin: auto;
+  text-align: right;
 }
-.weather h2{
-    font-size: 35px;
-    font-weight: 400;
-    margin-top:10px;
-}
-.details{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding: 0 20px;
-    margin-top:50px;
-    
-}
-.col{
-    display:flex;
-    align-items:center;
-    text-align:left;
-}
-.humidity{
-    font-size: 40px;
-    margin: -6px;
-}
-.wind{
-    font-size: 30px;
-    margin: 50px;
-}
-.checkButton{
-    left: 100px;
-    padding-right: 30px;
+.col {
+  display: flex;
+  align-items: center;
+  text-align: left;
 }
 </style>
