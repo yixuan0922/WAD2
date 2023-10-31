@@ -46,7 +46,6 @@
                             <option value="personal">Personal</option>
                             <option value="classes">Classes</option>
                             <option value="work">Work</option>
-                            <option value="meeting">Meetings</option>
                         </select>
                     </div>
                     <div class="row d-flex align-items-center justify-content-start">
@@ -712,7 +711,7 @@ background-color: #000;
 /* Task Board */
 .to {
   background-color: #E9B58D; /* To Do column background color */
-  color: #333; /* To Do column text color */
+  color: white; /* To Do column text color */
 }
 
 .inprogress {
@@ -722,7 +721,7 @@ background-color: #000;
 
 .done {
   background-color: #eca28a; /* Done column background color */
-  color: #333; /* Done column text color */
+  color: white; /* Done column text color */
 }
 
 .column {
