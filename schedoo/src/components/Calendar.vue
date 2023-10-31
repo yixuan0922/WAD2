@@ -17,7 +17,7 @@
 
         <!-- Upload timetable -->
         <div id="timetableUpload">
-          <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents">▼ Upload Timetable</button>
+          <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents" style="font-size: small;">▼ Upload Timetable</button>
 
           <div id="uploadContents" v-if="isUploadContentsVisible">
             <div class="timetable-header">
@@ -694,6 +694,7 @@ hr {
   text-align: left;
   padding-left: 8px;
   width: 100%;
+  font-size: small;
 }
 
 .form-check:hover {
@@ -706,7 +707,7 @@ hr {
 
 .header {
   font-size: large;
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 /* Initially hide the uploadContents */
@@ -736,5 +737,9 @@ hr {
   top: 100%;
   width: 200px; /* Adjust the width as needed */
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.fc-list-day-text, .fc-list-day-side-text, .fc-list-event-time, .fc-list-event-title {
+  font-size: small;
 }
 </style>
