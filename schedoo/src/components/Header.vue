@@ -41,7 +41,7 @@ import {RouterLink, RouterView} from 'vue-router';
             style="--c: #373B44;--b: 3px;--s: .15em; margin-left: 15px;"
             >
             <!-- <a href="#section-2" style="text-decoration: none;"> -->
-              About Us
+              About us
             <!-- </a> -->
             </button>
           </div>
@@ -51,14 +51,14 @@ import {RouterLink, RouterView} from 'vue-router';
     <section id="about-us"
     style="background-color: #79C1CB;"
     >
-      <div id="pg2-content" class="row col-md-4 offset-1 col-10" style="position: relative;">
+      <div id="pg2-content" class="row offset-1 col-md-5 col-sm-10" style="position: relative;">
         <h1 style="font-family: 'Poppins', sans-serif; margin-bottom: 30px; transform: translate(0,-70px); font-size: xx-large">About Us</h1>
 
         <p class="subtitle" style="font-size: medium; transform: translate(0,-50px);">
           Its time to say goodbye to scheduling headaches and hello to a <b>more organized</b> and <b>connected academic experience</b> with Schedoo.
           <!-- As university students ourselves, we know the troubles of conflicting schedules. This app is just for that. -->
         </p>
-        <p class="subtitle" style="font-size: medium; transform: translate(0,-50px);">
+        <p class="subtitle mx-auto" style="font-size: medium; transform: translate(0,-50px);">
         Invite peers to study sessions, CCAs and social events. <b>Enhance your own productivity</b>.
         </p>
         <!-- <p class="subtitle" style="font-size: medium;">
@@ -66,19 +66,19 @@ import {RouterLink, RouterView} from 'vue-router';
       </p> -->
 
       </div>
-      <div id="icon-float" class="col-4 offset-2 d-none d-md-block" style="position: relative;">
-        <img class="float floating3" src="../assets/icons/icon7.png" width="30%" 
-        style="position: absolute;  transform: translate(-120%, -80%);">
+      <div id="icon-float" class="col-4 offset-1 d-none d-md-block" style="position: relative;">
+        <!-- <img class="float floating3" src="../assets/icons/icon7.png" width="30%" 
+        style="position: absolute;  transform: translate(-150%, -60%);">
         <img class="float floating3" src="../assets/icons/icon6.png" width="30%" 
-        style="position: absolute;  transform: translate(10%, -80%);">
-        <img class="float floating1" src="../assets/icons/icon5.png" width="30%" 
-        style="position: absolute;  transform: translate(-60%, -80%);">
-        <img class="float floating4" src="../assets/icons/cloudicon.png" width="50%" 
+        style="position: absolute;  transform: translate(40%, -60%);"> -->
+        <img class="float floating1" src="../assets/icons/icon5.png" width="80%" 
+        style="position: absolute;  transform: translate(-60%, -50%);">
+        <!-- <img class="float floating4" src="../assets/icons/cloudicon.png" width="50%" 
         style="position: absolute; transform: translate(-90%, -175%);">
         <img class="float floating3 " src="../assets/icons/cloudicon.png" width="50%" 
         style="position: absolute; transform: translate(-20%, -175%);">
         <img class="float floating3" src="../assets/icons/icon3Bottom.png" width="80%" 
-        style="position: absolute;  transform: translate(-50%, -20%);">
+        style="position: absolute;  transform: translate(-50%, 0%);"> -->
       </div>
     </section>
   </main>
@@ -202,7 +202,7 @@ export default {
 #pg1-content {
     position:relative;
     z-index: 100;
-    transform: translate(0, 30px);
+    transform: translate(0, 20px);
 }
 
 #pg2-content {
@@ -211,7 +211,6 @@ export default {
   align-items: center;
   margin-top:auto;
   transform: translate(0, 70px);
-
 }
 
 /* Title  & Subtitles*/
@@ -260,6 +259,10 @@ main > section > div {
     text-align: center;
 }
 
+/* html,
+body {
+    overflow: hidden;
+} */
 
 /* Button animations */
 .mainBtn {
