@@ -12,10 +12,20 @@
           <div class="row">
             Category: 
             <select v-model="category">
-              <option value="event">Event</option>
-              <option value="class">Class</option>
-              <option value="exam">Exam</option>
-              <option value="invite">Invite</option>
+              <!-- #87bba2 light green -->
+              <option value="event">Event</option> 
+              <!-- #009688 darkgreen lolipop -->
+              <option value="study">Study</option> 
+              <!-- #70c1b3 Cyan -->
+              <option value="cca">CCA</option>
+              <!-- #8D6298 Purple -->
+              <option value="personal">Personal</option>
+              <!-- #a6a2a2 brown grey -->
+              <!-- <option value="class">Classes</option> -->
+              <!-- #dec3c3 pink -->
+              <!-- <option value="exam">Exam</option>-->
+              <!-- #4d648d blueberry blue -->
+              <!-- <option value="invite">Invite</option> -->
             </select>
           </div>
           <div class='row'> 
@@ -63,7 +73,7 @@ export default {
         allDay: false,
         newInvitee: '',
         addInviteeErr: '',
-        category: '',
+        category: 'event',
     }),
     methods: {
       clearError() {
@@ -99,25 +109,6 @@ export default {
                 start.setHours(startHours, startMinutes);
                 end.setHours(endHours, endMinutes);
             }
-
-            // let color;
-            // switch (this.category) {
-            //   case 'event':
-            //     color = '#ffcbcb'; //pink
-            //     break;
-            //   case 'exam':
-            //     color = '#ffdfba'; // orange
-            //     break;
-            //   case 'class':
-            //     color = '#bae1ff'; // blue
-            //     break;
-            //   case 'invite':
-            //     color = '#baffc9'; // green
-            //     break;
-
-            //   default:
-            //     color = '#ffcbcb'; 
-            // }
 
            let event = {
                 id: (new Date()).getTime(),

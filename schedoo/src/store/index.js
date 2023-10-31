@@ -108,24 +108,54 @@ export default createStore({
           let appData = doc.data();
           appData.id = doc.id;
 
-          let color;
-          switch (appData.category) {
-            case 'event':
-              color = '#ffcbcb'; //pink
-              break;
-            case 'exam':
-              color = '#ffdfba'; // orange
-              break;
-            case 'class':
-              color = '#bae1ff'; // blue
-              break;
-            case 'invite':
-              color = '#baffc9'; // green
-              break;
+          let color = '#87bba2' // light green ;
+
+          // // 1st set of colors
+          // switch (appData.category) {
+          //   case 'event':
+          //     color = '#ffcbcb'; //pink
+          //     break;
+          //   case 'exam':
+          //     color = '#ffdfba'; // orange
+          //     break;
+          //   case 'class':
+          //     color = '#bae1ff'; // blue
+          //     break;
+          //   case 'invite':
+          //     color = '#baffc9'; // green
+          //     break;
     
-            default:
-              color = '#ffcbcb'; 
-          }
+          //   default:
+          //     color = '#ffcbcb'; 
+          // }
+
+          // 2nd set of colors
+          // switch (appData.category) {
+          //   case 'event':
+          //     color = '#87bba2'; //light green
+          //     break;
+          //   case 'study':
+          //     color = '#009688'; // dark green
+          //     break;
+          //   case 'cca':
+          //     color = '#70c1b3'; // cyan
+          //     break;
+          //   case 'personal':
+          //     color = '#8D6298'; // purple
+          //     break;
+          //   case 'class':
+          //     color = '#a6a2a2'; // brown grey lolipop
+          //     break;
+          //   case 'exam':
+          //     color = '#dec3c3'; // pink
+          //     break;
+          //   case 'invite':
+          //     color = '#4d648d'; // blueberry blue
+          //     break;
+    
+          //   default:
+          //     color = '#87bba2'; 
+          // }
           
           appData.color = color;
           appData.start = new Date(appData.start);
@@ -142,24 +172,7 @@ export default createStore({
           let appData = doc.data();
           appData.id = doc.id;
 
-          let color;
-          switch (appData.category) {
-            case 'event':
-              color = '#ffcbcb'; //pink
-              break;
-            case 'exam':
-              color = '#ffdfba'; // orange
-              break;
-            case 'class':
-              color = '#bae1ff'; // blue
-              break;
-            case 'invite':
-              color = '#baffc9'; // green
-              break;
-    
-            default:
-              color = '#ffcbcb'; 
-          }
+          let color =  '#dec3c3'; // pink
           
           appData.color = color;
           appData.start = new Date(appData.start);
@@ -175,26 +188,8 @@ export default createStore({
           let appData = doc.data();
           appData.id = doc.id;
 
+          let color = '#a6a2a2'; // brown grey lolipop
 
-          let color;
-          switch (appData.category) {
-            case 'event':
-              color = '#ffcbcb'; //pink
-              break;
-            case 'exam':
-              color = '#ffdfba'; // orange
-              break;
-            case 'class':
-              color = '#bae1ff'; // blue
-              break;
-            case 'invite':
-              color = '#baffc9'; // green
-              break;
-    
-            default:
-              color = '#ffcbcb'; 
-          }
-          
           appData.color = color;
           appData.start = new Date(appData.start);
           appData.end = new Date(appData.end);
@@ -202,32 +197,53 @@ export default createStore({
         });
       }
 
-      // if (checkedCategories.includes('Invites')) {
-      //   const calInviteCollection = collection(userDoc, "calInvite");
-      //   let snapshotInvite = await getDocs(calInviteCollection);
-      //   snapshotInvite.forEach(inviteDoc => {
-      //     const invitorId = inviteDoc.data().invitorId;
-      //     const inviteEventId = inviteDoc.data().id;
+      if (checkedCategories.includes('Study')) {
+        const calStudyCollection = collection(userDoc, "calStudy");
+        let snapshotStudy = await getDocs(calStudyCollection);
+        snapshotStudy.forEach(doc => {
+          let appData = doc.data();
+          appData.id = doc.id;
 
-      //     const invitorDoc = doc(database, invitorId);
-      //     const calEventCollection = collection(invitorDoc, "calEvent");
-      //     const eventDoc = doc(calEventCollection, inviteEventId);
+          let color = '#009688'; // dark green
 
-      //     getDoc(eventDoc).then((doc) => {
-      //       console.log(doc.id);
-      //       console.log(doc.data());
+          appData.color = color;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+        });
+      }
 
-      //       let appData = doc.data();
-      //       appData.id = doc.id;
-      //       appData.start = new Date(appData.start);
-      //       appData.end = new Date(appData.end);
-      //       events.push(appData);
+      if (checkedCategories.includes('CCA')) {
+        const calCCACollection = collection(userDoc, "calCCA");
+        let snapshotCCA = await getDocs(calCCACollection);
+        snapshotCCA.forEach(doc => {
+          let appData = doc.data();
+          appData.id = doc.id;
 
-      //     });
-      //     console.log(inviteEventId);
-      //     console.log(invitorId);
-      //   });
-      // }
+          let color = '#70c1b3'; // cyan
+
+          appData.color = color;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+        });
+      }
+
+      if (checkedCategories.includes('Personal')) {
+        const calPersonalCollection = collection(userDoc, "calPersonal");
+        let snapshotPersonal = await getDocs(calPersonalCollection);
+        snapshotPersonal.forEach(doc => {
+          let appData = doc.data();
+          appData.id = doc.id;
+
+          let color = '#8D6298'; // purple
+
+          appData.color = color;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+        });
+      }
 
       if (checkedCategories.includes('Invites')) {
         const calInviteCollection = collection(userDoc, "calInvite");
@@ -247,7 +263,7 @@ export default createStore({
           const appData = document.data() || {};
           appData.id = document.id;
 
-          let color = '#baffc9'; // green // invite
+          let color = '#4d648d'; // blueberry blue
           
           appData.color = color;
           appData.start = new Date(appData.start);
@@ -258,6 +274,7 @@ export default createStore({
           console.log(invitorId);
         }
       }
+
       commit('SET_EVENTS', events);
     },
   
@@ -270,12 +287,52 @@ export default createStore({
       commit('setProfileInitials');
       console.log('dbResults', dbResults);
     },
+
     async addEvent({commit}, event){
       const currentUser = auth.currentUser;
       const database = collection(db, "users");
       const userDoc = doc(database, currentUser.uid);
-      const calEventCollection = collection(userDoc, "calEvent");
-      const eventDoc = doc(calEventCollection, String(event.id));
+
+
+      let collectionName;
+      let color;
+      switch (event.category) {
+        case 'event':
+          collectionName = 'calEvent'; //light green
+          color = '#87bba2'; //light green
+          break;
+        case 'study':
+          collectionName = 'calStudy'; // dark green
+          color = '#009688'; // dark green
+          break;
+        case 'cca':
+          collectionName = 'calCCA'; // cyan
+          color = '#70c1b3'; // cyan
+          break;
+        case 'personal':
+          collectionName = 'calPersonal'; // purple
+          color = '#8D6298'; // purple
+          break;
+        case 'class':
+          collectionName = 'calClass'; // brown grey lolipop
+          color = '#a6a2a2'; // brown grey lolipop
+          break;
+        case 'exam':
+          collectionName = 'calExam'; // pink
+          color = '#dec3c3'; // pink
+          break;
+        case 'invite':
+          collectionName = 'calInvite'; // blueberry blue
+          color = '#4d648d'; // blueberry blue
+          break;
+
+        default:
+          collectionName = 'calEvent'; 
+          color = '#87bba2';
+      }
+
+      const calCollection = collection(userDoc, collectionName);
+      const eventDoc = doc(calCollection, String(event.id));
 
       await setDoc(eventDoc, {
         title: event.title, 
@@ -286,28 +343,90 @@ export default createStore({
         category: event.category,
       })
 
-      let color;
-      switch (event.category) {
-        case 'event':
-          color = '#ffcbcb'; //pink
-          break;
-        case 'exam':
-          color = '#ffdfba'; // orange
-          break;
-        case 'class':
-          color = '#bae1ff'; // blue
-          break;
-        case 'invite':
-          color = '#baffc9'; // green
-          break;
+      // let color;
+      // switch (event.category) {
+      //   case 'event':
+      //     color = '#87bba2'; //light green
+      //     break;
+      //   case 'study':
+      //     color = '#009688'; // dark green
+      //     break;
+      //   case 'cca':
+      //     color = '#70c1b3'; // cyan
+      //     break;
+      //   case 'personal':
+      //     color = '#8D6298'; // purple
+      //     break;
+      //   case 'class':
+      //     color = '#a6a2a2'; // brown grey lolipop
+      //     break;
+      //   case 'exam':
+      //     color = '#dec3c3'; // pink
+      //     break;
+      //   case 'invite':
+      //     color = '#4d648d'; // blueberry blue
+      //     break;
 
-        default:
-          color = '#ffcbcb'; 
-      }
+      //   default:
+      //     color = '#87bba2'; 
+      // }
+      
+
       console.log('beforeAddColor',color);
 
       commit("ADD_EVENT", {event, color});
     },
+
+
+    // async addEvent({commit}, event){
+    //   const currentUser = auth.currentUser;
+    //   const database = collection(db, "users");
+    //   const userDoc = doc(database, currentUser.uid);
+    //   const calEventCollection = collection(userDoc, "calEvent");
+    //   const eventDoc = doc(calEventCollection, String(event.id));
+
+    //   await setDoc(eventDoc, {
+    //     title: event.title, 
+    //     start: String(event.start), 
+    //     end: String(event.end),  
+    //     allDay: Boolean(event.allDay),
+    //     invitees: event.invitees,
+    //     category: event.category,
+    //   })
+
+    //   let color;
+    //   switch (event.category) {
+    //     case 'event':
+    //       color = '#87bba2'; //light green
+    //       break;
+    //     case 'study':
+    //       color = '#009688'; // dark green
+    //       break;
+    //     case 'cca':
+    //       color = '#70c1b3'; // cyan
+    //       break;
+    //     case 'personal':
+    //       color = '#8D6298'; // purple
+    //       break;
+    //     case 'class':
+    //       color = '#a6a2a2'; // brown grey lolipop
+    //       break;
+    //     case 'exam':
+    //       color = '#dec3c3'; // pink
+    //       break;
+    //     case 'invite':
+    //       color = '#4d648d'; // blueberry blue
+    //       break;
+
+    //     default:
+    //       color = '#87bba2'; 
+    //   }
+      
+
+    //   console.log('beforeAddColor',color);
+
+    //   commit("ADD_EVENT", {event, color});
+    // },
 
     async addExam({commit}, event){
       const currentUser = auth.currentUser;
@@ -324,7 +443,7 @@ export default createStore({
         category: 'exam',
       })
 
-      let color = '#ffdfba'
+      let color = '#ffdfba' //light green
 
 
       commit("ADD_EVENT", {event, color});
@@ -345,7 +464,7 @@ export default createStore({
         category: 'class',
       })
 
-      let color = '#bae1ff';
+      let color = '#a6a2a2'; // brown grey
 
       commit("ADD_EVENT", {event, color});
     },
@@ -374,19 +493,49 @@ export default createStore({
       const currentUser = auth.currentUser;
       const database = collection(db, "users");
       const userDoc = doc(database, currentUser.uid);
-      const calEventCollection = collection(userDoc, "calEvent");
-      const eventDoc = doc(calEventCollection, eventId);
+
+      let collectionName;
+      switch (event.category) {
+        case 'event':
+          collectionName = 'calEvent'; //light green
+          break;
+        case 'study':
+          collectionName = 'calStudy'; // dark green
+          break;
+        case 'cca':
+          collectionName = 'calCCA'; // cyan
+          break;
+        case 'personal':
+          collectionName = 'calPersonal'; // purple
+          break;
+        case 'class':
+          collectionName = 'calClass'; // brown grey lolipop
+          break;
+        case 'exam':
+          collectionName = 'calExam'; // pink
+          break;
+        case 'invite':
+          collectionName = 'calInvite'; // blueberry blue
+          break;
+
+        default:
+          collectionName = 'calEvent'; 
+      }
+
+      const calCollection = collection(userDoc, collectionName);
+      const eventDoc = doc(calCollection, eventId);
       console.log('iseventdoc there',eventDoc);
 
       console.log(invitees);
 
-
+      if (invitees){
       invitees.forEach( async(invitee)=> {
         const inviteeDoc = doc(database, invitee.id);
         const calInviteCollection = collection(inviteeDoc, "calInvite");
         const inviteDoc = doc(calInviteCollection, eventId);
         await deleteDoc(inviteDoc);
       });
+      }
     
       await deleteDoc(eventDoc);
 
@@ -576,13 +725,12 @@ export default createStore({
         // location: event.location,
       });
 
-
-
-
       commit('UPDATE_PENDING_EVENTS', event);
-      console.log('beforeAddColor',event)
-      event.color = '#baffc9';
-      console.log('afterAddColor',event);
+      // console.log('beforeAddColor',event)
+
+      event.color = '#4d648d'; // blueberry blue
+      
+      // console.log('afterAddColor',event);
       commit('ADD_INVITE_EVENTS_TO_CALENDAR', event);
     },
 
