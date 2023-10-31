@@ -23,7 +23,7 @@ import {RouterLink, RouterView} from 'vue-router';
         </button>
 
         <span  class="navbar-text" >
-        <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle" style="position: absolute; top: 10px; right: 10px;">
+        <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle" style="position: absolute; top: 10px; right: 30px;">
         {{this.$store.state.profileInitials}}
         <div class="profile-menu" id="profileMenu" hidden>
               <div class="info">
@@ -85,7 +85,8 @@ import {RouterLink, RouterView} from 'vue-router';
 
 
 
-        <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent"
+        style="height: 40px">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item">
               <a class="nav-link active" @click="toAbout">About Us</a>
