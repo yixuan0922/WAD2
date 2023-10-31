@@ -10,6 +10,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@bryntum/taskboard": "npm:@bryntum/taskboard-trial@^5.6.0",
+    "@bryntum/taskboard-vue-3": "^5.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
     "@fullcalendar/interaction": "^6.1.9",
@@ -17,16 +20,22 @@
     "@fullcalendar/timegrid": "^6.1.9",
     "@fullcalendar/vue3": "^6.1.9",
     "bootstrap": "^5.3.2",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "firebase": "^10.4.0",
     "firebase-tools": "^12.5.4",
+    "font-awesome": "^4.7.0",
     "gsap": "^3.12.2",
     "register-service-worker": "^1.7.2",
+    "save": "^2.9.0",
     "vue": "^3.2.13",
     "vue-final-modal": "^4.4.5",
+    "vue-multiselect": "^2.1.8",
     "vue-router": "^4.0.3",
     "vue-timer-hook": "^1.0.84",
     "vue3-flip-countdown": "^0.1.6",
+    "vue3-multiselect-checkboxed": "^0.0.8",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
