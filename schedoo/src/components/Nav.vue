@@ -23,7 +23,7 @@ import {RouterLink, RouterView} from 'vue-router';
         </button>
 
         <span  class="navbar-text" >
-        <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle" style="position: absolute; top: 10px; right: 30px;">
+        <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle" style="position: absolute; top: 7px; right: 30px;">
         {{this.$store.state.profileInitials}}
         <div class="profile-menu" id="profileMenu" hidden>
               <div class="info">
@@ -183,6 +183,7 @@ export default {
     font-size: medium;
     font-family: system-ui;
     letter-spacing: 0.05em;
+    transform: translateY(-3px);
 }
 
 li {
