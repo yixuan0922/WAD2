@@ -14,21 +14,29 @@
       <div class="calendar-app-sidebar-section">
         <!-- Your calendar component here -->
         <button class="newEventButton" @click="newEvent">+ New Event</button>
-        <div class="timetable-header">
-          <p class="header">Upload Timetable</p>
-          <button class="newEventButton" @click="deleteCol">Delete</button>
+
+        <!-- Upload timetable -->
+        <div id="timetableUpload">
+          <button class="btn btn-primary" id="timetableToggle" @click="toggleUploadContents">Upload Timetable</button>
+
+          <div id="uploadContents" v-if="isUploadContentsVisible">
+            <div class="timetable-header">
+              <p class="header">Upload Timetable</p>
+              <button class="newEventButton" @click="deleteCol">Delete</button>
+            </div>
+            <div class="container">
+              <DropZone
+                class="m-auto"
+                @drop.prevent="drop"
+                @change="selectedFile"
+                :my-file="myFile"
+              ></DropZone>
+              <div class="file-info m-auto p-2">File: {{ myFile.name }}</div>
+              <button class="newEventButton m-auto" @click="upload">Upload</button>
+            </div>
+          </div>
+          <hr />
         </div>
-        <div class="container">
-          <DropZone
-            class="m-auto"
-            @drop.prevent="drop"
-            @change="selectedFile"
-            :my-file="myFile"
-          ></DropZone>
-          <div class="file-info m-auto p-2">File: {{ myFile.name }}</div>
-          <button class="newEventButton m-auto" @click="upload">Upload</button>
-        </div>
-        <hr />
         <!-- <button class="newEventButton m-auto" @click="upload">Upload</button> -->
 
         <div class="container">
@@ -557,6 +565,14 @@ const selectedFile = () => {
 //   deleteCol;
 //   deleteFile();
 // }
+
+
+
+let isUploadContentsVisible = ref(false);
+
+const toggleUploadContents = () => {
+  isUploadContentsVisible.value = !isUploadContentsVisible.value;
+};
 </script>
 
 <style>
@@ -682,5 +698,39 @@ hr {
 
 .form-check:hover {
   background-color: #d3e2e8;
+}
+
+.fc .fc-toolbar-title {
+    font-size: x-large !important;
+}
+
+
+/* Initially hide the uploadContents */
+.uploadContents {
+  display: none;
+}
+
+/* Style for the dropdown button */
+.timetableToggle {
+  cursor: pointer;
+}
+
+/* Style for the active dropdown button */
+.timetableToggle.active {
+  background-color: #007bff; /* Change to the color you prefer */
+  color: #fff; /* Change to the color you prefer */
+}
+
+/* Style for the dropdown contents */
+.uploadContents {
+  position: absolute;
+  z-index: 1;
+  background-color: #f9f9f9; /* Change to the color you prefer */
+  border: 1px solid #ddd;
+  padding: 10px;
+  right: 0;
+  top: 100%;
+  width: 200px; /* Adjust the width as needed */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 </style>
