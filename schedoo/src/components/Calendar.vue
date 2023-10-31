@@ -17,7 +17,7 @@
 
         <!-- Upload timetable -->
         <div id="timetableUpload">
-          <button class="btn btn-primary" id="timetableToggle" @click="toggleUploadContents">Upload Timetable</button>
+          <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents">▼ Upload Timetable</button>
 
           <div id="uploadContents" v-if="isUploadContentsVisible">
             <div class="timetable-header">
