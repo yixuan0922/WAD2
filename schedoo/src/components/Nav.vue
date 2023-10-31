@@ -17,9 +17,49 @@ import {RouterLink, RouterView} from 'vue-router';
         <button class="navbar-toggler" type="button" 
         data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
         aria-controls="navbarSupportedContent" aria-expanded="false" 
-        aria-label="Toggle navigation">
+        aria-label="Toggle navigation"
+        style="position: absolute; top: 10px; right: 70px;">
         <span class="navbar-toggler-icon"></span>
         </button>
+
+        <span  class="navbar-text" >
+        <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle" style="position: absolute; top: 10px; right: 10px;">
+        {{this.$store.state.profileInitials}}
+        <div class="profile-menu" id="profileMenu" hidden>
+              <div class="info">
+                  <p class="initials">{{this.$store.state.profileInitials}}</p>
+                  <div class="right">
+                      <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
+                      <p>{{this.$store.state.profileUsername}} </p>
+                      <p>{{this.$store.state.profileEmail}} </p>
+                  </div>
+              </div>
+              <div class="options">
+                  <div class="option">
+                      <router-link class-="option" to="#"
+                      style="color: black; text-decoration: none;"
+                      >
+                          <userIcon class="icon"/>
+                          <p
+                          style="padding-top: 10px"
+                          >Profile</p>
+                      </router-link>
+                  </div>
+                  <div @click="signOut" class="option">
+                      <router-link class="option" to="#"
+                      style="color: black; text-decoration: none"
+                      >
+                          <!-- <userIcon class="icon"/> -->
+                          <p
+                          >Sign Out</p>
+                      </router-link>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      </span>
+
 
         <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 40px">
           <ul class="navbar-nav mx-auto">
@@ -28,57 +68,22 @@ import {RouterLink, RouterView} from 'vue-router';
               </li>
               <li class="nav-item">
               <!-- <a class="nav-link active">My Calendar</a> -->
-              <router-link class="nav-link" :to="{name: 'Calendar'}">My Calendar</router-link>
+              <router-link class="nav-link" :to="{name: 'Calendar'}"
+              style="color: black; text-decoration: none;"
+              >My Calendar</router-link>
               </li>
               <li class="nav-item">
               <a class="nav-link active" href="#">Focus</a>
               </li>
           </ul>
-          <span class="navbar-text" style="right: 5%">
+          <!-- <span class="navbar-text" style="right: 5%">
               <router-link @click='signOut' class="nav-link" to="#"
               style="color: black; text-decoration: none;"
               >Sign Out</router-link>
-          </span>
-
-          <span  class="navbar-text" style="right: 5%">
-            <div class="profile pButton" ref="profile" @click="toggle">
-              {{this.$store.state.profileInitials}}
-              <div class="profile-menu" id="profileMenu" hidden>
-                    <div class="info">
-                        <p class="initials">{{this.$store.state.profileInitials}}</p>
-                        <div class="right">
-                            <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
-                            <p>{{this.$store.state.profileUsername}} </p>
-                            <p>{{this.$store.state.profileEmail}} </p>
-                        </div>
-                    </div>
-                    <div class="options">
-                        <div class="option">
-                            <router-link class-="option" to="#"
-                            style="color: black; text-decoration: none;"
-                            >
-                                <userIcon class="icon"/>
-                                <p
-                                style="padding-top: 10px"
-                                >Profile</p>
-                            </router-link>
-                        </div>
-                        <div @click='signOut' class="option">
-                            <router-link class="option" to="#"
-                            style="color: black; text-decoration: none"
-                            >
-                                <!-- <userIcon class="icon"/> -->
-                                <p
-                                >Sign Out</p>
-                            </router-link>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-          </span>
-          
+          </span> -->
         </div>
+
+
 
         <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mx-auto">
@@ -184,6 +189,13 @@ li {
   margin-top: 5px !important;
 }
 
+.circular-button {
+      width: 40px; /* Set the width and height to the same value to make it circular */
+      height: 40px;
+      border-radius: 50%; /* Makes the button circular */
+      font-size: small;
+    }
+
 .profile {
   position: relative;
   cursor: pointer;
@@ -194,6 +206,7 @@ li {
   height: 40px;
   /* right: 2%;
   top: 10px; */
+  margin: auto;
   margin-left: 20px;
   z-index: 1;
   font-size: small;
@@ -203,7 +216,7 @@ li {
 
   .profile-menu {
     position: absolute;
-    top: 50px;
+    top: 60px;
     right: 0px;
     width:260px;
     background-color: #e9b58d;
