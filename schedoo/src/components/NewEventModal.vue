@@ -14,8 +14,8 @@
             <select v-model="category">
               <option value="event">Event</option>
               <option value="class">Class</option>
-              <option value="exams">Exams</option>
-              <option value="invites">Invites</option>
+              <option value="exam">Exam</option>
+              <option value="invite">Invite</option>
             </select>
           </div>
           <div class='row'> 
@@ -63,7 +63,7 @@ export default {
         allDay: false,
         newInvitee: '',
         addInviteeErr: '',
-        category: 'event',
+        category: '',
     }),
     methods: {
       clearError() {
@@ -100,15 +100,34 @@ export default {
                 end.setHours(endHours, endMinutes);
             }
 
-            
+            // let color;
+            // switch (this.category) {
+            //   case 'event':
+            //     color = '#ffcbcb'; //pink
+            //     break;
+            //   case 'exam':
+            //     color = '#ffdfba'; // orange
+            //     break;
+            //   case 'class':
+            //     color = '#bae1ff'; // blue
+            //     break;
+            //   case 'invite':
+            //     color = '#baffc9'; // green
+            //     break;
 
-            let event = {
+            //   default:
+            //     color = '#ffcbcb'; 
+            // }
+
+           let event = {
                 id: (new Date()).getTime(),
                 title: this.title,
                 start: start,
                 end: end,
                 allDay: this.allDay,
                 invitees: [],
+                // color: color,
+                category: this.category,
             };
 
             for (let invitee of this.$store.state.invitees) {

@@ -48,6 +48,7 @@
           endTime: "", 
           allDay: false,
           invitees: [],
+          category: '',
       }),
       methods: {
           updateEvent () {
@@ -69,6 +70,7 @@
                   end: end,
                   allDay: this.allDay,
                   invitees: this.invitees,
+                  category: this.category,
               };
               // this.$store.commit("UPDATE_EVENT", event);
               this.$store.dispatch('updateEvent', event);
@@ -104,6 +106,8 @@
         this.endTime = formatTime(this.event.end);
         this.allDay = Boolean(this.event.allDay);
         this.invitees = this.event.invitees;
+        this.category = this.event.category;
+        console.log(this.category);
     }
   };
   

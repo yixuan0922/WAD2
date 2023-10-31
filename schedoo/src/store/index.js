@@ -26,7 +26,10 @@ export default createStore({
       state.events = events;
       console.log('SetEvents',state.events);
     },
-    ADD_EVENT: (state, event) => {
+    ADD_EVENT: (state, {event, color}) => {
+      console.log(color);
+      event.color = color;
+      console.log('event', event);
       state.events.push(event)
     },
     UPDATE_EVENT: (state, {id, title, start, end, allDay, invitees}) => {
@@ -68,8 +71,10 @@ export default createStore({
       console.log('updatePendingEvents',state.pendingEvents);
     },
 
-    ADD_INVITE_EVENTS_TO_CALENDAR(state, invite){
-      state.events.push(invite);
+    ADD_INVITE_EVENTS_TO_CALENDAR(state, event){
+      // console.log(invite, color);
+      // invite.color = color;
+      state.events.push(event);
     },
 
     // User
@@ -102,8 +107,30 @@ export default createStore({
         snapshot.forEach(doc => {
           let appData = doc.data();
           appData.id = doc.id;
+
+          let color;
+          switch (appData.category) {
+            case 'event':
+              color = '#ffcbcb'; //pink
+              break;
+            case 'exam':
+              color = '#ffdfba'; // orange
+              break;
+            case 'class':
+              color = '#bae1ff'; // blue
+              break;
+            case 'invite':
+              color = '#baffc9'; // green
+              break;
+    
+            default:
+              color = '#ffcbcb'; 
+          }
+          
+          appData.color = color;
           appData.start = new Date(appData.start);
           appData.end = new Date(appData.end);
+          
           events.push(appData);
         });
       }
@@ -114,6 +141,27 @@ export default createStore({
         snapshotExams.forEach(doc => {
           let appData = doc.data();
           appData.id = doc.id;
+
+          let color;
+          switch (appData.category) {
+            case 'event':
+              color = '#ffcbcb'; //pink
+              break;
+            case 'exam':
+              color = '#ffdfba'; // orange
+              break;
+            case 'class':
+              color = '#bae1ff'; // blue
+              break;
+            case 'invite':
+              color = '#baffc9'; // green
+              break;
+    
+            default:
+              color = '#ffcbcb'; 
+          }
+          
+          appData.color = color;
           appData.start = new Date(appData.start);
           appData.end = new Date(appData.end);
           events.push(appData);
@@ -126,6 +174,28 @@ export default createStore({
         snapshotClass.forEach(doc => {
           let appData = doc.data();
           appData.id = doc.id;
+
+
+          let color;
+          switch (appData.category) {
+            case 'event':
+              color = '#ffcbcb'; //pink
+              break;
+            case 'exam':
+              color = '#ffdfba'; // orange
+              break;
+            case 'class':
+              color = '#bae1ff'; // blue
+              break;
+            case 'invite':
+              color = '#baffc9'; // green
+              break;
+    
+            default:
+              color = '#ffcbcb'; 
+          }
+          
+          appData.color = color;
           appData.start = new Date(appData.start);
           appData.end = new Date(appData.end);
           events.push(appData);
@@ -176,6 +246,10 @@ export default createStore({
           
           const appData = document.data() || {};
           appData.id = document.id;
+
+          let color = '#baffc9'; // green // invite
+          
+          appData.color = color;
           appData.start = new Date(appData.start);
           appData.end = new Date(appData.end);
           events.push(appData);
@@ -203,17 +277,36 @@ export default createStore({
       const calEventCollection = collection(userDoc, "calEvent");
       const eventDoc = doc(calEventCollection, String(event.id));
 
-      
-
       await setDoc(eventDoc, {
         title: event.title, 
         start: String(event.start), 
         end: String(event.end),  
         allDay: Boolean(event.allDay),
         invitees: event.invitees,
+        category: event.category,
       })
 
-      commit("ADD_EVENT", event);
+      let color;
+      switch (event.category) {
+        case 'event':
+          color = '#ffcbcb'; //pink
+          break;
+        case 'exam':
+          color = '#ffdfba'; // orange
+          break;
+        case 'class':
+          color = '#bae1ff'; // blue
+          break;
+        case 'invite':
+          color = '#baffc9'; // green
+          break;
+
+        default:
+          color = '#ffcbcb'; 
+      }
+      console.log('beforeAddColor',color);
+
+      commit("ADD_EVENT", {event, color});
     },
 
     async addExam({commit}, event){
@@ -228,9 +321,13 @@ export default createStore({
         start: String(event.start), 
         end: String(event.end),  
         allDay: Boolean(event.allDay),
+        category: 'exam',
       })
 
-      commit("ADD_EVENT", event);
+      let color = '#ffdfba'
+
+
+      commit("ADD_EVENT", {event, color});
     },
 
     async addClass({commit}, event){
@@ -245,9 +342,12 @@ export default createStore({
         start: String(event.start), 
         end: String(event.end),  
         allDay: Boolean(event.allDay),
+        category: 'class',
       })
 
-      commit("ADD_EVENT", event);
+      let color = '#bae1ff';
+
+      commit("ADD_EVENT", {event, color});
     },
 
     async updateEvent({commit}, event){
@@ -431,7 +531,8 @@ export default createStore({
 
     async acceptInvite({commit},event) {
       console.log(event);
-      console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId)
+      console.log(event.category);
+      console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId);
       const currentUserId = auth.currentUser.uid;
       
       const database = collection(db, "users");
@@ -458,7 +559,6 @@ export default createStore({
       const inviteDoc = doc(calInviteCollection, String(event.id));
 
       console.log(event);
-      console.log('inviteDoc', inviteDoc);
 
       // const calEventCollection = collection(userDoc, "calClass");
       // const eventDoc = doc(calEventCollection, String(event.id));
@@ -476,9 +576,14 @@ export default createStore({
         // location: event.location,
       });
 
-      commit('ADD_INVITE_EVENTS_TO_CALENDAR', event);
+
+
+
       commit('UPDATE_PENDING_EVENTS', event);
-      
+      console.log('beforeAddColor',event)
+      event.color = '#baffc9';
+      console.log('afterAddColor',event);
+      commit('ADD_INVITE_EVENTS_TO_CALENDAR', event);
     },
 
     async declineInvite({commit},event) {

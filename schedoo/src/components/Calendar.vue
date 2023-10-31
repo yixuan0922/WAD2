@@ -226,6 +226,7 @@ const handleEventClick = (arg) => {
       end: arg.event.end,
       allDay: arg.allDay,
       invitees: arg.event.extendedProps.invitees,
+      category: arg.event.extendedProps.category,
     },
   });
 };
@@ -422,9 +423,10 @@ const upload = () => {
 
 const acceptInvite = (event) => {
   console.log("acceptInvite", event.start);
+  console.log(event.category);
   toggleModal(AcceptInvite, {
     text: "This is from the component",
-    // event: arg.event
+    // event
     event: {
       id: event.id,
       title: event.title,
@@ -435,10 +437,9 @@ const acceptInvite = (event) => {
 
       invitorId: event.invitorId, 
       invitorEmail: event.invitorEmail,
+      category: event.category,
     },
   });
-
-  // store.dispatch("acceptInvite", event);
 };
 
 const declineInvite = (event) => {
