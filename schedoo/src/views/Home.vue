@@ -3,7 +3,7 @@
 
 <div class="surface-ground px-4 py-5 md:px-6 lg:px-8 scrollable-container">
     <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-12">
             <div class="surface-card shadow-2 p-3 border-round" style="height:150px; content-justify: center; align-items:center;">
                 <div class="flex justify-content-between mb-3">
                     <div>
@@ -15,11 +15,14 @@
                     </div>
                 </div>
                 <div id="datetime" class="datetime">{{updateDateTime}}</div>
+
+                    
+
             </div>
         </div>
     </div>
     <div class="grid">
-        <div class="col-4 md:col-6 lg:col-3">
+        <div class="col-4 md:col-6 lg:col-4">
             <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
                     <div>
@@ -51,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-4 md:col-6 lg:col-3">
+        <div class="col-4 md:col-6 lg:col-4">
             <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
                     
@@ -60,12 +63,21 @@
                 <span class="text-500"></span>
             </div>
         </div>
-        <div class="col-4 md:col-6 lg:col-3">
+        <div class="col-4 md:col-6 lg:col-4">
             <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3"></span>
-                        <div class="text-900 font-medium text-xl"></div>
+                        <div>
+                            <h1>{{ videoTitle }}</h1>
+                            <div id="youtube-player"></div>
+                            <div>
+                            <input v-model="videoUrl" type="text" placeholder="Enter YouTube video URL" />
+                            <button @click="loadVideo" class="btn btn-primary">Load Video</button>
+                            <button @click="playVideo" class="btn btn-success">Play</button>
+                            <button @click="pauseVideo" class="btn btn-warning">Pause</button>
+                            <button @click="stopVideo" class="btn btn-danger">Stop</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" style="width:2.5rem;height:2.5rem">
                         <i class="pi pi-inbox text-cyan-500 text-xl"></i>
@@ -85,7 +97,11 @@
 export default{
     data(){
         return{
-            date : new Date()
+            date : new Date(),
+            player: null,
+            videoUrl: '', // Added video URL data property
+            videoTitle: '', // Added video title data property
+            apiKey: "AIzaSyAQVOvGilTXr4hLlRHcT3cv_otBkO_cXuU",
         }
     },
 
@@ -110,9 +126,107 @@ export default{
         },
     },
 
+    methods: {
+            playVideo() {
+      if (this.player) {
+        this.player.playVideo();
+      }
+    },
+
+    pauseVideo() {
+      if (this.player) {
+        this.player.pauseVideo();
+      }
+    },
+
+    stopVideo() {
+      if (this.player) {
+        this.player.stopVideo();
+      }
+    },
+
+    loadVideo() {
+      // Validate the YouTube URL
+      const videoId = this.extractVideoId(this.videoUrl);
+
+      if (videoId) {
+        if (this.player) {
+          this.player.loadVideoById(videoId);
+        } else {
+          this.createYouTubePlayer(videoId);
+        }
+      } else {
+        alert('Invalid YouTube video URL.');
+      }
+    },
+
+    extractVideoId(url) {
+      // Extract the video ID from the YouTube URL
+      const videoIdMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+      if (videoIdMatch) {
+        return videoIdMatch[1];
+      }
+      return null;
+    },
+    // Fetch video title using YouTube Data API
+
+    fetchVideoTitle(videoId) {
+      // const apiKey = this.apiKey; // Replace with your own API key
+      const apiUrl = `https://www.googleapis.com/youtube/v3/videos?key=${this.apiKey}&id=${videoId}&part=snippet`;
+      
+      fetch(apiUrl)
+          .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+          })
+          .then(data => {
+          if (data.items && data.items.length > 0) {
+              const video = data.items[0];
+              this.videoTitle = video.snippet.title;
+          } else {
+              console.error('Video not found or data unavailable.');
+          }
+          })
+          .catch(error => {
+          console.error('Error fetching video title:', error);
+          });
+      },
+
+    createYouTubePlayer(videoId) {
+      
+      this.player = new YT.Player('youtube-player', {
+          videoId: videoId,
+          playerVars: {
+          controls: 0,
+          showinfo: 0,
+          rel: 0,
+          },
+          events: {
+          onReady: (event) => {
+              this.player = event.target;
+              // Fetch video title and set it
+              this.videoTitle = this.fetchVideoTitle(videoId);
+          },
+          },
+      });
+      },
+    onYouTubeIframeAPIReady() {
+      // Load YouTube Iframe Player API script
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // Expose onYouTubeIframeAPIReady to the window
+      window.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady;
+    },
+    },
+
 }; 
 
-const apiKey="";
+const apiKey="0448f72af4824d5ad3d358a845efaa01";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=Singapore";
 
 async function checkWeather(){
@@ -535,6 +649,8 @@ checkWeather();
 .datetime{
     font-family: 'Poppins', sans-serif;
     font-size: x-large;
+    display:flex;
+    align-items:left;
 }
 
 .card{

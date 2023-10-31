@@ -10,6 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fullcalendar/bootstrap5": "^6.1.9",
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
     "@fullcalendar/interaction": "^6.1.9",
@@ -17,6 +18,7 @@
     "@fullcalendar/timegrid": "^6.1.9",
     "@fullcalendar/vue3": "^6.1.9",
     "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.1",
     "core-js": "^3.8.3",
     "firebase": "^10.4.0",
     "firebase-tools": "^12.5.4",

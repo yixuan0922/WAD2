@@ -3,36 +3,25 @@
       <fieldset>
         <legend>Event details</legend>
         <b>Title:</b>  {{ event.title }} <br/>
+        <b>Invited By:</b> {{ event.invitorEmail }} <br/>
         <b>Start:</b>  {{ event.start }} <br/>
         <b>End:</b>  {{ event.end }} <br/>
         <b>ID:</b>  {{ event.id }} <br/>
-        <b>Invitees</b> 
+        <b>Invitees</b>
         <ul>
           <li v-for="(invitee, index) in event.invitees" :key="index">{{invitee.email + "(" + invitee.status + ")" + invitee.location}}</li>
         </ul><br/>
       </fieldset>
       <fieldset>
-          <legend>Edit event</legend>
+          <legend>Provide your location</legend>
           <div class="container">
             <div class='row'> 
-              Event Title: <input type="text" v-model="title">
-            </div>
-            <div class="row">
-              <label>All Day:</label><input type="checkbox" v-model="allDay">
-            </div>
-            <div class="row">
-              <div class='col col-6'>Start: 
-                <input type="date" v-model="start">
-                <input type="time" v-model="startTime" v-show="!allDay">
-              </div>
-              <div class='col col-6'>End: 
-                  <input type="date" v-model="end">
-                  <input type="time" v-model="endTime" v-show="!allDay">
-              </div>
+              Location: <input type="text" v-model="location">
             </div>
           </div>
-          <button class='buttonSave' @click="deleteEvent">Delete</button>
-          <button class='buttonSave' @click="updateEvent">Save</button>
+          <button class='buttonSave' @click="load">Load</button>
+          <button class='buttonSave' @click="this.$emit('close-modal')">Close</button>
+          <!-- <button class='buttonSave' @click="updateEvent">Confirm</button> -->
       </fieldset>
     </div>
   </template>
@@ -48,10 +37,56 @@
           endTime: "", 
           allDay: false,
           invitees: [],
+          invitorId: '', 
+          invitorEmail: '', 
+          location:'',
       }),
       methods: {
           updateEvent () {
               let start = new Date(this.start);
+              let end = new Date(this.end);
+
+              if (!this.allDay) {
+                  let [startHours, startMinutes] = this.startTime.split(':');
+                  let [endHours, endMinutes] = this.endTime.split(':');
+
+                  start.setHours(startHours, startMinutes);
+                  end.setHours(endHours, endMinutes);
+              }
+
+
+
+              let event = {
+                  id: this.event.id,
+                  title: this.title,
+                  start: start,
+                  end: end,
+                  allDay: this.allDay,
+                  invitees: this.invitees,
+                  invitorId: this.invitorId,
+                  invitorEmail: this.invitorEmail,
+              };
+
+              console.log(event);
+
+              // this.$store.commit("UPDATE_EVENT", {
+              //     id: this.event.id,
+              //     title: this.title,
+              //     start: this.start,
+              //     end: this.end,
+              // })
+              this.$emit('close-modal');
+          },
+          load () {
+            // console.log(this.location);
+            const currUserId = this.$store.state.profileId;
+            for (let invitee in this.invitees){
+              if (this.invitees[invitee].id == currUserId ){
+                this.invitees[invitee].location = this.location;
+              };
+            }
+
+            let start = new Date(this.start);
               let end = new Date(this.end);
 
               if (!this.allDay) {
@@ -69,41 +104,29 @@
                   end: end,
                   allDay: this.allDay,
                   invitees: this.invitees,
+                  invitorId: this.invitorId,
+                  invitorEmail: this.invitorEmail,
               };
-              // this.$store.commit("UPDATE_EVENT", event);
-              this.$store.dispatch('updateEvent', event);
-
-              // this.$store.commit("UPDATE_EVENT", {
-              //     id: this.event.id,
-              //     title: this.title,
-              //     start: this.start,
-              //     end: this.end,
-              // })
-              this.$emit('close-modal');
-          },
-          deleteEvent() {
-            console.log(this.event.id);
-            console.log(this.invitees);
-            let event = {
-              id : this.event.id, 
-              invitees: this.invitees,
-            }
-            this.$store.dispatch('deleteEvent', event);
-            // this.$store.commit("DELETE_EVENT", this.event.id)
+            // console.log(event);
+            this.$store.dispatch("acceptInvite", event);
             this.$emit('close-modal');
-          }
+          },
       },
     props: {
       text: String,
       event: Object
     },mounted() {
         this.id = this.event.id;
+        this.title = this.event.title;
         this.start = formatDate(this.event.start);
         this.end = formatDate(this.event.end);
         this.startTime = formatTime(this.event.start);
         this.endTime = formatTime(this.event.end);
         this.allDay = Boolean(this.event.allDay);
         this.invitees = this.event.invitees;
+
+        this.invitorId = this.event.invitorId;
+        this.invitorEmail = this.event.invitorEmail;
     }
   };
   
