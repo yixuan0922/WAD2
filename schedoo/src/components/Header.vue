@@ -87,7 +87,7 @@ import {RouterLink, RouterView} from 'vue-router';
 <script>
 
 export default {
-    name: "headerTester",
+    name: "Header",
     mounted() {
 
         // Typing animation
@@ -100,10 +100,9 @@ export default {
     },
     methods: {
       toAbout() {
-        console.log("Button clicked"); // Check if this message is logged
         const about = document.getElementById("about-us");
         about.scrollIntoView({ behavior: "smooth" });
-      },
+      }
     },
 }
 </script>

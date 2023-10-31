@@ -61,6 +61,17 @@ export default createStore({
       state.pendingEvents = pendingEvents;
     },
 
+    UPDATE_PENDING_EVENTS(state,invite) {
+      console.log(invite.id)
+      let index = state.pendingEvents.findIndex(_event => _event.id == invite.id)
+      state.pendingEvents.splice(index, 1);
+      console.log('updatePendingEvents',state.pendingEvents);
+    },
+
+    ADD_INVITE_EVENTS_TO_CALENDAR(state, invite){
+      state.events.push(invite);
+    },
+
     // User
     updateUser(state, payload) {
       state.user = payload; 
@@ -76,11 +87,6 @@ export default createStore({
       state.profileInitials = state.profileFirstName.match(/(\b\S)?/g).join("") + state.profileLastName.match(/(\b\S)?/g).join("");
     }, 
 
-
-
-    
-
-    
   },
   actions: {
     async fetchEvents({commit}, checkedCategories) {
@@ -125,7 +131,59 @@ export default createStore({
           events.push(appData);
         });
       }
-    
+
+      // if (checkedCategories.includes('Invites')) {
+      //   const calInviteCollection = collection(userDoc, "calInvite");
+      //   let snapshotInvite = await getDocs(calInviteCollection);
+      //   snapshotInvite.forEach(inviteDoc => {
+      //     const invitorId = inviteDoc.data().invitorId;
+      //     const inviteEventId = inviteDoc.data().id;
+
+      //     const invitorDoc = doc(database, invitorId);
+      //     const calEventCollection = collection(invitorDoc, "calEvent");
+      //     const eventDoc = doc(calEventCollection, inviteEventId);
+
+      //     getDoc(eventDoc).then((doc) => {
+      //       console.log(doc.id);
+      //       console.log(doc.data());
+
+      //       let appData = doc.data();
+      //       appData.id = doc.id;
+      //       appData.start = new Date(appData.start);
+      //       appData.end = new Date(appData.end);
+      //       events.push(appData);
+
+      //     });
+      //     console.log(inviteEventId);
+      //     console.log(invitorId);
+      //   });
+      // }
+
+      if (checkedCategories.includes('Invites')) {
+        const calInviteCollection = collection(userDoc, "calInvite");
+        let snapshotInvite = await getDocs(calInviteCollection);
+        for (let inviteDoc of snapshotInvite.docs) {
+          const invitorId = inviteDoc.data().invitorId;
+          const inviteEventId = inviteDoc.data().id;
+      
+          const invitorDoc = doc(database, invitorId);
+          const calEventCollection = collection(invitorDoc, "calEvent");
+          const eventDoc = doc(calEventCollection, inviteEventId);
+      
+          let document = await getDoc(eventDoc);
+          console.log(document.id);
+          console.log(document.data());
+          
+          const appData = document.data() || {};
+          appData.id = document.id;
+          appData.start = new Date(appData.start);
+          appData.end = new Date(appData.end);
+          events.push(appData);
+      
+          console.log(inviteEventId);
+          console.log(invitorId);
+        }
+      }
       commit('SET_EVENTS', events);
     },
   
@@ -210,16 +268,29 @@ export default createStore({
       commit("UPDATE_EVENT", event);
     },
 
-    async deleteEvent({commit}, id){
+    async deleteEvent({commit}, event){
+      let eventId = event.id;
+      let invitees = event.invitees;
       const currentUser = auth.currentUser;
       const database = collection(db, "users");
       const userDoc = doc(database, currentUser.uid);
       const calEventCollection = collection(userDoc, "calEvent");
-      const eventDoc = doc(calEventCollection, id);
+      const eventDoc = doc(calEventCollection, eventId);
+      console.log('iseventdoc there',eventDoc);
 
+      console.log(invitees);
+
+
+      invitees.forEach( async(invitee)=> {
+        const inviteeDoc = doc(database, invitee.id);
+        const calInviteCollection = collection(inviteeDoc, "calInvite");
+        const inviteDoc = doc(calInviteCollection, eventId);
+        await deleteDoc(inviteDoc);
+      });
+    
       await deleteDoc(eventDoc);
 
-      commit("DELETE_EVENT", id);
+      commit("DELETE_EVENT", eventId);
     },
 
     async deleteCol({commit}){
@@ -285,6 +356,7 @@ export default createStore({
         });
 
 
+        // fetch user's timeslots to find common timeslots
         const userDoc = doc(database, userId);
         const calEventCollection = collection(userDoc, "calEvent");
         const calClassCollection = collection(userDoc, "calClass");
@@ -357,7 +429,7 @@ export default createStore({
       commit('SET_PENDING_INVITES', pendingEvents);
     }, 
 
-    async acceptInvite(_,event) {
+    async acceptInvite({commit},event) {
       console.log(event);
       console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId)
       const currentUserId = auth.currentUser.uid;
@@ -366,7 +438,7 @@ export default createStore({
       const invitorDoc = doc(database, event.invitorId);
       const calEventCollection = collection(invitorDoc, "calEvent");
       const eventDoc = doc(calEventCollection, String(event.id));
-    
+      
       await setDoc(eventDoc, {
         title: event.title, 
         start: String(event.start), 
@@ -380,13 +452,36 @@ export default createStore({
           return invitee;
         })
       }, {merge: true});
-     
-      const docAfterSet = await getDoc(eventDoc);
-      console.log(docAfterSet.data());
+
+      const inviteeDoc = doc(database, currentUserId);
+      const calInviteCollection = collection(inviteeDoc, "calInvite");
+      const inviteDoc = doc(calInviteCollection, String(event.id));
+
       console.log(event);
+      console.log('inviteDoc', inviteDoc);
+
+      // const calEventCollection = collection(userDoc, "calClass");
+      // const eventDoc = doc(calEventCollection, String(event.id));
+
+      // await setDoc(eventDoc, {
+      //   title: event.title, 
+      //   start: String(event.start), 
+      //   end: String(event.end),  
+      //   allDay: Boolean(event.allDay),
+      // })
+
+      await setDoc(inviteDoc, {
+        id: event.id, 
+        invitorId: event.invitorId,
+        // location: event.location,
+      });
+
+      commit('ADD_INVITE_EVENTS_TO_CALENDAR', event);
+      commit('UPDATE_PENDING_EVENTS', event);
+      
     },
 
-    async declineInvite(_,event) {
+    async declineInvite({commit},event) {
       console.log(event);
       console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId)
       const currentUserId = auth.currentUser.uid;
@@ -413,6 +508,8 @@ export default createStore({
       const docAfterSet = await getDoc(eventDoc);
       console.log(docAfterSet.data());
       console.log(event);
+      commit('UPDATE_PENDING_EVENTS', event);
+
     },
 
     

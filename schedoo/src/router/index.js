@@ -4,6 +4,7 @@ import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
+import Settings from '../views/SettingsView.vue';
 // import CreateEvent from '/src/components/CreateEvent.vue';
 import CalendarView from '../views/CalendarView.vue';
 import CrEvent from '../components/CrEvent.vue';
@@ -54,6 +55,11 @@ const routes = [
     name: "CrEvent",
     component: CrEvent,
   },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: Settings,
+  }
 ];
 
 const router = createRouter({
