@@ -23,7 +23,7 @@ import {RouterLink, RouterView} from 'vue-router';
         <!-- pg1 content -->
         <div id="pg1-content">
           <h1 class="title" 
-          style="text-shadow: 4px 4px 2px #edc3a3"
+          
           >SCHEDOO</h1>
           <p class="subtitle">
             Keep 

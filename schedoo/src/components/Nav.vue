@@ -6,7 +6,7 @@ import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9b58d"
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f7dfc2"
 >
     <div class="container">
         <!-- <a class="navbar-brand" id="navBarLogo" href="#"></a> -->
@@ -18,7 +18,7 @@ import {RouterLink, RouterView} from 'vue-router';
         data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
         aria-controls="navbarSupportedContent" aria-expanded="false" 
         aria-label="Toggle navigation"
-        style="position: absolute; top: 10px; right: 70px;">
+        style="position: absolute; top: 10px; right: 100px;">
         <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -64,13 +64,13 @@ import {RouterLink, RouterView} from 'vue-router';
         <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 40px">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item">
-              <a class="nav-link active" href="#">Insights</a>
-              </li>
-              <li class="nav-item">
               <!-- <a class="nav-link active">My Calendar</a> -->
               <router-link class="nav-link" :to="{name: 'Calendar'}"
               style="color: black; text-decoration: none;"
               >My Calendar</router-link>
+              </li>
+              <li class="nav-item">
+              <a class="nav-link active" href="#">Insights</a>
               </li>
               <li class="nav-item">
               <a class="nav-link active" href="#">Focus</a>
@@ -177,6 +177,7 @@ export default {
     width: 100%;
     z-index: 10;
     min-height: 50px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
 }
 .nav-link {
     font-weight: bold;
