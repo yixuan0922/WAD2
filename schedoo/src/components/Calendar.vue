@@ -701,9 +701,13 @@ hr {
 }
 
 .fc .fc-toolbar-title {
-    font-size: x-large !important;
+    font-size: large !important;
 }
 
+.header {
+  font-size: large;
+  font-weight: normal;
+}
 
 /* Initially hide the uploadContents */
 .uploadContents {
