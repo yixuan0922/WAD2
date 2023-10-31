@@ -127,7 +127,7 @@ export default{
 
     body {
   // background: #e1e7ec;
-  background: #dfe7ef;
+  background: #ffffff;
   font-family: "Bitter", serif;
 }
 
