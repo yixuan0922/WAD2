@@ -11,14 +11,16 @@ import {RouterLink, RouterView} from 'vue-router';
 
 <template>
   <main>
-    <section id="home">
-      <div class="ripple-background">
+    <div class="ripple-background">
         <!-- bkgrnd animations -->
         <div class="circle xxlarge shade1"></div>
         <div class="circle xlarge shade2"></div>
         <div class="circle large shade3"></div>
         <div class="circle mediun shade4"></div>
         <div class="circle small shade5"></div>
+      </div>
+    <section id="home">
+      
 
         <!-- pg1 content -->
         <div id="pg1-content">
@@ -46,12 +48,12 @@ import {RouterLink, RouterView} from 'vue-router';
             </button>
           </div>
         </div>
-      </div>
+      
     </section>
     <section id="about-us"
     style="background-color: #79C1CB;"
     >
-      <div id="pg2-content" class="row offset-1 col-md-5 col-sm-10" style="position: relative;">
+      <div id="pg2-content" class="row offset-1 col-md-5 col-xs-10" style="position: relative; ">
         <h1 style="font-family: 'Poppins', sans-serif; margin-bottom: 30px; transform: translate(0,-70px); font-size: xx-large">About Us</h1>
 
         <p class="subtitle" style="font-size: medium; transform: translate(0,-50px);">
@@ -120,6 +122,7 @@ export default {
 .ripple-background {
     position: relative;
     z-index: 0;
+    transform: translate(200px, 400px);
 }
 
 .circle{
@@ -131,38 +134,39 @@ export default {
 }
 
 .small{
+  width: 100px;
+  height: 100px;
+  left: -50px;
+  bottom: -50px;
+}
+
+.medium{
   width: 200px;
   height: 200px;
   left: -100px;
   bottom: -100px;
 }
 
-.medium{
+.large{
   width: 400px;
   height: 400px;
   left: -200px;
   bottom: -200px;
 }
 
-.large{
+.xlarge{
   width: 600px;
   height: 600px;
   left: -300px;
   bottom: -300px;
 }
 
-.xlarge{
+.xxlarge{
   width: 800px;
   height: 800px;
   left: -400px;
   bottom: -400px;
-}
-
-.xxlarge{
-  width: 1000px;
-  height: 1000px;
-  left: -500px;
-  bottom: -500px;
+  overflow: hidden
 }
 
 .shade1{
@@ -238,6 +242,7 @@ main {
     height: 100vh;
     width: 100%;
     
+    overflow: hidden;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
 }
