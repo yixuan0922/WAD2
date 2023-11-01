@@ -62,6 +62,11 @@
                   start.setHours(startHours, startMinutes);
                   end.setHours(endHours, endMinutes);
               }
+              else {
+                if (start === end) {
+                  end.setDate(end.getDate() + 1);
+                }
+              }
 
               let event = {
                   id: this.event.id,
@@ -89,6 +94,7 @@
             let event = {
               id : this.event.id, 
               invitees: this.invitees,
+              category: this.event.category,
             }
             this.$store.dispatch('deleteEvent', event);
             // this.$store.commit("DELETE_EVENT", this.event.id)

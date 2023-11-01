@@ -24,12 +24,9 @@ export default createStore({
     // Events
     SET_EVENTS(state, events) {
       state.events = events;
-      console.log('SetEvents',state.events);
     },
     ADD_EVENT: (state, {event, color}) => {
-      console.log(color);
       event.color = color;
-      console.log('event', event);
       state.events.push(event)
     },
     UPDATE_EVENT: (state, {id, title, start, end, allDay, invitees}) => {
@@ -41,12 +38,10 @@ export default createStore({
         state.events[index].allDay = allDay;
         state.events[index].invitees = invitees;
 
-        console.log('updateEvents',state.events);
     },
     DELETE_EVENT: (state, id) => {
         let index = state.events.findIndex(_event => _event.id == id)
         state.events.splice(index, 1)
-        console.log('DeleteEvents',state.events);
     },
     DELETE_COLLECTION: (state) => {
       state.events = [];
@@ -54,25 +49,20 @@ export default createStore({
     // Invitees
     SET_INVITEES(state, inviteeObj) {
       state.invitees.push(inviteeObj);
-      console.log('SetInvitees',state.invitees);
     },
     INVITEE_EXIST(state, bool) {
       state.invitee_exist = bool;
-      console.log('InviteeExist',state.invitee_exist);
     },
     SET_PENDING_INVITES(state, pendingEvents){
       state.pendingEvents = pendingEvents;
     },
 
     UPDATE_PENDING_EVENTS(state,invite) {
-      console.log(invite.id)
       let index = state.pendingEvents.findIndex(_event => _event.id == invite.id)
       state.pendingEvents.splice(index, 1);
-      console.log('updatePendingEvents',state.pendingEvents);
     },
 
     ADD_INVITE_EVENTS_TO_CALENDAR(state, event){
-      // console.log(invite, color);
       // invite.color = color;
       state.events.push(event);
     },
@@ -257,8 +247,6 @@ export default createStore({
           const eventDoc = doc(calEventCollection, inviteEventId);
       
           let document = await getDoc(eventDoc);
-          console.log(document.id);
-          console.log(document.data());
           
           const appData = document.data() || {};
           appData.id = document.id;
@@ -269,9 +257,6 @@ export default createStore({
           appData.start = new Date(appData.start);
           appData.end = new Date(appData.end);
           events.push(appData);
-      
-          console.log(inviteEventId);
-          console.log(invitorId);
         }
       }
 
@@ -285,7 +270,6 @@ export default createStore({
       const dbResults = await getDoc(userDoc);
       commit('setProfileInfo', dbResults);
       commit('setProfileInitials');
-      console.log('dbResults', dbResults);
     },
 
     async addEvent({commit}, event){
@@ -370,9 +354,6 @@ export default createStore({
       //   default:
       //     color = '#87bba2'; 
       // }
-      
-
-      console.log('beforeAddColor',color);
 
       commit("ADD_EVENT", {event, color});
     },
@@ -421,9 +402,7 @@ export default createStore({
     //     default:
     //       color = '#87bba2'; 
     //   }
-      
-
-    //   console.log('beforeAddColor',color);
+    
 
     //   commit("ADD_EVENT", {event, color});
     // },
@@ -475,7 +454,6 @@ export default createStore({
       const userDoc = doc(database, currentUser.uid);
       const calEventCollection = collection(userDoc, "calEvent");
       const eventDoc = doc(calEventCollection, String(event.id));
-      console.log(event.allDay);
 
       await setDoc(eventDoc, {
         title: event.title, 
@@ -493,6 +471,7 @@ export default createStore({
       const currentUser = auth.currentUser;
       const database = collection(db, "users");
       const userDoc = doc(database, currentUser.uid);
+      console.log(event.category);
 
       let collectionName;
       switch (event.category) {
@@ -517,13 +496,14 @@ export default createStore({
         case 'invite':
           collectionName = 'calInvite'; // blueberry blue
           break;
-
         default:
           collectionName = 'calEvent'; 
       }
 
+      console.log(collectionName);
       const calCollection = collection(userDoc, collectionName);
       const eventDoc = doc(calCollection, eventId);
+      console.log(eventDoc);
       console.log('iseventdoc there',eventDoc);
 
       console.log(invitees);
@@ -592,11 +572,9 @@ export default createStore({
       
       if (inviteeDocs.empty) {
         // this.state.invitee_exist = false;
-        // console.log(this.state.invitee_exist);
         commit('INVITEE_EXIST', false);
       } else {
         const userId = inviteeDocs.docs[0].id;
-        console.log(userId);
         
         let inviteeObj = {};
         inviteeDocs.forEach((inviteeDoc) => {
@@ -644,9 +622,7 @@ export default createStore({
           events.push(appData);
         });
 
-        console.log(events);
         inviteeObj['events'] = events;
-        console.log('InvteeObject', inviteeObj);
         commit('SET_INVITEES', inviteeObj);
       } 
     }, 
@@ -674,14 +650,10 @@ export default createStore({
           }
         }
       }
-      console.log(pendingEvents);
       commit('SET_PENDING_INVITES', pendingEvents);
     }, 
 
     async acceptInvite({commit},event) {
-      console.log(event);
-      console.log(event.category);
-      console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId);
       const currentUserId = auth.currentUser.uid;
       
       const database = collection(db, "users");
@@ -696,7 +668,6 @@ export default createStore({
         allDay: Boolean(event.allDay),
         invitees: event.invitees.map(invitee => {
           if (invitee.id == currentUserId) {
-            console.log(invitee.id, currentUserId);
             invitee.status = 'accepted';
           }
           return invitee;
@@ -707,7 +678,6 @@ export default createStore({
       const calInviteCollection = collection(inviteeDoc, "calInvite");
       const inviteDoc = doc(calInviteCollection, String(event.id));
 
-      console.log(event);
 
       // const calEventCollection = collection(userDoc, "calClass");
       // const eventDoc = doc(calEventCollection, String(event.id));
@@ -726,17 +696,13 @@ export default createStore({
       });
 
       commit('UPDATE_PENDING_EVENTS', event);
-      // console.log('beforeAddColor',event)
 
       event.color = '#4d648d'; // blueberry blue
       
-      // console.log('afterAddColor',event);
       commit('ADD_INVITE_EVENTS_TO_CALENDAR', event);
     },
 
     async declineInvite({commit},event) {
-      console.log(event);
-      console.log(event.id, event.title, event.start, event.end, event.invitees, event.invitorEmail, event.invitorId)
       const currentUserId = auth.currentUser.uid;
       
       const database = collection(db, "users");
@@ -751,16 +717,15 @@ export default createStore({
         allDay: Boolean(event.allDay),
         invitees: event.invitees.map(invitee => {
           if (invitee.id == currentUserId) {
-            console.log(invitee.id, currentUserId);
             invitee.status = 'declined';
           }
           return invitee;
         })
       }, {merge: true});
      
-      const docAfterSet = await getDoc(eventDoc);
-      console.log(docAfterSet.data());
-      console.log(event);
+      // const docAfterSet = await getDoc(eventDoc);
+      // console.log(docAfterSet.data());
+      // console.log(event);
       commit('UPDATE_PENDING_EVENTS', event);
 
     },
@@ -780,7 +745,6 @@ export default createStore({
       const userDoc = doc(database, currentUser.uid);
 
       const dbResults = await getDoc(userDoc);
-      console.log(dbResults);
       return dbResults.data().goals;
     },
   },
