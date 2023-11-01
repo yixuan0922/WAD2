@@ -41,7 +41,7 @@ import {RouterLink, RouterView} from 'vue-router';
             style="--c: #373B44;--b: 3px;--s: .15em; margin-left: 15px;"
             >
             <!-- <a href="#section-2" style="text-decoration: none;"> -->
-              About us
+              About Us
             <!-- </a> -->
             </button>
           </div>
@@ -202,7 +202,7 @@ export default {
 #pg1-content {
     position:relative;
     z-index: 100;
-    transform: translate(0, 20px);
+    transform: translate(0, 30px);
 }
 
 #pg2-content {
@@ -211,6 +211,7 @@ export default {
   align-items: center;
   margin-top:auto;
   transform: translate(0, 70px);
+
 }
 
 /* Title  & Subtitles*/
@@ -259,10 +260,6 @@ main > section > div {
     text-align: center;
 }
 
-/* html,
-body {
-    overflow: hidden;
-} */
 
 /* Button animations */
 .mainBtn {
