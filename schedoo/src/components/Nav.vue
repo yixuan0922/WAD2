@@ -36,7 +36,7 @@ import {RouterLink, RouterView} from 'vue-router';
               </div>
               <div class="options">
                   <div class="option">
-                      <router-link class-="option" to="#"
+                      <router-link class-="option" :to="{name: 'Settings'}"
                       style="color: black; text-decoration: none;"
                       >
                           <userIcon class="icon"/>
