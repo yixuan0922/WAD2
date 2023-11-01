@@ -26,6 +26,7 @@ export default createStore({
       state.events = events;
     },
     ADD_EVENT: (state, {event, color}) => {
+      console.log('add_event', event.category);
       event.color = color;
       state.events.push(event)
     },
@@ -44,8 +45,15 @@ export default createStore({
         state.events.splice(index, 1)
     },
     DELETE_COLLECTION: (state) => {
-      state.events = [];
-    },
+      for (let i = state.events.length - 1; i >= 0; i--) {
+          let event = state.events[i];
+          console.log(event.title, event.category);
+          if (event.category == 'exam' || event.category == 'class') {
+              console.log('delete', event.title, event.category);
+              state.events.splice(i, 1);
+          }
+        }
+      },
     // Invitees
     SET_INVITEES(state, inviteeObj) {
       state.invitees.push(inviteeObj);
@@ -327,6 +335,7 @@ export default createStore({
         category: event.category,
       })
 
+
       // let color;
       // switch (event.category) {
       //   case 'event':
@@ -423,6 +432,7 @@ export default createStore({
       })
 
       let color = '#ffdfba' //light green
+      event.category = 'exam';
 
 
       commit("ADD_EVENT", {event, color});
@@ -444,6 +454,7 @@ export default createStore({
       })
 
       let color = '#a6a2a2'; // brown grey
+      event.category = 'class';
 
       commit("ADD_EVENT", {event, color});
     },
@@ -526,7 +537,7 @@ export default createStore({
       const currentUser = auth.currentUser;
       const database = collection(db, "users");
       const userDoc = doc(database, currentUser.uid);
-      const calEventCollection = collection(userDoc, "calEvent");
+      // const calEventCollection = collection(userDoc, "calEvent");
       const calClassCollection = collection(userDoc, "calClass");
       const calExamCollection = collection(userDoc, "calExam");
     
@@ -534,11 +545,11 @@ export default createStore({
       let batch = writeBatch(db);
     
       // Delete documents in a batch
-      const qEvent = query(calEventCollection);
-      const querySnapshotEvent = await getDocs(qEvent);
-      querySnapshotEvent.forEach((doc) => {
-        batch.delete(doc.ref);
-      });
+      // const qEvent = query(calEventCollection);
+      // const querySnapshotEvent = await getDocs(qEvent);
+      // querySnapshotEvent.forEach((doc) => {
+      //   batch.delete(doc.ref);
+      // });
       // Commit the batch
       // await batch.commit();
 
