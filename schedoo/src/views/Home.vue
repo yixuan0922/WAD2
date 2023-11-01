@@ -7,11 +7,12 @@
           style="height: 150px; content-justify: center; align-items: center"
         >
           <div id="current-time" class="datetime">{{ runningTime }}</div>
+          <p>{{currentDate}}</p>
 
           <div>
-            <div class="weather">
+            <!-- <div class="weather">
               <h1 class="temp">22°C</h1>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -25,15 +26,17 @@
         </div>
       </div>
       <div class="col-4 md:col-6 lg:col-4">
-        <div class="surface-card shadow-2 p-3 border-round">
-          <div class="flex justify-content-between mb-3"></div>
+        <div class="surface-card shadow-2 p-3 border-round" style="display:flex; flex-direction: column; align-items: center;">
+          <!-- <div class="piechart-container" style="width: 400px; height: 400px;">
+            <div id="pieChart" style="width: 200px;"></div> -->
+          <!-- </div> -->
         </div>
       </div>
       <div class="col-4 md:col-6 lg:col-4">
         <div class="surface-card shadow-2 p-3 border-round">
           <div class="flex justify-content-between mb-3"></div>
-          <span class="text-green-500 font-medium"> </span>
-          <span class="text-500"></span>
+          <link rel="alternate" type="application/json+oembed" href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe" />
+          <div v-html="spotifyEmbedHtml"></div>
         </div>
       </div>
     </div>
@@ -46,9 +49,11 @@ export default {
   data() {
     return {
       date: new Date(),
+      currentDate: new Date().toLocaleDateString(),
       weather: {
         temp: null, // Initialize with null or a default value
       },
+       spotifyEmbedHtml: `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`,
     };
   },
 
@@ -80,9 +85,13 @@ export default {
     }, 1000);
 
     const lineData = [
-      { x: 1, y: 10 },
-      { x: 2, y: 20 },
-      { x: 3, y: 15 },
+      { x: "Monday", y: 10 },
+      { x: "Tuesday", y: 20 },
+      { x: "Wednesday", y: 15 },
+      {x: "Thursday", y: 20},
+      {x: "Friday", y: 30},
+      {x: "Saturday", y: 20}, 
+      {x: "Sunday",y: 10},
     ];
 
     const lineChart = document.getElementById("line-chart");
@@ -101,6 +110,46 @@ export default {
           title: "Hours",
         }
     });
+
+    // var donutData = [{
+    //   values: [16, 15, 12, 6, 5, 4, 42],
+    //   labels: ['Personal', 'Study', 'CCA', 'Classes', 'Work', 'Meetings', 'Others' ],
+    //   domain: {column: 0},
+    //   name: "Time", 
+    //   hoverinfo:"label+percent+name",
+    //   hole: .4,
+    //   type: "pie"
+    // }];
+
+    // var donutLayout = {
+    //   title: "Target number of hours to spend for each activity",
+    //   annotations:[
+    //     {
+    //       font:{
+    //         size: 18
+    //       },
+    //       showarrow: false, 
+    //       text: 'Hours',
+    //       x: 0.17,
+    //       y: 0.5,
+    //       xref: 'paper',
+    //       yref: 'paper',
+    //     },
+    //   ],
+    //   height: 400,
+    //   width: 550,
+    //   showlegend: false,
+    //   grid:{rows:1, columns: 2},
+
+    //   // margin:{
+    //   //   l:10,
+    //   //   r: 10,
+    //   //   t:10,
+    //   //   b:10
+    //   // }
+    // };
+
+    // Plotly.newPlot('pieChart', donutData, donutLayout)
   },
 };
 </script>
