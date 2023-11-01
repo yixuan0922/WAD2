@@ -14,11 +14,11 @@
       <div class="calendar-app-sidebar-section">
         <!-- Your calendar component here -->
         <button class="newEventButton" @click="newEvent">+ New Event</button>
+        <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents" style="margin-left: 10px;">▼ Upload Timetable</button>
+
 
         <!-- Upload timetable -->
         <div id="timetableUpload">
-          <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents" style="font-size: small;">▼ Upload Timetable</button>
-
           <div id="uploadContents" v-if="isUploadContentsVisible">
             <div class="timetable-header">
               <p class="header">Upload Timetable</p>
@@ -596,6 +596,7 @@ const toggleUploadContents = () => {
   padding-top: 1.3em;
   position: sticky;
   top: 30px;
+  width: auto;
 }
 
 .fc {
@@ -613,6 +614,7 @@ const toggleUploadContents = () => {
   margin-bottom: 10px;
   border-radius: 10px;
   padding: 6px 10px;
+  font-size: small;
 }
 
 .calendar-app {
@@ -741,5 +743,12 @@ hr {
 
 .fc-list-day-text, .fc-list-day-side-text, .fc-list-event-time, .fc-list-event-title {
   font-size: small;
+}
+
+@media (max-width: 1000px) {
+  .calendar-app-sidebar {
+    visibility: hidden;
+    width: 0;
+  }
 }
 </style>
