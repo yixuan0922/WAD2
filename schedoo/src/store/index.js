@@ -765,10 +765,24 @@ export default createStore({
 
     },
 
-    
-    
-      
-    
+    async updateProfileGoals(_, userSettings){
+      const currentUser = auth.currentUser;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUser.uid);
+
+      await setDoc(userDoc, {
+       goals: userSettings,
+      }, {merge: true});
+    }, 
+    async fetchProfileGoals() {
+      const currentUser = auth.currentUser;
+      const database = collection(db, 'users');
+      const userDoc = doc(database, currentUser.uid);
+
+      const dbResults = await getDoc(userDoc);
+      console.log(dbResults);
+      return dbResults.data().goals;
+    },
   },
   modules: {},
 });
