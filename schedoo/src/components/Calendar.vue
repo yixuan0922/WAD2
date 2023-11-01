@@ -90,6 +90,42 @@
                 Invites</label
               >
             </div>
+            <div class="form-check studies">
+              <label for="studies">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="study"
+                  value="Study"
+                  v-model="state.checkedCategories"
+                />
+                Study</label
+              >
+            </div>
+            <div class="form-check cca">
+              <label for="cca">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="cca"
+                  value="CCA"
+                  v-model="state.checkedCategories"
+                />
+                CCA</label
+              >
+            </div>
+            <div class="form-check personal">
+              <label for="personal">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="personal"
+                  value="Personal"
+                  v-model="state.checkedCategories"
+                />
+                Personal</label
+              >
+            </div>
           </div>
           <hr />
           <div class="invite-container">
@@ -144,7 +180,7 @@ const modalContent = ref(markRaw({ component: null, props: {} }));
 
 
 const state = reactive({
-  checkedCategories: ["Event", "Exam", "Class", "Invites"],
+  checkedCategories: ["Event", "Exam", "Class", "Invites", "Study", "CCA", "Personal"],
 });
 
 const toggleModal = (component, props) => {
