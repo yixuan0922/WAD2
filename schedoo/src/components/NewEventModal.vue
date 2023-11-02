@@ -48,7 +48,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="location" class="form-label"
+            <label for="autocomplete" class="form-label"
               >Location or Video Call</label
             ><br />
             <div
@@ -57,16 +57,18 @@
               style="width: 100%"
             >
               <input
-                id="location"
+                id="autocomplete"
                 type="text"
                 class="form-control"
                 placeholder="Enter Location or Video Call link"
+                ref="location"
               />
-              <i
+              <!-- <i
                 aria-hidden="true"
                 class="dot circle outline link icon"
                 id="locator-button"
-              ></i>
+                @click="locatorButtonPressed()"
+              ></i> -->
             </div>
           </div>
         </div>
@@ -237,6 +239,8 @@
 
 <script>
 // import { Store } from 'vuex';
+/* eslint-disable */
+import { Loader } from "@googlemaps/js-api-loader";
 
 export default {
   data: () => ({
@@ -249,6 +253,7 @@ export default {
     newInvitee: "",
     addInviteeErr: "",
     category: "event",
+    selectedCoord: {}
   }),
   methods: {
     clearError() {
@@ -306,13 +311,10 @@ export default {
       this.$store.dispatch("addEvent", event);
       this.$emit("close-modal");
     },
-    loadScripts(sources) {
-      sources.forEach((src) => {
-        const script = document.createElement("script");
-        script.src = src;
-        script.async = true;
-        document.head.appendChild(script);
-      });
+    getCoord(placeObj) {
+      const obj = placeObj.geometry.location
+      this.selectedCoord = {lat: obj.lat(), lng: obj.lng()}
+      console.log(this.selectedCoord)
     },
     loadStylesheets(links) {
       links.forEach((href) => {
@@ -322,24 +324,6 @@ export default {
         document.head.appendChild(link);
       });
     },
-
-    // addEvent() {
-    //     this.$store.commit("ADD_EVENT", {
-    //     id: (new Date()).getTime(),
-    //     title: this.title,
-    //     start: this.start,
-    //     end: this.end,
-    //     startTime: this.startTime,
-    //     endTime: this.endTime,
-    //     allDay: this.allDay
-    // });
-    //     // this.$store.commit("UPDATE_EVENT", {
-    //     //     id: this.event.id,
-    //     //     title: this.title,
-    //     //     start: this.start,
-    //     //     end: this.end,
-    //     // })
-    // }
   },
   props: {
     text: String,
@@ -353,11 +337,48 @@ export default {
     this.endTime = formatTime(this.event.end);
     this.allDay = Boolean(this.event.allDay);
     this.$store.state.invitees = [];
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          loader.load().then(async () => {
+            const { Map } = await google.maps.importLibrary("maps");
+
+            const autocomplete = new google.maps.places.Autocomplete(
+              document.getElementById("autocomplete"),
+              {
+                bounds: new google.maps.LatLngBounds(
+                  // current coords
+                  new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+                ),
+              }
+            );
+
+            autocomplete.addListener("place_changed", () => {
+              // cyx store in firebase pls thanks :)
+              console.log(autocomplete.getPlace());
+              this.getCoord(autocomplete.getPlace())
+            });
+          });
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+    } else {
+      console.log("Your browser does not support Geolocation");
+    }
+
+    const loader = new Loader({
+      apiKey: "AIzaSyDRsyQe3YsYSKVP_AQakrP7nSiZ4wAE7ik",
+      libraries: ["places"],
+    });
+
     // Load your external scripts dynamically when the component is mounted
-    this.loadScripts([
-      "https://www.googletagmanager.com/gtag/js?id=UA-23581568-13",
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places&callback=Function.prototype",
-    ]);
+    // this.loadScripts([
+    //   "https://www.googletagmanager.com/gtag/js?id=UA-23581568-13",
+    //   "https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places&callback=Function.prototype",
+    // ]);
 
     // Load your stylesheets dynamically
     this.loadStylesheets([
