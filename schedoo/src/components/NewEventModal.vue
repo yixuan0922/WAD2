@@ -63,12 +63,12 @@
                 placeholder="Enter Location or Video Call link"
                 ref="location"
               />
-              <!-- <i
+              <i
                 aria-hidden="true"
                 class="dot circle outline link icon"
                 id="locator-button"
                 @click="locatorButtonPressed()"
-              ></i> -->
+              ></i>
             </div>
           </div>
         </div>
@@ -178,37 +178,42 @@
           </p> -->
 
           <!-- Add Invitees -->
-          <div class="mb-3">
-            <div class="row" v-if="category === 'event'">
-              <div class="col">
-                <label for="invitees" class="form-label">Add Invitees</label>
-              </div>
-              <div class="emails emails-input" style="display: flex">
-                <input
-                  id="emails-input"
-                  placeholder="Enter email(s) here ..."
-                  type="text"
-                  v-model="newInvitee"
-                  @input="clearError"
-                /><button
-                  class="col-2 btn btn-primary"
-                  style="width: 30px; height: 30px"
-                  @click="addInvitee"
+          <div class="mb-3" v-if="category === 'event'">
+            <label for="invitees" class="form-label">Add Invitees</label>
+            <br />
+            <div class="row mx-auto" style="width: 100%; display: flex">
+              <!-- <div style="height: 100%; display: flex; padding: 0"> -->
+              <input
+                class="col"
+                style="border-radius: 5px;"
+                id="emails-input"
+                placeholder="Enter email(s) here"
+                type="text"
+                v-model="newInvitee"
+                @input="clearError"
+                @keyup.enter="addInvitee"
+              /><button
+                class="col-2 btn btn-primary"
+                style="
+                  height: 40px;
+                  padding: 6px !important;
+                  justify-content: center;
+                "
+                @click="addInvitee"
+              >
+                +
+              </button>
+              <!-- </div> -->
+            </div>
+            <br>
+            <div class="inviteesEmail">
+                <div
+                  v-for="(invitee, index) in this.$store.state.invitees"
+                  :key="index"
                 >
-                  +
-                </button>
+                  {{ invitee.email }}
               </div>
-              <div class="inviteesEmail">
-                <ul>
-                  <li
-                    v-for="(invitee, index) in this.$store.state.invitees"
-                    :key="index"
-                  >
-                    {{ invitee.email }}
-                  </li>
-                </ul>
-                <p>{{ addInviteeErr }}</p>
-              </div>
+              <p>{{ addInviteeErr }}</p>
             </div>
             <!-- <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
             <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div> -->
@@ -253,7 +258,7 @@ export default {
     newInvitee: "",
     addInviteeErr: "",
     category: "event",
-    selectedCoord: {}
+    selectedCoord: {},
   }),
   methods: {
     clearError() {
@@ -263,6 +268,7 @@ export default {
       if (this.newInvitee) {
         // console.log(this.newInvitee);
         // this.invitees.push(this.newInvitee);
+
         console.log(this.$store.state.invitees);
         if (this.$store.state.invitees.includes(this.newInvitee)) {
           console.log(this.$store.state.invitee_exist);
@@ -312,9 +318,9 @@ export default {
       this.$emit("close-modal");
     },
     getCoord(placeObj) {
-      const obj = placeObj.geometry.location
-      this.selectedCoord = {lat: obj.lat(), lng: obj.lng()}
-      console.log(this.selectedCoord)
+      const obj = placeObj.geometry.location;
+      this.selectedCoord = { lat: obj.lat(), lng: obj.lng() };
+      console.log(this.selectedCoord);
     },
     loadStylesheets(links) {
       links.forEach((href) => {
@@ -349,7 +355,10 @@ export default {
               {
                 bounds: new google.maps.LatLngBounds(
                   // current coords
-                  new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+                  new google.maps.LatLng(
+                    position.coords.latitude,
+                    position.coords.longitude
+                  )
                 ),
               }
             );
@@ -357,7 +366,7 @@ export default {
             autocomplete.addListener("place_changed", () => {
               // cyx store in firebase pls thanks :)
               console.log(autocomplete.getPlace());
-              this.getCoord(autocomplete.getPlace())
+              this.getCoord(autocomplete.getPlace());
             });
           });
         },
@@ -532,7 +541,7 @@ input[type="text"] {
 }
 
 /* add invitees */
-.emails.emails-input {
+/* .emails.emails-input {
   max-height: inherit;
   border-radius: 0.25rem;
   background: #fff;
@@ -541,7 +550,7 @@ input[type="text"] {
   line-height: 1.5rem;
   cursor: text;
   overflow: auto;
-}
+} */
 
 .emails.emails-input input {
   border: 0;
