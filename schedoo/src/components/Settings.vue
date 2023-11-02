@@ -34,7 +34,9 @@
 
             <div class="save">
                 <!-- Save into database -->
-                <button type="button" @click="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2">Save</button>
+                <button type="button" @click="set()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2 mr-2" v-if="!this.categories">Set</button>
+                <button type="button" @click="reset()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2 mr-2" v-if="this.categories">Reset</button>
+                <button type="button" @click="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2" v-if="this.categories">Save</button>
             </div>
         </div>
     </body>
@@ -122,13 +124,39 @@ export default {
             console.log(this.categories);
             this.store.dispatch('updateProfileGoals', this.categories);
         },
+        set() {
+            // Save to firebase
+            // able to store same format as categories?
+            this.categories = [
+            // Am assuming personal includes sleep
+            {'name': "Personal", 'value': 4},
+            {'name': "Study", 'value': 4},
+            {'name': "CCA", 'value': 4},
+            {'name': "Classes", 'value': 4},
+            {'name': "Work", 'value': 4},
+            {'name': "Meetings", 'value': 4},]
+        },
+
+        reset() {
+            // Save to firebase
+            // able to store same format as categories?
+            this.categories = [
+            // Am assuming personal includes sleep
+            {'name': "Personal", 'value': 4},
+            {'name': "Study", 'value': 4},
+            {'name': "CCA", 'value': 4},
+            {'name': "Classes", 'value': 4},
+            {'name': "Work", 'value': 4},
+            {'name': "Meetings", 'value': 4},]
+            this.store.dispatch('updateProfileGoals', this.categories);
+        },
     }, 
     mounted() {
         // Get the goals from firebase //use to dispatch
        this.store.dispatch('fetchProfileGoals').then(doc => {
             this.categories = doc;
        }); 
-    }
+    }, 
 
 }
 </script>

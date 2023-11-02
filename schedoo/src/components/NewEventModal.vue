@@ -12,10 +12,20 @@
           <div class="row">
             Category: 
             <select v-model="category">
-              <option value="event">Event</option>
-              <option value="class">Class</option>
-              <option value="exams">Exams</option>
-              <option value="invites">Invites</option>
+              <!-- #87bba2 light green -->
+              <option value="event">Event</option> 
+              <!-- #009688 darkgreen lolipop -->
+              <option value="study">Study</option> 
+              <!-- #70c1b3 Cyan -->
+              <option value="cca">CCA</option>
+              <!-- #8D6298 Purple -->
+              <option value="personal">Personal</option>
+              <!-- #a6a2a2 brown grey -->
+              <!-- <option value="class">Classes</option> -->
+              <!-- #dec3c3 pink -->
+              <!-- <option value="exam">Exam</option>-->
+              <!-- #4d648d blueberry blue -->
+              <!-- <option value="invite">Invite</option> -->
             </select>
           </div>
           <div class='row'> 
@@ -100,15 +110,15 @@ export default {
                 end.setHours(endHours, endMinutes);
             }
 
-            
-
-            let event = {
+           let event = {
                 id: (new Date()).getTime(),
                 title: this.title,
                 start: start,
                 end: end,
                 allDay: this.allDay,
                 invitees: [],
+                // color: color,
+                category: this.category,
             };
 
             for (let invitee of this.$store.state.invitees) {
