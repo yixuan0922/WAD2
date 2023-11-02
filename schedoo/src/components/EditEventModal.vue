@@ -48,6 +48,7 @@
           endTime: "", 
           allDay: false,
           invitees: [],
+          category: '',
       }),
       methods: {
           updateEvent () {
@@ -61,6 +62,11 @@
                   start.setHours(startHours, startMinutes);
                   end.setHours(endHours, endMinutes);
               }
+              else {
+                if (start === end) {
+                  end.setDate(end.getDate() + 1);
+                }
+              }
 
               let event = {
                   id: this.event.id,
@@ -69,6 +75,7 @@
                   end: end,
                   allDay: this.allDay,
                   invitees: this.invitees,
+                  category: this.category,
               };
               // this.$store.commit("UPDATE_EVENT", event);
               this.$store.dispatch('updateEvent', event);
@@ -87,6 +94,7 @@
             let event = {
               id : this.event.id, 
               invitees: this.invitees,
+              category: this.event.category,
             }
             this.$store.dispatch('deleteEvent', event);
             // this.$store.commit("DELETE_EVENT", this.event.id)
@@ -104,6 +112,8 @@
         this.endTime = formatTime(this.event.end);
         this.allDay = Boolean(this.event.allDay);
         this.invitees = this.event.invitees;
+        this.category = this.event.category;
+        console.log(this.category);
     }
   };
   

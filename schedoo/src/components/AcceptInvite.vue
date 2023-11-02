@@ -27,6 +27,7 @@
   </template>
   
   <script>
+
   
   export default {
       data: () => ({
@@ -40,43 +41,45 @@
           invitorId: '', 
           invitorEmail: '', 
           location:'',
+          category: '',
       }),
       methods: {
-          updateEvent () {
-              let start = new Date(this.start);
-              let end = new Date(this.end);
+          // updateEvent () {
+          //     let start = new Date(this.start);
+          //     let end = new Date(this.end);
 
-              if (!this.allDay) {
-                  let [startHours, startMinutes] = this.startTime.split(':');
-                  let [endHours, endMinutes] = this.endTime.split(':');
+          //     if (!this.allDay) {
+          //         let [startHours, startMinutes] = this.startTime.split(':');
+          //         let [endHours, endMinutes] = this.endTime.split(':');
 
-                  start.setHours(startHours, startMinutes);
-                  end.setHours(endHours, endMinutes);
-              }
+          //         start.setHours(startHours, startMinutes);
+          //         end.setHours(endHours, endMinutes);
+          //     }
 
 
 
-              let event = {
-                  id: this.event.id,
-                  title: this.title,
-                  start: start,
-                  end: end,
-                  allDay: this.allDay,
-                  invitees: this.invitees,
-                  invitorId: this.invitorId,
-                  invitorEmail: this.invitorEmail,
-              };
+          //     let event = {
+          //         id: this.event.id,
+          //         title: this.title,
+          //         start: start,
+          //         end: end,
+          //         allDay: this.allDay,
+          //         invitees: this.invitees,
+          //         invitorId: this.invitorId,
+          //         invitorEmail: this.invitorEmail,
+          //         category: this.category,
+          //     };
 
-              console.log(event);
+          //     console.log(event);
 
-              // this.$store.commit("UPDATE_EVENT", {
-              //     id: this.event.id,
-              //     title: this.title,
-              //     start: this.start,
-              //     end: this.end,
-              // })
-              this.$emit('close-modal');
-          },
+          //     // this.$store.commit("UPDATE_EVENT", {
+          //     //     id: this.event.id,
+          //     //     title: this.title,
+          //     //     start: this.start,
+          //     //     end: this.end,
+          //     // })
+          //     this.$emit('close-modal');
+          // },
           load () {
             // console.log(this.location);
             const currUserId = this.$store.state.profileId;
@@ -106,8 +109,13 @@
                   invitees: this.invitees,
                   invitorId: this.invitorId,
                   invitorEmail: this.invitorEmail,
+                  category: this.category,
               };
-            // console.log(event);
+
+              console.log(event);
+
+
+              
             this.$store.dispatch("acceptInvite", event);
             this.$emit('close-modal');
           },
@@ -127,6 +135,9 @@
 
         this.invitorId = this.event.invitorId;
         this.invitorEmail = this.event.invitorEmail;
+
+        this.category = this.event.category;
+        console.log(this.category);
     }
   };
   

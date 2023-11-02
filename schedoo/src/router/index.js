@@ -8,6 +8,7 @@ import Settings from '../views/SettingsView.vue';
 // import CreateEvent from '/src/components/CreateEvent.vue';
 import CalendarView from '../views/CalendarView.vue';
 import CrEvent from '../components/CrEvent.vue';
+import Home from '../views/Home.vue';
 // import Calendar from '../components/Calendar.vue';
 import Login2 from '../views/Login2.vue';
 import CommonLoc from '../views/CommonLoc.vue';
@@ -82,6 +83,11 @@ const routes = [
     path: "/settings",
     name: "Settings",
     component: Settings,
+  }, 
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
   }
 ];
 

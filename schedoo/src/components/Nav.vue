@@ -6,96 +6,90 @@ import {RouterLink, RouterView} from 'vue-router';
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9b58d; height: 70px; "
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f7dfc2"
 >
     <div class="container">
-        <a class="navbar-brand" id="navBarLogo" href="#"><img src="@/assets/navschedoo.png" width="125"></a>
+        <!-- <a class="navbar-brand" id="navBarLogo" href="#"></a> -->
+          <router-link class="nav-link" :to="{name: 'Landing'}"><img src="@/assets/navschedoo.png" height="40"></router-link>
 
-        <div class="navbar-text me-auto align-bottom justify-content-end" id="wholeProfile">
-            <!-- <li class="nav-item"> -->
-            <!-- <RouterLink class="nav-link text-white" to="#"> Home </RouterLink> -->
-            <!-- <router-link class="nav-link" :to="{name: 'Login'}">Login</router-link>
-            </li> -->
-            <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle">
-                <span >{{this.$store.state.profileInitials}}</span>
-                <div class="profile-menu" id="profileMenu" hidden>
-                    <div class="info">
-                        <p class="initials">{{this.$store.state.profileInitials}}</p>
-                        <div class="right">
-                            <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
-                            <p>{{this.$store.state.profileUsername}} </p>
-                            <p>{{this.$store.state.profileEmail}} </p>
-                        </div>
-                    </div>
-                    <div class="options">
-                        <div class="option">
-                            <router-link class-="option" to="#"
-                            style="color: black; text-decoration: none;"
-                            >
-                                <userIcon class="icon"/>
-                                <p
-                                style="padding-top: 10px"
-                                >Profile</p>
-                            </router-link>
-                        </div>
-                        <div @click='signOut' class="option">
-                            <router-link class="option" to="#"
-                            style="color: black; text-decoration: none"
-                            >
-                                <!-- <userIcon class="icon"/> -->
-                                <p
-                                >Sign Out</p>
-                            </router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <button class="navbar-toggler" type="button" 
         data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
         aria-controls="navbarSupportedContent" aria-expanded="false" 
-        aria-label="Toggle navigation">
+        aria-label="Toggle navigation"
+        style="position: absolute; top: 10px; right: 100px;">
         <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <span  class="navbar-text" >
+        <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle" style="position: absolute; top: 7px; right: 30px;">
+        {{this.$store.state.profileInitials}}
+        <div class="profile-menu" id="profileMenu" hidden>
+              <div class="info">
+                  <p class="initials">{{this.$store.state.profileInitials}}</p>
+                  <div class="right">
+                      <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
+                      <p>{{this.$store.state.profileUsername}} </p>
+                      <p>{{this.$store.state.profileEmail}} </p>
+                  </div>
+              </div>
+              <div class="options">
+                  <div class="option">
+                      <router-link class-="option" :to="{name: 'Settings'}"
+                      style="color: black; text-decoration: none;"
+                      >
+                          <userIcon class="icon"/>
+                          <p
+                          style="padding-top: 10px"
+                          >Profile</p>
+                      </router-link>
+                  </div>
+                  <div @click="signOut" class="option">
+                      <router-link class="option" to="#"
+                      style="color: black; text-decoration: none"
+                      >
+                          <!-- <userIcon class="icon"/> -->
+                          <p
+                          >Sign Out</p>
+                      </router-link>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      </span>
+
+
+        <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 40px">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item">
-              <a class="nav-link active" href="#">Home</a>
+              <!-- <a class="nav-link active">My Calendar</a> -->
+              <router-link class="nav-link" :to="{name: 'Calendar'}"
+              style="color: black; text-decoration: none;"
+              >My Calendar</router-link>
               </li>
               <li class="nav-item">
-              <!-- <a class="nav-link active">My Calendar</a> -->
-              <router-link class="nav-link" :to="{name: 'Calendar'}">My Calendar</router-link>
+              <a class="nav-link active" href="#">Insights</a>
               </li>
-              <li class="nav-item dropdown">
-                  <a class="nav-link active dropdown-toggle" 
-                  href="#" 
-                  id="navbarDropdown" 
-                  role="button" 
-                  data-bs-toggle="dropdown" 
-                  aria-expanded="false">
-                      Schedule
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">CCAs</a></li>
-                      <li><a class="dropdown-item" href="#">Meetings</a></li>
-                      <li><a class="dropdown-item" href="#">Classes</a></li>
-                      <li><a class="dropdown-item" href="#">Outings</a></li>
-                  </ul>
+              <li class="nav-item">
+              <a class="nav-link active" href="#">Focus</a>
               </li>
           </ul>
-          <span class="navbar-text" style="right: 5%">
+          <!-- <span class="navbar-text" style="right: 5%">
               <router-link @click='signOut' class="nav-link" to="#"
               style="color: black; text-decoration: none;"
               >Sign Out</router-link>
-          </span>
+          </span> -->
         </div>
 
-        <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+        <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent"
+        style="height: 40px">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item">
-              <a class="nav-link active" href="#">About Us</a>
+              <a class="nav-link active" @click="toAbout">About Us</a>
               </li>
           </ul>
           <span  class="navbar-text" style="right: 5%">
@@ -107,36 +101,6 @@ import {RouterLink, RouterView} from 'vue-router';
     </div>
 </nav>
 
-            <!-- <ul class="nav navbar-nav">
-            <li class="nav-item">
-                <a
-                class="nav-link text-dark"
-                href="https://twitter.com"
-                >
-                <i class="fab fa-twitter"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                class="nav-link text-dark mx-2"
-                href="https://www.facebook.com"
-                >
-                <i class="fab fa-facebook"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                class="nav-link"
-                href="https://www.instagram.com"
-                >
-                <i class="fab fa-instagram"></i>
-                </a>
-            </li>
-            </ul> -->
-        <!-- </div>
-        
-    </div>
-</nav> -->
 </template>
 
 <script>
@@ -167,7 +131,14 @@ export default {
       auth.signOut();
       // window.location.reload();
       window.location.href = "/login";
-    }
+    },
+
+
+    toAbout() {
+      console.log("Button clicked"); // Check if this message is logged
+      const about = document.getElementById("about-us");
+      about.scrollIntoView({ behavior: "smooth" });
+    },
 
     // signOut() {
     //   const auth = getAuth();
@@ -205,13 +176,15 @@ export default {
     top: 0;
     width: 100%;
     z-index: 10;
-    height: 70px;
+    min-height: 50px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
 }
 .nav-link {
     font-weight: bold;
-    font-size: large;
+    font-size: medium;
     font-family: system-ui;
     letter-spacing: 0.05em;
+    transform: translateY(-3px);
 }
 
 li {
@@ -219,29 +192,37 @@ li {
   margin-top: 5px !important;
 }
 
+.circular-button {
+      width: 40px; /* Set the width and height to the same value to make it circular */
+      height: 40px;
+      border-radius: 50%; /* Makes the button circular */
+      font-size: small;
+    }
+
 .profile {
   position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   /* right: 2%;
   top: 10px; */
+  margin: auto;
   margin-left: 20px;
   z-index: 1;
-  font-size: large;
+  font-size: small;
   border-radius: 50%;
   color: #ffff;
   background-color: #303030;
 
   .profile-menu {
     position: absolute;
-    top: 70px;
-    left: -110px;
+    top: 60px;
+    right: 0px;
     width:260px;
-    background-color: #e3cf62;
+    background-color: #e9b58d;
     color: black !important;
     font-weight: bold;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
