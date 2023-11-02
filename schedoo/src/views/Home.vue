@@ -85,7 +85,7 @@ export default {
       weather: {
         temp: null, // Initialize with null or a default value
       },
-      spotifyEmbedHtml: `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator" width="120%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" margin-left=-50px></iframe>`,
+      spotifyEmbedHtml: `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator" width="120%" height="352" box-shadow="0 20px 50px rgba(0, 5, 24, 0.4)" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" margin-left=-50px></iframe>`,
     };
   },
 
@@ -300,6 +300,8 @@ body {
   border-radius: 20px;
   padding: 40px 35px;
   text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgba(0, 5, 24, 0.4);
 }
 .scrollable-container {
   height: 100vh;
@@ -332,7 +334,7 @@ body {
   padding: 40px 20px;
   position: relative;
   border-radius: 8px;
-  box-shadow: 0 20px 50px rgba(0, 5, 24, 0.4);
+
 }
 .display {
   width: 100%;
