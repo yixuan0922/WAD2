@@ -11,7 +11,8 @@
         <div class="card sliderMain" style="background-color: white">
 
             <!-- Goal setting for each category -->
-            <p class="subtext" style="font-size: small; text-decoration: underline;">Time Percentage for Each Category</p>
+            <p class="subtext" style="font-size: small; text-decoration: underline; margin-bottom: 10px
+            ;">Time Percentage for Each Category</p>
 
             <div :key="cat.name" v-for="cat in categories">
 
@@ -33,13 +34,21 @@
 
             <div class="save">
                 <!-- Save into database -->
-                <button type="button" onclick="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2">Save</button>
+                <button type="button" @click="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2">Save</button>
             </div>
         </div>
     </body>
 </template>
 <script>
+
+import { useStore } from "vuex";
+
+
 export default {
+    setup() {
+        const store = useStore();
+        return {store};
+    },
     name: "Settings",
     data() { 
     return { 
@@ -110,8 +119,17 @@ export default {
         save() {
             // Save to firebase
             // able to store same format as categories?
+            console.log(this.categories);
+            this.store.dispatch('updateProfileGoals', this.categories);
         },
+    }, 
+    mounted() {
+        // Get the goals from firebase //use to dispatch
+       this.store.dispatch('fetchProfileGoals').then(doc => {
+            this.categories = doc;
+       }); 
     }
+
 }
 </script>
 <style scoped>
@@ -139,6 +157,7 @@ p {
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
     border-radius: 25px;
+    transform: translateX(-23px);
     
 }
 
@@ -151,7 +170,8 @@ p {
     /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
     font-weight: bold;
     font-size: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+    color: black !important;
 }
 
 .sliderMain {
@@ -162,7 +182,7 @@ p {
 
     /* original settings style */
     width: 60%;
-    margin: auto;
+    padding-bottom: 10px;
     /* margin-top: 30px; */
     transform: translate(0,30px);
     border: 2px solid grey;

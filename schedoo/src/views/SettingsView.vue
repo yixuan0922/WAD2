@@ -1,7 +1,7 @@
 <template>
     <div class="SettingsView">
       <Nav/>
-      <Settings/>
+      <Settings class="settings"/>
     </div>
   </template>
   
@@ -20,3 +20,9 @@
     },
   };
   </script>
+
+<style>
+.settings {
+  margin-top: 0px;
+}
+</style>
