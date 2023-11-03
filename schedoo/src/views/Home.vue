@@ -1,4 +1,7 @@
 <template>
+  <div>
+  <Nav/>
+  <div class="dashboard-content">
   <div class="surface-ground px-4 py-5 md:px-6 lg:px-8 scrollable-container">
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-12">
@@ -72,12 +75,17 @@
     </div>
   
       </div>
-    
+    </div>
+    </div>
 </template>
 
 <script>
+import Nav from "@/components/Nav.vue";
 import Plotly from "plotly.js-dist-min";
 export default {
+  components:{
+    Nav,
+  },
   data() {
     return {
       date: new Date(),
@@ -377,6 +385,9 @@ input[type="button"]#equal {
 }
 input[type="button"][value="0"] {
   grid-column: span 2;
+}
+.dashboard-content{
+  padding-top:40px;
 }
 
 </style>
