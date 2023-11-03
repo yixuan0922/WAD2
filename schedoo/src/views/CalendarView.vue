@@ -19,10 +19,23 @@ export default {
     Nav,
     Calendar,
   },
+  mounted() {
+    this.applyStyles();
+  },
+  methods: {
+    applyStyles() {
+      // Get the <html> element
+      const htmlElement = document.querySelector('html');
+
+      // Apply the styles
+      htmlElement.style.overflowY = 'hidden';
+    }
+  }
 };
 </script>
 <style>
 .calendar {
   margin-top: 50px;
 }
+
 </style>
