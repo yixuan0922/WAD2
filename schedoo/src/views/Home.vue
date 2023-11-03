@@ -573,7 +573,7 @@ export default{
     
 }
 .col{
-    display:flex;
+    // display:flex;
     align-items:center;
     text-align:left;
 }

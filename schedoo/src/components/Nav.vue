@@ -10,7 +10,7 @@ import {RouterLink, RouterView} from 'vue-router';
 >
     <div class="container">
         <!-- <a class="navbar-brand" id="navBarLogo" href="#"></a> -->
-          <router-link class="nav-link" :to="{name: 'Landing'}"><img src="@/assets/navschedoo.png" height="40"></router-link>
+          <router-link class="nav-link" :to="{name: 'Landing'}"><img src="@/assets/navschedoo.png" style="height:40px !important"></router-link>
 
 
 

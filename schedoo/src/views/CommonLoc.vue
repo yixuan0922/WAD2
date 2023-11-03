@@ -1,57 +1,60 @@
 <template>
   <div id="app">
+    <Nav></Nav>
     <div class="outer-container">
       <div class="inner-container">
-        <div class="col-6 side-bar">
-           
-           <div class="card" style="width: 100%;"> 
-               <img src="https://api-private.atlassian.com/users/5f116c2970b8a90025c6efa9/avatar?initials=public" class="card-img-top" alt="..."> 
-               <div class="card-body"> 
-                   <h5 class="card-title">Card title</h5> 
-                   <p class="card-text">Some quick example text to make up the bulk of the card's content.</p>  
-               </div> 
-               <div class="card-body"> 
-                   <a href="#" class="card-link">Card link</a> 
-                   <a href="#" class="card-link">Another link</a> 
-               </div> 
-           </div> 
-           <!-- BS card: End --> 
-          
-        </div>
-
-        <div class="col right-side" style="display: block; margin-right: 40px">
-          <div class="row" id="map" style="margin-bottom: 5px"></div>
-          <div class="row">
-            <h2 class="header">Recommended Locations:</h2>
+        <div class="col-5 left-side" >
+          <div
+            class="container row map-outer"
+            style="margin-bottom: 15px; z-index: 10"
+          >
+            <div id="map" style="margin-bottom: 20px; z-index: 10"></div>
           </div>
-          <div class="row">
+
+          <div class="container row" style="height: 300px; overflow-y: auto;">
             <div
-              v-for="place in placesList"
-              :key="place.name"
-              style="padding-left: 2px"
+              v-for="(event, id) in EventList"
+              :key="id"
+              class="col-md-12 col-lg-6"
+              style="margin-bottom: 20px"
             >
+              <EventCard @click="getMidCoord(); displayEventDetails()" ></EventCard>
+            </div>
+          </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="inner-container" style="display: block">
+          <div class="col right-side" style="overflow-y: auto !important; overflow-x: hidden;">
+            <div class="row" style="margin: auto;">
               <div
-                class="row loc"
-                @click="
-                  recenterMap(
-                    place.geometry.location,
-                    place.name,
-                    place.vicinity,
-                    map
-                  );
-                  selectPlace(place);
-                "
+                v-for="place in placesList"
+                :key="place.name"
+                style="padding-left: 2px;"
+                class="place"
               >
-                <div class="col-3 loc-img" v-if="checkPhoto(place)">
-                  <img id="img" :src="imageSource" />
-                </div>
-                <div class="col loc-details">
-                  <p class="loc-name">{{ place.name }}</p>
-                  <p class="loc-address">{{ place.vicinity }}</p>
+                <div
+                  class="row loc"
+                  @click="
+                    recenterMap(
+                      place.geometry.location,
+                      place.name,
+                      place.vicinity,
+                      map
+                    );
+                    selectPlace(place);
+                  "
+                >
+                  <div class="col-3 loc-img" v-if="checkPhoto(place)">
+                    <img id="img" :src="imageSource" />
+                  </div>
+                  <div class="col loc-details">
+                    <p class="loc-name">{{ place.name }}</p>
+                    <p class="loc-address">{{ place.vicinity }}</p>
+                  </div>
                 </div>
               </div>
+              <button @click="setLocation(selectedPlace)" style="width: 80%; margin: auto;">Set Location</button>
             </div>
-            <button @click="setLocation(selectedPlace)">Set Location</button>
           </div>
         </div>
       </div>
@@ -63,11 +66,15 @@
 /* eslint-disable no-undef */
 import { Loader } from "@googlemaps/js-api-loader";
 import { onMounted, ref } from "vue";
+import Nav from "@/components/Nav.vue";
+import EventCard from "@/components/EventCard.vue";
 
 let placesList = ref([]);
 let map = ref("");
 let selectedPlace = {};
 let imageSource = "";
+let EventList = [(0, 0), (1, 1), (2, 2), (3,3), (4,4)];
+let midCoord = {};
 
 const loader = new Loader({
   apiKey: process.env.VUE_APP_GOOGLE_API_KEY,
@@ -75,7 +82,19 @@ const loader = new Loader({
 });
 
 onMounted(async () => {
-  var midCoord = { lat: 1.3005, lng: 103.8522 };
+  if (navigator.geolocation) {
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+
+      midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
+    } catch (error) {
+      console.error(error.message);
+    }
+  } else {
+    console.log("Your browser does not support geolocation API");
+  }
 
   await loader.load();
   const gmap = new google.maps.Map(document.getElementById("map"), {
@@ -174,35 +193,62 @@ function checkPhoto(place) {
 
   return imageSource;
 }
+
+//retrieves event data and calc mid coord
+function getMidCoord(coordList) {
+  var latCount = 0;
+  var longCount = 0;
+  for (var coord of coordList) {
+    latCount += coord.lat;
+    longCount += coord.lng;
+  }
+
+  var midLat = latCount / coordList.length;
+  var midLong = longCount / coordList.length;
+
+  midCoord = { lat: midLat, long: midLong }
+
+  return setMarker(midCoord, map);
+}
 </script>
 
 <style>
 body {
   padding-top: 0 !important;
 }
+.right-side {
+  margin-top: 25px !important;
+  margin-right: 80px !important;
+  height: 100%;
+}
+
+.map-outer {
+  position: sticky !important;
+  top: 0px;
+  padding-top: 20px;
+  background-color: white;
+}
 
 #map {
   border: transparent;
   border-radius: 20px;
-  background-color: pink;
+  background-color: transparent;
   width: 100%;
   height: 400px;
   margin: auto;
   object-fit: contain;
   display: flex;
-  position: sticky !important;
-  top: 40px;
 }
 
 #map h3 {
   margin: auto;
 }
 
-.header {
+.locHeader {
   text-align: left;
   font-weight: bold;
   margin-top: 0px;
-  padding-top: 400px !important;
+  /* padding-top: 400px !important; */
   padding-bottom: 10px !important;
   color: rgb(55, 51, 51);
   margin-bottom: 20px;
@@ -213,13 +259,14 @@ body {
   padding-bottom: 3px;
 }
 
-.side-bar {
+.left-side {
   margin-top: 28px !important;
-  margin-left: 40px;
+  margin-left: 80px !important;
 }
 
 .inner-container {
   display: flex;
+  height: 100vh;
 }
 
 .outer-container {
@@ -245,8 +292,16 @@ body {
   height: 100%;
 }
 
-.row.loc {
+.row .loc {
   margin: 10px !important;
+}
+
+.row .loc:hover {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.place:hover {
+  background-color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .loc-details {
