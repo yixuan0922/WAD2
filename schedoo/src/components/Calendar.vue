@@ -103,6 +103,42 @@
                 Invites</label
               >
             </div>
+            <div class="form-check studies">
+              <label for="studies">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="study"
+                  value="Study"
+                  v-model="state.checkedCategories"
+                />
+                Study</label
+              >
+            </div>
+            <div class="form-check cca">
+              <label for="cca">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="cca"
+                  value="CCA"
+                  v-model="state.checkedCategories"
+                />
+                CCA</label
+              >
+            </div>
+            <div class="form-check personal">
+              <label for="personal">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="personal"
+                  value="Personal"
+                  v-model="state.checkedCategories"
+                />
+                Personal</label
+              >
+            </div>
           </div>
           <hr />
           <div class="invite-container">
@@ -157,7 +193,7 @@ const modalContent = ref(markRaw({ component: null, props: {} }));
 
 
 const state = reactive({
-  checkedCategories: ["Event", "Exam", "Class", "Invites"],
+  checkedCategories: ["Event", "Exam", "Class", "Invites", "Study", "CCA", "Personal"],
 });
 
 const toggleModal = (component, props) => {
@@ -183,6 +219,7 @@ const newEvent = () => {
     },
   });
 };
+
 
 // const renderEvent = (arg) => {
 //     console.log(arg.el);
@@ -239,6 +276,7 @@ const handleEventClick = (arg) => {
       end: arg.event.end,
       allDay: arg.allDay,
       invitees: arg.event.extendedProps.invitees,
+      category: arg.event.extendedProps.category,
     },
   });
 };
@@ -435,9 +473,10 @@ const upload = () => {
 
 const acceptInvite = (event) => {
   console.log("acceptInvite", event.start);
+  console.log(event.category);
   toggleModal(AcceptInvite, {
     text: "This is from the component",
-    // event: arg.event
+    // event
     event: {
       id: event.id,
       title: event.title,
@@ -448,10 +487,9 @@ const acceptInvite = (event) => {
 
       invitorId: event.invitorId, 
       invitorEmail: event.invitorEmail,
+      category: event.category,
     },
   });
-
-  // store.dispatch("acceptInvite", event);
 };
 
 const declineInvite = (event) => {
