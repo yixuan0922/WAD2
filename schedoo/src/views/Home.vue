@@ -33,33 +33,11 @@
           <!-- <div class="piechart-container" style="width: 400px; height: 400px;">
             <div id="pieChart" style="width: 200px;"></div> -->
           <!-- </div> -->
-          <div class="calculator">
-            <div class="display">
-              <input type="text" placeholder="0" id="input" disabled />
-            </div>
-            <div class="buttons">
-              <!-- Full Erase -->
-              <input type="button" value="AC" id="clear" />
-              <!-- Erase Single Value -->
-              <input type="button" value="DEL" id="erase" />
-              <input type="button" value="/" class="input-button" />
-              <input type="button" value="*" class="input-button" />
-              <input type="button" value="7" class="input-button" />
-              <input type="button" value="8" class="input-button" />
-              <input type="button" value="9" class="input-button" />
-              <input type="button" value="-" class="input-button" />
-              <input type="button" value="6" class="input-button" />
-              <input type="button" value="5" class="input-button" />
-              <input type="button" value="4" class="input-button" />
-              <input type="button" value="+" class="input-button" />
-              <input type="button" value="1" class="input-button" />
-              <input type="button" value="2" class="input-button" />
-              <input type="button" value="3" class="input-button" />
-              <input type="button" value="=" id="equal" />
-              <input type="button" value="0" class="input-button" />
-              <input type="button" value="." class="input-button" />
-            </div>
-        </div>
+          <div>
+          <button class="calculatorButton" @click="toggleCalculator">Calculator</button>
+          <Calculator v-if="showCalculator"/>
+          
+      </div>
       </div>
       <div class="col-4 md:col-6 lg:col-3">
         <!-- <div class="surface-card shadow-2 p-3 border-round">
@@ -82,9 +60,13 @@
 <script>
 import Nav from "@/components/Nav.vue";
 import Plotly from "plotly.js-dist-min";
+import Calculator from "@/components/Calculator.vue";
+
+
 export default {
   components:{
     Nav,
+    Calculator,
   },
   data() {
     return {
@@ -94,6 +76,7 @@ export default {
         temp: null, // Initialize with null or a default value
       },
       spotifyEmbedHtml: `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator" width="120%" height="352" box-shadow="0 20px 50px rgba(0, 5, 24, 0.4)" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" margin-left=-50px></iframe>`,
+      showCalculator: false,
     };
   },
 
@@ -134,6 +117,9 @@ export default {
         console.error(error);
         // Handle error as needed
       }
+    },
+    toggleCalculator() {
+      this.showCalculator = !this.showCalculator;
     },
   },
 
@@ -216,62 +202,9 @@ export default {
     // };
 
     // Plotly.newPlot('pieChart', donutData, donutLayout)
-
-   
     
-    let equal_pressed = 0;
-//Refer all buttons excluding AC and DEL
-let button_input = document.querySelectorAll(".input-button");
-//Refer input,equal,clear and erase
-let input = document.getElementById("input");
-let equal = document.getElementById("equal");
-let clear = document.getElementById("clear");
-let erase = document.getElementById("erase");
 
-window.onload = () => {
-  input.value = "";
-};
-
-//Access each class using forEach
-button_input.forEach((button_class) => {
-  button_class.addEventListener("click", () => {
-    if (equal_pressed == 1) {
-      input.value = "";
-      equal_pressed = 0;
-    }
-    //display value of each button
-    input.value += button_class.value;
-  });
-});
-
-//Solve the user's input when clicked on equal sign
-equal.addEventListener("click", () => {
-  equal_pressed = 1;
-  let inp_val = input.value;
-  try {
-    //evaluate user's input
-    let solution = eval(inp_val);
-    //True for natural numbers
-    //false for decimals
-    if (Number.isInteger(solution)) {
-      input.value = solution;
-    } else {
-      input.value = solution.toFixed(2);
-    }
-  } catch (err) {
-    //If user has entered invalid input
-    alert("Invalid Input");
-  }
-});
-
-//Clear Whole Input
-clear.addEventListener("click", () => {
-  input.value = "";
-});
-//Erase Single Digit
-erase.addEventListener("click", () => {
-  input.value = input.value.substr(0, input.value.length - 1);
-});
+  
   },
 };
 </script>
