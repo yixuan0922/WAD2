@@ -185,7 +185,7 @@
               <!-- <div style="height: 100%; display: flex; padding: 0"> -->
               <input
                 class="col"
-                style="border-radius: 5px;"
+                style="border-radius: 5px"
                 id="emails-input"
                 placeholder="Enter email(s) here"
                 type="text"
@@ -205,15 +205,27 @@
               </button>
               <!-- </div> -->
             </div>
-            <br>
+            <br />
             <div class="inviteesEmail">
-                <div
-                  v-for="(invitee, index) in this.$store.state.invitees"
-                  :key="index"
-                >
-                  {{ invitee.email }}
+              <div
+                v-for="(invitee, index) in this.$store.state.invitees"
+                :key="index"
+              >
+                {{ invitee.email }}
               </div>
               <p>{{ addInviteeErr }}</p>
+              <button
+                @click="recommendTimeSlots"
+                :disabled="!this.$store.state.invitees.length"
+              >
+                Find Timeslot
+              </button>
+              <div class="mb-3">
+                <label for="recommendations" class="form-label"
+                  >Recommendations</label
+                >
+                <div id="recommendations"></div>
+              </div>
             </div>
             <!-- <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
             <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div> -->
@@ -329,6 +341,237 @@ export default {
         link.href = href;
         document.head.appendChild(link);
       });
+    },
+
+    formatDate(date) {
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      return `${day}-${month}-${year}`;
+    },
+
+    formatTime(date) {
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      return `${hours}:${minutes}`;
+    },
+
+    //to retrieve the array of unavailable dates of invitees and in the specific string format
+    formatInviteeEventTimes() {
+      const formattedTimes = [];
+
+      for (const invitee of this.$store.state.invitees) {
+        for (const event of invitee.events) {
+          const startTime = new Date(event.start);
+          const endTime = new Date(event.end);
+
+          const startDateString = formatDate(startTime);
+          const startTimeString = formatTime(startTime);
+          const endTimeString = formatTime(endTime);
+
+          const formattedTime = `${startDateString}: ${startTimeString}-${endTimeString}`;
+          formattedTimes.push(formattedTime);
+        }
+      }
+      // console.log(formattedTimes.join(", "));
+
+      return formattedTimes.join(", ");
+    },
+
+    //fnd available dates and timings
+    findAvailableDateTimeOptions() {
+      const unavailableSlotsInput = formatInviteeEventTimes(); //from created function to retrieve an array of unavailable dates and timings
+      const startDate = formatDate(new Date()); //start date of finding available dates and timings (current date and timing)
+      const endDate =formatDate( new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000)); //end date of finding available dates and timings
+      const startTime = "08:00"; //start time of finding available timings
+      const endTime = "22:00"; //end time of finding available timings
+      const unavailableSlots = unavailableSlotsInput
+        .split(", ")
+        .map((slot) => slot.trim());
+
+      const availableDateTimeOptions = findAvailableDateTimeOptionsInRange(
+        unavailableSlots,
+        startDate,
+        endDate,
+        startTime,
+        endTime
+      );
+
+      const availableDateTimeOptionsContainer = availableDateTimeOptions;
+      availableDateTimeOptionsContainer.innerHTML = ""; // Clear previous content
+
+      if (availableDateTimeOptions.length > 0) {
+        availableDateTimeOptions.forEach((option) => {
+          const p = document.createElement("p");
+          p.textContent = option;
+          availableDateTimeOptionsContainer.appendChild(p);
+        });
+      } else {
+        availableDateTimeOptionsContainer.textContent =
+          "No available date and time options found in the specified range.";
+      }
+    },
+
+    findAvailableDateTimeOptionsInRange(
+      unavailableSlots,
+      startDate,
+      endDate,
+      startTime,
+      endTime
+    ) {
+      const availableDateTimeOptions = [];
+      const currentDate = new Date(startDate);
+      // console.log(currentDate); 
+      const endDateTime = new Date(endDate);
+      const endHour = parseInt(endTime.split(":")[0]);
+      let endMinute = parseInt(endTime.split(":")[1]); // Declare endMinute here
+
+      while (currentDate <= endDateTime) {
+
+        for (
+          let hour = parseInt(startTime.split(":")[0]);
+          hour <= endHour;
+          hour++
+        ) {
+          const startMinute =
+            hour === parseInt(startTime.split(":")[0])
+              ? parseInt(startTime.split(":")[1])
+              : 0;
+          endMinute = hour === endHour ? endMinute : 59;
+          
+          for (let minute = startMinute; minute <= endMinute; minute++) {
+            // console.log(a);
+            const currentDateString = currentDate.toLocaleDateString();
+            const currentTimeString =
+              hour.toString().padStart(2, "0") +
+              ":" +
+              minute.toString().padStart(2, "0");
+
+            let slotUnavailable = false;
+            for (const slot of unavailableSlots) {
+              console.log(slot);
+              if (
+                slot.includes(currentDateString) &&
+                slot.includes(currentTimeString)
+              ) {
+                slotUnavailable = true;
+                break;
+              }
+            }
+            
+            // console.log(slotUnavailable);
+            if (!slotUnavailable) {
+              availableDateTimeOptions.push(
+                currentDateString + ": " + currentTimeString
+              );
+            }
+          }
+        }
+
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      // console.log(availableDateTimeOptions);
+      return availableDateTimeOptions;
+    },
+
+    //display timeslot
+    recommendTimeSlots() {
+      const selectedDate = document.getElementById("startDate").value;
+      const unavailableSlots = this.formatInviteeEventTimes();
+      const availableSlotsInput = this.findAvailableDateTimeOptionsInRange(
+        unavailableSlots, //create function to create array of unavailable slots
+        document.getElementById("startDate").value,
+        document.getElementById("endDate").value,
+        "08:00", // start of finding available dates and timings
+        "22:00" // end of finding available dates and timings
+      );
+      const meetingDuration =
+        parseInt(document.getElementById("startTime").value, 10) -
+        parseInt(document.getElementById("endTime").value, 10); //math to find the meeting duration
+      const minGap = 10; //fixed
+      const startTime = "08:00"; // start of finding available dates and timings
+      const endTime = "22:00"; // end of finding available dates and timings
+
+      // Extract the date part from the selected date
+      const datePart = selectedDate;
+      const day = new Date(selectedDate).toLocaleString("en-US", {
+        weekday: "short",
+      }); // Get the day name
+
+      const recommendations = [];
+
+      // Search for available time slots that match the selected date
+      const pattern = new RegExp(`${datePart}:\\s(\\d+:\\d+-\\d+:\\d+)`, "g");
+      let matches;
+      while ((matches = pattern.exec(availableSlotsInput)) !== null) {
+        const slot = matches[1];
+        const [start, end] = slot.split("-");
+        const [startHour, startMinute] = start.split(":").map(Number);
+        const [endHour, endMinute] = end.split(":").map(Number);
+
+        let currentTime = new Date(0);
+        currentTime.setHours(startHour, startMinute);
+
+        while (
+          currentTime.getHours() < endHour ||
+          (currentTime.getHours() === endHour &&
+            currentTime.getMinutes() < endMinute)
+        ) {
+          const nextTime = new Date(
+            currentTime.getTime() + meetingDuration * 60000
+          );
+          const currentTimeStr = `${datePart}: ${day}: ${currentTime.getHours()}:${String(
+            currentTime.getMinutes()
+          ).padStart(2, "0")}`;
+          if (
+            nextTime.getHours() < endHour ||
+            (nextTime.getHours() === endHour &&
+              nextTime.getMinutes() <= endMinute)
+          ) {
+            // Check if the current time is within the preferred time range
+            if (isWithinTimeRange(currentTime, startTime, endTime)) {
+              recommendations.push(
+                `${currentTimeStr} - ${nextTime.getHours()}:${String(
+                  nextTime.getMinutes()
+                ).padStart(2, "0")}`
+              );
+            }
+          }
+          currentTime = new Date(currentTime.getTime() + 60000 * minGap);
+        }
+      }
+
+      // Randomize the recommendations
+      recommendations.sort(() => 0.5 - Math.random());
+
+      // Get the first three recommendations
+      const randomRecommendations = recommendations.slice(0, 3);
+
+      const recommendationsContainer =
+        document.getElementById("recommendations");
+      recommendationsContainer.innerHTML = ""; // Clear previous content
+
+      if (randomRecommendations.length > 0) {
+        // Display recommendations in Bootstrap cards
+        randomRecommendations.forEach((recommendation) => {
+          const col = document.createElement("div");
+          col.className = "col-md-4"; // Use the grid system for columns (Bootstrap 4)
+          col.innerHTML = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Recommended Time Slot</h5>
+                                <p class="card-text">${recommendation}</p>
+                                <button class="btn btn-primary" onclick="selectTimeSlot('${recommendation}')">Select</button>
+                            </div>
+                        </div>
+                    `;
+
+          recommendationsContainer.appendChild(col);
+        });
+      } else {
+        recommendationsContainer.textContent =
+          "No available time slots found within the preferred time range";
+      }
     },
   },
   props: {
