@@ -103,42 +103,6 @@
                 Invites</label
               >
             </div>
-            <div class="form-check studies">
-              <label for="studies">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="study"
-                  value="Study"
-                  v-model="state.checkedCategories"
-                />
-                Study</label
-              >
-            </div>
-            <div class="form-check cca">
-              <label for="cca">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="cca"
-                  value="CCA"
-                  v-model="state.checkedCategories"
-                />
-                CCA</label
-              >
-            </div>
-            <div class="form-check personal">
-              <label for="personal">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="personal"
-                  value="Personal"
-                  v-model="state.checkedCategories"
-                />
-                Personal</label
-              >
-            </div>
           </div>
           <hr />
           <div class="invite-container">
@@ -193,7 +157,7 @@ const modalContent = ref(markRaw({ component: null, props: {} }));
 
 
 const state = reactive({
-  checkedCategories: ["Event", "Exam", "Class", "Invites", "Study", "CCA", "Personal"],
+  checkedCategories: ["Event", "Exam", "Class", "Invites"],
 });
 
 const toggleModal = (component, props) => {
@@ -219,7 +183,6 @@ const newEvent = () => {
     },
   });
 };
-
 
 // const renderEvent = (arg) => {
 //     console.log(arg.el);
@@ -276,7 +239,6 @@ const handleEventClick = (arg) => {
       end: arg.event.end,
       allDay: arg.allDay,
       invitees: arg.event.extendedProps.invitees,
-      category: arg.event.extendedProps.category,
     },
   });
 };
@@ -473,10 +435,9 @@ const upload = () => {
 
 const acceptInvite = (event) => {
   console.log("acceptInvite", event.start);
-  console.log(event.category);
   toggleModal(AcceptInvite, {
     text: "This is from the component",
-    // event
+    // event: arg.event
     event: {
       id: event.id,
       title: event.title,
@@ -487,9 +448,10 @@ const acceptInvite = (event) => {
 
       invitorId: event.invitorId, 
       invitorEmail: event.invitorEmail,
-      category: event.category,
     },
   });
+
+  // store.dispatch("acceptInvite", event);
 };
 
 const declineInvite = (event) => {
@@ -632,6 +594,7 @@ const toggleSidebar = () => {
   line-height: 1.5;
   background: #ededed;
   border-right: 1px solid #d3e2e8;
+  height: 100%;
 }
 
 .calendar-app-sidebar-section {
@@ -820,12 +783,21 @@ hr {
   visibility: hidden;
 }
 
+/* Add a CSS transition for smoother sidebar animation */
+.calendar-app-sidebar {
+  width: 360px;
+  line-height: 1.5;
+  background: #ededed;
+  border-right: 1px solid #d3e2e8;
+  transition: width 0.3s;
+}
+
 /* Add media query for screens below 1000px */
 @media (max-width: 1000px) {
   .calendar-app-sidebar {
-    visibility: hidden;
     width: 0;
   }
+ */
   .shown {
     position: absolute;
     z-index: 1;
@@ -834,6 +806,7 @@ hr {
     right:0
   }
   .calendar-app-main {
+    width: calc(100% - 50px); /* 50px is the width of the toggle button */
     position: relative;
     z-index: 0;
   }
@@ -852,3 +825,4 @@ hr {
   }
 }
 </style>
+
