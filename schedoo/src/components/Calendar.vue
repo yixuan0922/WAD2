@@ -1,7 +1,7 @@
 <template>
   <div class="calendar-app">
     <!-- <div class="toggleSidebar round-btn" @click="toggleSidebar">&lt;  &gt;</div> -->
-    <div class="calendar-app-main">
+    <div class="calendar-app-main" :class="{ shownMain: isShownMain}">
       <Fullcalendar class="app-calendar" v-bind:options="calendarOptions" />
       <Modal class="newEvent" @close="toggleModal" :modalActive="modalActive">
         <component
@@ -33,6 +33,7 @@
                 @drop.prevent="drop"
                 @change="selectedFile"
                 :my-file="myFile"
+                style="width:auto"
               ></DropZone>
               <div class="file-info m-auto p-2">File: {{ myFile.name }}</div>
               <button class="newEventButton m-auto" @click="upload">Upload</button>
@@ -45,6 +46,7 @@
         <div class="container">
           <Fullcalendar
             class="app-calendar-sidebar"
+            
             v-bind:options="calendarSidebarOptions"
           />
           <hr />
@@ -578,9 +580,11 @@ const toggleUploadContents = () => {
 };
 
 const isShown = ref(false);
+const isShownMain = ref(false);
 
 const toggleSidebar = () => {
   isShown.value = !isShown.value;
+  isShownMain.value = !isShownMain.value;
 };
 </script>
 
@@ -604,8 +608,8 @@ const toggleSidebar = () => {
   padding-bottom: 1.5em;
   padding-top: 1.3em;
   position: relative;
+  width: 100%;
   /* top: 30px; */
-  width: auto;
 }
 
 .fc {
@@ -628,6 +632,9 @@ const toggleSidebar = () => {
 
 .calendar-app {
   display: flex;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .app-calendar {
@@ -767,31 +774,13 @@ hr {
   align-items: left;
   /* cursor: pointer; */
   right:0;
-  top: 20%;
+  top: 15%;
   transform: translateX(25px);
   white-space: nowrap;
   font-size: large;
   display: flex;
   visibility: hidden;
 }
-
-/* @media (max-width: 1000px) {
-  .calendar-app-main {
-  }
-  .calendar-app-sidebar {
-    width: 0;
-
-    &--isHidden {
-      transform: translateX(-12rem);
-      transition: transform 300ms ease-out;
-      visibility: hidden;
-    }
-  }
-  .round-btn {
-    visibility: visible;
-  }
-  
-} */
 
 /* Add media query for screens below 1000px */
 @media (max-width: 1000px) {
@@ -800,18 +789,28 @@ hr {
     width: 0;
   }
   .shown {
-    display: absolute;
+    position: absolute;
     z-index: 1;
     visibility: visible;
-    width: 360px;
+    width: 275px;
+    right:0
   }
-  .calendar-app {
-    display: relative;
+  .calendar-app-main {
+    position: relative;
     z-index: 0;
   }
   .round-btn {
     visibility: visible;
     z-index: 2;
+  }
+  .app-calendar {
+    width: 100%;
+  }
+  .shownMain {
+    padding-right: 0 !important;
+  }
+  div.fc-view-harness.fc-view-harness-active {
+    height: 175px !important;
   }
 }
 </style>
