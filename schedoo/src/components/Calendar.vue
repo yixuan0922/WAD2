@@ -1,21 +1,24 @@
 <template>
   <div class="calendar-app">
+    <!-- <div class="toggleSidebar round-btn" @click="toggleSidebar">&lt;  &gt;</div> -->
     <div class="calendar-app-main">
       <Fullcalendar class="app-calendar" v-bind:options="calendarOptions" />
-      <Modal @close="toggleModal" :modalActive="modalActive">
+      <Modal class="newEvent" @close="toggleModal" :modalActive="modalActive">
         <component
           :is="modalContent.component"
           v-bind="modalContent.props"
           @close-modal="toggleModal"
         ></component>
-      </Modal>
+      </Modal> 
     </div>
-    <div class="calendar-app-sidebar">
+
+    <button class="toggleSidebar round-btn" @click="toggleSidebar">&lt;  &gt;</button>
+    <!-- Sidebar section -->
+    <div class="calendar-app-sidebar"  :class="{ shown: isShown}" >
       <div class="calendar-app-sidebar-section">
         <!-- Your calendar component here -->
         <button class="newEventButton" @click="newEvent">+ New Event</button>
         <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents" style="margin-left: 10px;">▼ Upload Timetable</button>
-
 
         <!-- Upload timetable -->
         <div id="timetableUpload">
@@ -573,6 +576,12 @@ let isUploadContentsVisible = ref(false);
 const toggleUploadContents = () => {
   isUploadContentsVisible.value = !isUploadContentsVisible.value;
 };
+
+const isShown = ref(false);
+
+const toggleSidebar = () => {
+  isShown.value = !isShown.value;
+};
 </script>
 
 <style>
@@ -594,8 +603,8 @@ const toggleUploadContents = () => {
   padding-right: 2em;
   padding-bottom: 1.5em;
   padding-top: 1.3em;
-  position: sticky;
-  top: 30px;
+  position: relative;
+  /* top: 30px; */
   width: auto;
 }
 
@@ -623,6 +632,7 @@ const toggleUploadContents = () => {
 
 .app-calendar {
   height: 86vh;
+  top: 0;
 }
 
 .fc .fc-daygrid-day.fc-day-today {
@@ -745,10 +755,63 @@ hr {
   font-size: small;
 }
 
+.round-btn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: grey; /* Dark background color */
+  color: #333; /* Text color */
+  border: none; /* Remove default button border */
+  justify-content: center;
+  align-items: left;
+  /* cursor: pointer; */
+  right:0;
+  top: 20%;
+  transform: translateX(25px);
+  white-space: nowrap;
+  font-size: large;
+  display: flex;
+  visibility: hidden;
+}
+
+/* @media (max-width: 1000px) {
+  .calendar-app-main {
+  }
+  .calendar-app-sidebar {
+    width: 0;
+
+    &--isHidden {
+      transform: translateX(-12rem);
+      transition: transform 300ms ease-out;
+      visibility: hidden;
+    }
+  }
+  .round-btn {
+    visibility: visible;
+  }
+  
+} */
+
+/* Add media query for screens below 1000px */
 @media (max-width: 1000px) {
   .calendar-app-sidebar {
     visibility: hidden;
     width: 0;
+  }
+  .shown {
+    display: absolute;
+    z-index: 1;
+    visibility: visible;
+    width: 360px;
+  }
+  .calendar-app {
+    display: relative;
+    z-index: 0;
+  }
+  .round-btn {
+    visibility: visible;
+    z-index: 2;
   }
 }
 </style>
