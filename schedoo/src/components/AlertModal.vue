@@ -37,6 +37,11 @@
   </script>
   
   <style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+  p, button {
+    font-family: 'Poppins', sans-serif;
+  }
   .alert-modal {
     position: fixed;
     top: 0;
@@ -52,8 +57,8 @@
   }
   
   .modal-content {
-    background-color: #e41749;
-    color: black;
+    background-color: #ed2939;
+    color: white;
     border-radius: 10px;
     width: 80%;
     max-width: 400px;
