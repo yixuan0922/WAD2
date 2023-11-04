@@ -17,8 +17,10 @@
     <div class="calendar-app-sidebar"  :class="{ shown: isShown}" >
       <div class="calendar-app-sidebar-section">
         <!-- Your calendar component here -->
-        <button class="newEventButton" @click="newEvent">+ New Event</button>
-        <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents" style="margin-left: 10px;">▼ Upload Timetable</button>
+        <div class="topBtns" style="white-space: nowrap;">
+          <button class="newEventButton" @click="newEvent">+ New Event</button>
+          <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents" style="margin-left: 5px;">▼ Upload Timetable</button>
+        </div>
 
         <!-- Upload timetable -->
         <div id="timetableUpload">
@@ -55,56 +57,58 @@
               <img src="../assets/rightArrow.png" v-if="!showFilters" style="width: 10px">
               <img src="../assets/downArrow.png" v-if="showFilters" style="width: 10px">
               Filter Categories</h2>
-            <div class="form-check event" v-if="showFilters">
-              <label for="event">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="event"
-                  value="Event"
-                  v-model="state.checkedCategories"
-                />
-                Event</label
-              >
-            </div>
+            <div class="filterCats" v-if="showFilters">
+              <div class="form-check event">
+                <label for="event">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="event"
+                    value="Event"
+                    v-model="state.checkedCategories"
+                  />
+                  Event</label
+                >
+              </div>
 
-            <div class="form-check exam" v-if="showFilters">
-              <label for="exam">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="exam"
-                  value="Exam"
-                  v-model="state.checkedCategories"
-                />
-                Exam</label
-              >
-            </div>
+              <div class="form-check exam">
+                <label for="exam">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="exam"
+                    value="Exam"
+                    v-model="state.checkedCategories"
+                  />
+                  Exam</label
+                >
+              </div>
 
-            <div class="form-check class" v-if="showFilters">
-              <label for="class">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="class"
-                  value="Class"
-                  v-model="state.checkedCategories"
-                />
-                Class</label
-              >
-            </div>
+              <div class="form-check class">
+                <label for="class">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="class"
+                    value="Class"
+                    v-model="state.checkedCategories"
+                  />
+                  Class</label
+                >
+              </div>
 
-            <div class="form-check invites" v-if="showFilters">
-              <label for="invites">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="invites"
-                  value="Invites"
-                  v-model="state.checkedCategories"
-                />
-                Invites</label
-              >
+              <div class="form-check invites">
+                <label for="invites">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="invites"
+                    value="Invites"
+                    v-model="state.checkedCategories"
+                  />
+                  Invites</label
+                >
+              </div>
             </div>
           </div>
           <hr />
@@ -603,13 +607,12 @@ const toggleFilters = () => {
   line-height: 1.5;
   background: #ededed;
   border-right: 1px solid #d3e2e8;
-  height: 100%;
+  height: 100vh;
   transition: width 0.3s;
 }
 
 .calendar-app-sidebar-section {
   padding: 1.1em;
-  
 }
 
 .calendar-app-main {
@@ -639,6 +642,7 @@ const toggleFilters = () => {
   border-radius: 10px;
   padding: 6px 10px;
   font-size: small;
+  transform: translateX(-5px);
 }
 
 .calendar-app {
