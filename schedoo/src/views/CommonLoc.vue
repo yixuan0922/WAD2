@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <PageLoader v-if="!isLoaded"></PageLoader>
     <Nav></Nav>
     <div class="outer-container">
       <div class="inner-container">
@@ -68,6 +69,8 @@ import { Loader } from "@googlemaps/js-api-loader";
 import { onMounted, ref } from "vue";
 import Nav from "@/components/Nav.vue";
 import EventCard from "@/components/EventCard.vue";
+import PageLoader from "@/components/PageLoader.vue";
+
 
 let placesList = ref([]);
 let map = ref("");
@@ -75,6 +78,7 @@ let selectedPlace = {};
 let imageSource = "";
 let EventList = [(0, 0), (1, 1), (2, 2), (3,3), (4,4)];
 let midCoord = {};
+let isLoaded = false;
 
 const loader = new Loader({
   apiKey: process.env.VUE_APP_GOOGLE_API_KEY,
@@ -118,6 +122,7 @@ onMounted(async () => {
     if (status !== "OK" || !results) return;
     placesList.value = results;
     console.log(placesList.value);
+    isLoaded = true
   });
 
   return setMarker(midCoord, map);
@@ -284,6 +289,7 @@ body {
   object-fit: contain;
   overflow: hidden;
   padding-top: 8px !important;
+  padding: 0px !important;
 }
 
 #img {
