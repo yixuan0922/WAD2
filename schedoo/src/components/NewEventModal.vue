@@ -347,7 +347,7 @@ export default {
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, "0");
       const day = date.getDate().toString().padStart(2, "0");
-      return `${day}-${month}-${year}`;
+      return `${year}-${month}-${day}`;
     },
 
     formatTime(date) {
@@ -380,9 +380,11 @@ export default {
 
     //fnd available dates and timings
     findAvailableDateTimeOptions() {
-      const unavailableSlotsInput = formatInviteeEventTimes(); //from created function to retrieve an array of unavailable dates and timings
+      const unavailableSlotsInput = formatInviteeEventTimes(); //from created function to retrieve an array of unavailable dates and timings (in string)
       const startDate = formatDate(new Date()); //start date of finding available dates and timings (current date and timing)
-      const endDate =formatDate( new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000)); //end date of finding available dates and timings
+      const endDate = formatDate(
+        new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000)
+      ); //end date of finding available dates and timings
       const startTime = "08:00"; //start time of finding available timings
       const endTime = "22:00"; //end time of finding available timings
       const unavailableSlots = unavailableSlotsInput
@@ -395,11 +397,11 @@ export default {
         endDate,
         startTime,
         endTime
-      );
+      ); //array
 
       const availableDateTimeOptionsContainer = availableDateTimeOptions;
       availableDateTimeOptionsContainer.innerHTML = ""; // Clear previous content
-
+      // console.log(availableDateTimeOptions.length);
       if (availableDateTimeOptions.length > 0) {
         availableDateTimeOptions.forEach((option) => {
           const p = document.createElement("p");
@@ -421,62 +423,51 @@ export default {
     ) {
       const availableDateTimeOptions = [];
       const currentDate = new Date(startDate);
-      // console.log(currentDate); 
       const endDateTime = new Date(endDate);
       const endHour = parseInt(endTime.split(":")[0]);
-      let endMinute = parseInt(endTime.split(":")[1]); // Declare endMinute here
 
       while (currentDate <= endDateTime) {
-
         for (
           let hour = parseInt(startTime.split(":")[0]);
-          hour <= endHour;
+          hour < endHour;
           hour++
         ) {
-          const startMinute =
-            hour === parseInt(startTime.split(":")[0])
-              ? parseInt(startTime.split(":")[1])
-              : 0;
-          endMinute = hour === endHour ? endMinute : 59;
-          
-          for (let minute = startMinute; minute <= endMinute; minute++) {
-            // console.log(a);
-            const currentDateString = currentDate.toLocaleDateString();
-            const currentTimeString =
-              hour.toString().padStart(2, "0") +
-              ":" +
-              minute.toString().padStart(2, "0");
+          const currentDateString = currentDate.toISOString().split("T")[0];
+          const startRangeString = hour.toString().padStart(2, "0") + ":00";
+          const endRangeString = (hour + 1).toString().padStart(2, "0") + ":00";
 
-            let slotUnavailable = false;
-            for (const slot of unavailableSlots) {
-              console.log(slot);
-              if (
-                slot.includes(currentDateString) &&
-                slot.includes(currentTimeString)
-              ) {
-                slotUnavailable = true;
-                break;
-              }
+          let slotUnavailable = false;
+
+          const slotUnavailableArray = unavailableSlots
+            .split(",")
+            .map((range) => range.trim());
+
+          for (const slot of slotUnavailableArray) {
+            if (
+              slot.includes(currentDateString) &&
+              (slot.includes(startRangeString) || slot.includes(endRangeString))
+            ) {
+              slotUnavailable = true;
+              break;
             }
-            
-            // console.log(slotUnavailable);
-            if (!slotUnavailable) {
-              availableDateTimeOptions.push(
-                currentDateString + ": " + currentTimeString
-              );
-            }
+          }
+
+          if (!slotUnavailable) {
+            availableDateTimeOptions.push(
+              currentDateString + ": " + startRangeString + "-" + endRangeString
+            );
           }
         }
 
         currentDate.setDate(currentDate.getDate() + 1);
       }
-      // console.log(availableDateTimeOptions);
       return availableDateTimeOptions;
     },
 
     //display timeslot
     recommendTimeSlots() {
-      const selectedDate = document.getElementById("startDate").value;
+      const selectedDate = new Date(document.getElementById("startDate").value);
+      // console.log(selectedDate);
       const unavailableSlots = this.formatInviteeEventTimes();
       const availableSlotsInput = this.findAvailableDateTimeOptionsInRange(
         unavailableSlots, //create function to create array of unavailable slots
@@ -488,30 +479,31 @@ export default {
       const meetingDuration =
         parseInt(document.getElementById("startTime").value, 10) -
         parseInt(document.getElementById("endTime").value, 10); //math to find the meeting duration
-      const minGap = 10; //fixed
+      const minGap = 15; //fixed
       const startTime = "08:00"; // start of finding available dates and timings
       const endTime = "22:00"; // end of finding available dates and timings
 
       // Extract the date part from the selected date
-      const datePart = selectedDate;
-      const day = new Date(selectedDate).toLocaleString("en-US", {
-        weekday: "short",
-      }); // Get the day name
+      const datePart = selectedDate.toISOString().split("T")[0];
 
       const recommendations = [];
 
       // Search for available time slots that match the selected date
       const pattern = new RegExp(`${datePart}:\\s(\\d+:\\d+-\\d+:\\d+)`, "g");
-      let matches;
-      while ((matches = pattern.exec(availableSlotsInput)) !== null) {
-        const slot = matches[1];
+      // console.log(availableSlotsInput);
+      const availableSlotsString = availableSlotsInput.join(", ");
+      const matches = [...availableSlotsString.matchAll(pattern)];
+      // console.log(matches)
+      for (const match of matches) {
+        const slot = match[1];
         const [start, end] = slot.split("-");
         const [startHour, startMinute] = start.split(":").map(Number);
         const [endHour, endMinute] = end.split(":").map(Number);
+        // console.log(slot)
 
         let currentTime = new Date(0);
         currentTime.setHours(startHour, startMinute);
-
+        // console.log(true);
         while (
           currentTime.getHours() < endHour ||
           (currentTime.getHours() === endHour &&
@@ -520,16 +512,19 @@ export default {
           const nextTime = new Date(
             currentTime.getTime() + meetingDuration * 60000
           );
-          const currentTimeStr = `${datePart}: ${day}: ${currentTime.getHours()}:${String(
+          const currentTimeStr = `${datePart}: ${currentTime.getHours()}:${String(
             currentTime.getMinutes()
           ).padStart(2, "0")}`;
+
           if (
             nextTime.getHours() < endHour ||
             (nextTime.getHours() === endHour &&
               nextTime.getMinutes() <= endMinute)
           ) {
             // Check if the current time is within the preferred time range
+            console.log(currentTime + startTime + endTime);
             if (isWithinTimeRange(currentTime, startTime, endTime)) {
+              console.log(recommendations);
               recommendations.push(
                 `${currentTimeStr} - ${nextTime.getHours()}:${String(
                   nextTime.getMinutes()
@@ -573,7 +568,10 @@ export default {
           "No available time slots found within the preferred time range";
       }
     },
+
+    
   },
+
   props: {
     text: String,
     event: Object,
@@ -639,6 +637,11 @@ export default {
     ]);
   },
 };
+
+function isWithinTimeRange(time, startTime, endTime) {
+            const timeStr = time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            return timeStr >= startTime && timeStr <= endTime;
+        }
 
 function formatDate(date) {
   // YYYY-MM-DD
