@@ -26,17 +26,21 @@
                         </p>
                     </div>
                     <div class="row">
-                        <input type="range" min="1" max="24" v-model="cat.value" class="slider" @click="update(cat)" style="margin-left:5%; margin-right:5%; width: 90%">
+                        <input type="range" min="0" max="24" v-model="cat.value" class="slider" style="margin-left:5%; margin-right:5%; width: 90%">
                     </div>
                 </div>
 
             </div>
 
-            <div class="save">
-                <!-- Save into database -->
-                <button type="button" @click="set()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2 mr-2" v-if="!this.categories">Set</button>
-                <button type="button" @click="reset()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2 mr-2" v-if="this.categories">Reset</button>
-                <button type="button" @click="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2" v-if="this.categories">Save</button>
+            <div class="row">
+                <p class="extra col-4 offset-1">{{ check24hr }}</p>
+                <div class="save col-6 offset-1">
+                    
+                    <!-- Save into database -->
+                    <button type="button" @click="set()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2 mr-2" v-if="!this.categories">Set</button>
+                    <button type="button" @click="reset()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2 mr-2" v-if="this.categories">Reset</button>
+                    <button type="button" @click="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2" v-if="this.categories">Save</button>
+                </div>
             </div>
         </div>
     </body>
@@ -64,69 +68,97 @@ export default {
             {'name': "Meetings", 'value': 4},],
         };
     }, 
-    methods: {
-        update(catName) {
-            // overall total to make sure adds up to 24
-
-            var val = catName.value;
-            var overall = +val;
-
-            // total before cat change
-            var prev = 0;
-
-            for (var cat1 of this.categories) {
-                if (cat1.name != catName.name) {
-                    prev += +cat1.value;
-                }
-            }
-            
-            // total after cat change
-            var total = 24 - val;
-
-            for (var cat2 of this.categories) {
-                // if not changed cat
-                if (cat2.name != catName.name) {
-                    // get % of total * new total
-                    if (cat2.value != 0) {
-                        cat2.value = Math.floor(cat2.value/prev * total);
-                        overall = overall + cat2.value;
-                    }
-                    else {
-                        cat2.value = Math.floor(total/5);
-                        overall = overall + cat2.value;
-                    }
-
-                }
+    computed: {
+        check24hr () {
+            var overall = 0;
+            for (var cat of this.categories) {
+                overall += +cat.value;
             }
 
-            var valCheck = overall - 24;
-            if (valCheck != 0) {
-                // making 24
-
-                // not enough hrs
-                if (valCheck < 0) {
-                    this.categories[0].value = +this.categories[0].value - (overall - 24)
-                }
-                // run through, edit next cat w/ enough hrs
-                else {
-                    for (cat2 of this.categories) {
-                        if (cat2.value >= valCheck) {
-                            cat2.value -= valCheck;
-                            break;
-                        }
-                    }
-                }
+            var diff = overall - 24;
+            if (diff > 0) {
+                return diff + "hours too many!"
+            }
+            else if (diff < 0) {
+                return  -diff + "hours too few!"
+            }
+            else {
+                return "Just right! (24hrs)"
             }
         },
+    },
+    methods: {
+        // update(catName) {
+        //     // overall total to make sure adds up to 24
+
+        //     var val = catName.value;
+        //     var overall = +val;
+
+        //     // total before cat change
+        //     var prev = 0;
+
+        //     for (var cat1 of this.categories) {
+        //         if (cat1.name != catName.name) {
+        //             prev += +cat1.value;
+        //         }
+        //     }
+            
+        //     // total after cat change
+        //     var total = 24 - val;
+
+        //     for (var cat2 of this.categories) {
+        //         // if not changed cat
+        //         if (cat2.name != catName.name) {
+        //             // get % of total * new total
+        //             if (cat2.value != 0) {
+        //                 cat2.value = Math.floor(cat2.value/prev * total);
+        //                 overall = overall + cat2.value;
+        //             }
+        //             else {
+        //                 cat2.value = Math.floor(total/5);
+        //                 overall = overall + cat2.value;
+        //             }
+
+        //         }
+        //     }
+
+        //     var valCheck = overall - 24;
+        //     if (valCheck != 0) {
+        //         // making 24
+
+        //         // not enough hrs
+        //         if (valCheck < 0) {
+        //             this.categories[0].value = +this.categories[0].value - (overall - 24)
+        //         }
+        //         // run through, edit next cat w/ enough hrs
+        //         else {
+        //             for (cat2 of this.categories) {
+        //                 if (cat2.value >= valCheck) {
+        //                     cat2.value -= valCheck;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // },
         save() {
             // Save to firebase
-            // able to store same format as categories?
             console.log(this.categories);
-            this.store.dispatch('updateProfileGoals', this.categories);
+
+            var overall = 0;
+            for (var cat of this.categories) {
+                overall += +cat.value;
+            }
+
+            if (overall == 24) {
+                this.store.dispatch('updateProfileGoals', this.categories);
+            }
+            else {
+                alert("Make sure that your goals add up to 24hrs!")
+            }
         },
         set() {
             // Save to firebase
-            // able to store same format as categories?
             this.categories = [
             // Am assuming personal includes sleep
             {'name': "Personal", 'value': 4},
@@ -139,7 +171,6 @@ export default {
 
         reset() {
             // Save to firebase
-            // able to store same format as categories?
             this.categories = [
             // Am assuming personal includes sleep
             {'name': "Personal", 'value': 4},
@@ -240,7 +271,7 @@ p {
 .ripple-background {
     position: relative;
     z-index: 0;
-
+    transform: translate(0,0);
 }
 
 .circle{
@@ -325,4 +356,16 @@ input.slider::before {
     background: transparent;
 }
 
+.extra {
+    display: flex;
+    color: black;
+    font-size: small;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+button {
+    font-family: "poppins", sans-serif;
+}
 </style>
