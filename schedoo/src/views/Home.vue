@@ -1,82 +1,117 @@
 <template>
   <div>
-  <Nav/>
-  <div class="dashboard-content">
-  <div class="surface-ground px-4 py-5 md:px-6 lg:px-8 scrollable-container">
-    <div class="grid">
-      <div class="col-12 md:col-6 lg:col-12">
-        <div
-          class="surface-card shadow-2 p-3 border-round"
-          style="height: 150px; content-justify: center; align-items: center"
-        >
-          <div id="current-time" class="datetime">{{ runningTime }}</div>
-          <p>{{ currentDate }}</p>
+    <Nav/>
+    <div class="container-fluid col-lg-12 px-5 scrollable-container" style="padding-top: 70px;">
+        <div class="row">
+          <div class="col-lg-9">
+            <!-- Header -->
+            <div class="row">
+              <div v-if="insightsPage">
+                <h4 style="position: relative; font-weight: bold; text-align: start; margin-top: 20px">Welcome to your dashboard.</h4>
+                <p style="position: relative; text-align: start; margin-bottom: 5px;">Manage your study-life balance all in this page.</p>
+              </div>
+              <div v-if="!insightsPage">
+                <h4 style="position: relative; font-weight: bold; text-align: start; margin-top: 20px">Welcome to your deep focus tracker.</h4>
+                <p style="position: relative; text-align: start; margin-bottom: 5px;">There is no better time to start than now. You got this!</p>
+              </div>
 
-          <div>
-            <!-- <div class="weather">
-              <h1 class="temp">22°C</h1>
-            </div> -->
+              <!-- Add navigation links -->
+              <div class="row">
+                <!-- <input type="button" class="col-6" id="insights" placeholder="My Insights"> -->
+                <router-link to="/home/insights" class="col-6" id="insightsPage" v-on:click="checkPage" :class="[this.insightsPage ? 'boxClicked' : 'boxNotClicked']">Insights</router-link>
+                <router-link to="/home/focus" class="col-6" id="focusPage" v-on:click="checkPage" :class="[this.insightsPage ? 'boxNotClicked' : 'boxClicked']">Focus Mode</router-link>
+              </div>
+              <Insights v-if="pageLoad"/>
+            </div>
+            <router-view/>
+          </div>
+          <!-- Fixed right side of dashboard -->
+          <div class="col-lg-3">
+            <!-- Time, Calculator -->
+            <div
+              class="shadow-5 p-3"
+              style="height: 100px; content-justify: center; align-items: center;background-color: #EDEDED; border-radius: 15px;"
+            >
+              <div id="current-time" class="datetime" style="font-size: 30px;">{{ runningTime }}</div>
+              <p> {{currentDayOfWeek}}, {{ currentDate }}</p>
+
+              <div>
+                <!-- <div class="weather">
+                  <h1 class="temp">22°C</h1>
+                </div> -->
+              </div>
+            </div>
+            <!-- Event list -->
+            <!-- <Fullcalendar
+              class="app-calendar-sidebar"
+              v-bind:options="calendarSidebarOptions"
+            /> -->
+
+            <!-- Spotify -->
+            <div class="row" style="margin-top: 20px">
+              <link
+                rel="alternate"
+                type="application/json+oembed"
+                href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
+              />
+              <div v-html="spotifyEmbedHtml"></div>
+              <!-- </div> -->
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-4 md:col-6 lg:col-4">
-        <div class="surface-card shadow-2 p-3 border-round">
-          <div class="line-chart-container">
-            <div id="line-chart" style="width: 400px; height: 400px"></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4 md:col-6 lg:col-4">
         
-          <!-- <div class="piechart-container" style="width: 400px; height: 400px;">
-            <div id="pieChart" style="width: 200px;"></div> -->
-          <!-- </div> -->
-          <div>
-          <button class="calculatorButton" @click="toggleCalculator">Calculator</button>
-          <Calculator v-if="showCalculator"/>
           
-      </div>
-      </div>
-      <div class="col-4 md:col-6 lg:col-3">
-        <!-- <div class="surface-card shadow-2 p-3 border-round">
-            <div class="flex justify-content-between mb-3"></div> -->
-        <link
-          rel="alternate"
-          type="application/json+oembed"
-          href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
-        />
-        <div v-html="spotifyEmbedHtml"></div>
-        <!-- </div> -->
-      </div>
     </div>
-  
-      </div>
-    </div>
-    </div>
+  </div>
 </template>
 
 <script>
 import Nav from "@/components/Nav.vue";
-import Plotly from "plotly.js-dist-min";
-import Calculator from "@/components/Calculator.vue";
+import Insights from '../components/Insights.vue';
 
+// Calendar
+// import Fullcalendar from "@fullcalendar/vue3";
+// import ListPlugin from "@fullcalendar/list";
+// import bootstrap5Plugin from "@fullcalendar/bootstrap5";
+// import { onMounted, computed } from "vue";
+// import { ref } from "vue";
+// import { useStore } from "vuex";
+// const store = useStore();
+
+// onMounted(() => {
+//   store.dispatch("fetchEvents");
+//   store.dispatch("getPendingEvents");
+// });
+
+// let calendarSidebarOptions = ref({
+//   plugins: [ListPlugin, bootstrap5Plugin],
+//   themeSystem: "bootstrap5",
+//   initialView: "listWeek",
+//   events: computed(() => store.getters["EVENTS"]),
+//   headerToolbar: {
+//     left: "",
+//     center: "title",
+//     right: "",
+//   },
+// });
 
 export default {
   components:{
     Nav,
-    Calculator,
+    Insights,
   },
   data() {
     return {
       date: new Date(),
       currentDate: new Date().toLocaleDateString(),
+      currentDayOfWeek: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][new Date().getDay()],
       weather: {
         temp: null, // Initialize with null or a default value
       },
-      spotifyEmbedHtml: `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator" width="120%" height="352" box-shadow="0 20px 50px rgba(0, 5, 24, 0.4)" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" margin-left=-50px></iframe>`,
+      spotifyEmbedHtml: `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator" height="320px" width="100%" box-shadow="0 20px 50px rgba(0, 5, 24, 0.7)" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" margin-left=-50px></iframe>`,
       showCalculator: false,
+      insightsPage: true,
+      pageLoad: true,
     };
   },
 
@@ -97,30 +132,31 @@ export default {
       }
     },
 
-    insertNum(num) {
-      const inputField = document.getElementById("input");
-      inputField.textContent += num;
-    },
-
-    eraseNum() {
-      this.inputText = this.inputText.slice(0, -1);
-    },
-
-    clearInput() {
-      this.inputText = "";
-    },
-
-    equalTo() {
-      try {
-        this.inputText = eval(this.inputText);
-      } catch (error) {
-        console.error(error);
-        // Handle error as needed
-      }
-    },
     toggleCalculator() {
       this.showCalculator = !this.showCalculator;
     },
+    checkPage(){
+      this.pageLoad = false;
+      if (this.insightsPage == false) {
+        var insights = document.getElementById('insightsPage');
+        insights.style.color = 'black';
+        insights.style.borderBottom = 'solid #000000 2px';
+
+        var focus = document.getElementById('focusPage');
+        focus.style.color = 'gray';
+        focus.style.borderBottom = 'solid gray 1px';
+      }else{
+        focus = document.getElementById('focusPage');
+        focus.style.color = 'black';
+        focus.style.borderBottom = 'solid #000000 2px';
+
+        insights = document.getElementById('insightsPage');
+        insights.style.color = 'gray';
+        insights.style.borderBottom = 'solid gray 1px';
+      }
+      this.insightsPage = !this.insightsPage;
+
+    }
   },
 
   mounted() {
@@ -131,80 +167,6 @@ export default {
       let d = new Date();
       time.innerHTML = d.toLocaleTimeString();
     }, 1000);
-
-    const lineData = [
-      { x: "Monday", y: 10 },
-      { x: "Tuesday", y: 20 },
-      { x: "Wednesday", y: 15 },
-      { x: "Thursday", y: 20 },
-      { x: "Friday", y: 30 },
-      { x: "Saturday", y: 20 },
-      { x: "Sunday", y: 10 },
-    ];
-
-    const lineChart = document.getElementById("line-chart");
-    Plotly.newPlot(
-      lineChart,
-      [
-        {
-          x: lineData.map((d) => d.x),
-          y: lineData.map((d) => d.y),
-          type: "line",
-        },
-      ],
-      {
-        title: "Study hours the past week",
-        xaxis: {
-          title: "Days",
-        },
-        yaxis: {
-          title: "Hours",
-        },
-      }
-    );
-
-    // var donutData = [{
-    //   values: [16, 15, 12, 6, 5, 4, 42],
-    //   labels: ['Personal', 'Study', 'CCA', 'Classes', 'Work', 'Meetings', 'Others' ],
-    //   domain: {column: 0},
-    //   name: "Time",
-    //   hoverinfo:"label+percent+name",
-    //   hole: .4,
-    //   type: "pie"
-    // }];
-
-    // var donutLayout = {
-    //   title: "Target number of hours to spend for each activity",
-    //   annotations:[
-    //     {
-    //       font:{
-    //         size: 18
-    //       },
-    //       showarrow: false,
-    //       text: 'Hours',
-    //       x: 0.17,
-    //       y: 0.5,
-    //       xref: 'paper',
-    //       yref: 'paper',
-    //     },
-    //   ],
-    //   height: 400,
-    //   width: 550,
-    //   showlegend: false,
-    //   grid:{rows:1, columns: 2},
-
-    //   // margin:{
-    //   //   l:10,
-    //   //   r: 10,
-    //   //   t:10,
-    //   //   b:10
-    //   // }
-    // };
-
-    // Plotly.newPlot('pieChart', donutData, donutLayout)
-    
-
-  
   },
 };
 </script>
@@ -214,7 +176,7 @@ export default {
 
 body {
   // background: #e1e7ec;
-  background: #ffffff;
+  background: #F8F9FD;
   font-family: "Bitter", serif;
 }
 
@@ -223,6 +185,19 @@ body {
 }
 
 //others
+.boxClicked{
+  background-color: transparent; text-decoration: none !important; color: black; border-bottom: solid #000000 2px;
+}
+
+.boxNotClicked{
+  background-color: transparent; text-decoration: none !important; color: gray; border-bottom: solid gray 1px;
+}
+#insights{
+  background-color: transparent; 
+  border: none; 
+  border-bottom: 1px #000000; 
+  color: black;
+}
 
 .datetime {
   font-family: "Poppins", sans-serif;
