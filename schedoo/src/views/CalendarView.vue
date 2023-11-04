@@ -36,6 +36,7 @@ export default {
 <style>
 .calendar {
   margin-top: 50px;
+  overflow-y: auto;
 }
 
 </style>

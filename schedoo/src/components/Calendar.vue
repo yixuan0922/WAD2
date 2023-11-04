@@ -33,7 +33,7 @@
                 @drop.prevent="drop"
                 @change="selectedFile"
                 :my-file="myFile"
-                style="width:auto"
+                style="width:auto; height: 150px"
               ></DropZone>
               <div class="file-info m-auto p-2">File: {{ myFile.name }}</div>
               <button class="newEventButton m-auto" @click="upload">Upload</button>
@@ -51,8 +51,11 @@
           />
           <hr />
           <div class="mb-3 category">
-            <h2 class="header">Filter Categories</h2>
-            <div class="form-check event">
+            <h2 class="header" @click="toggleFilters">
+              <img src="../assets/rightArrow.png" v-if="!showFilters" style="width: 10px">
+              <img src="../assets/downArrow.png" v-if="showFilters" style="width: 10px">
+              Filter Categories</h2>
+            <div class="form-check event" v-if="showFilters">
               <label for="event">
                 <input
                   class="form-check-input"
@@ -65,7 +68,7 @@
               >
             </div>
 
-            <div class="form-check exam">
+            <div class="form-check exam" v-if="showFilters">
               <label for="exam">
                 <input
                   class="form-check-input"
@@ -78,7 +81,7 @@
               >
             </div>
 
-            <div class="form-check class">
+            <div class="form-check class" v-if="showFilters">
               <label for="class">
                 <input
                   class="form-check-input"
@@ -91,7 +94,7 @@
               >
             </div>
 
-            <div class="form-check invites">
+            <div class="form-check invites" v-if="showFilters">
               <label for="invites">
                 <input
                   class="form-check-input"
@@ -586,6 +589,12 @@ const toggleSidebar = () => {
   isShown.value = !isShown.value;
   isShownMain.value = !isShownMain.value;
 };
+
+const showFilters = ref(false);
+
+const toggleFilters = () => {
+  showFilters.value = !showFilters.value;
+}
 </script>
 
 <style>
@@ -595,6 +604,7 @@ const toggleSidebar = () => {
   background: #ededed;
   border-right: 1px solid #d3e2e8;
   height: 100%;
+  transition: width 0.3s;
 }
 
 .calendar-app-sidebar-section {
@@ -775,7 +785,7 @@ hr {
   align-items: left;
   /* cursor: pointer; */
   right:0;
-  top: 15%;
+  top: 50px;
   transform: translateX(25px);
   white-space: nowrap;
   font-size: large;
@@ -783,27 +793,19 @@ hr {
   visibility: hidden;
 }
 
-/* Add a CSS transition for smoother sidebar animation */
-.calendar-app-sidebar {
-  width: 360px;
-  line-height: 1.5;
-  background: #ededed;
-  border-right: 1px solid #d3e2e8;
-  transition: width 0.3s;
-}
-
 /* Add media query for screens below 1000px */
 @media (max-width: 1000px) {
   .calendar-app-sidebar {
     width: 0;
+    /* transition: width 0.3s; */
   }
- */
   .shown {
     position: absolute;
     z-index: 1;
     visibility: visible;
     width: 275px;
-    right:0
+    right:0;
+    /* transition: width 0.3s; */
   }
   .calendar-app-main {
     width: calc(100% - 50px); /* 50px is the width of the toggle button */
