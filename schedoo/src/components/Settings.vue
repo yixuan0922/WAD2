@@ -41,6 +41,8 @@
                     <button type="button" @click="reset()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2 mr-2" v-if="this.categories">Reset</button>
                     <button type="button" @click="save()" class="btn btn-info rounded-pill mr-md-3 mb-2 mt-2" v-if="this.categories">Save</button>
                 </div>
+                <AlertModal ref="alertModal"></AlertModal>
+                <SavedModal ref="savedModal"></SavedModal>
             </div>
         </div>
     </body>
@@ -48,6 +50,8 @@
 <script>
 
 import { useStore } from "vuex";
+import AlertModal from "./AlertModal.vue"; // Import the AlertModal component
+import SavedModal from "./SavedModal.vue";
 
 
 export default {
@@ -88,59 +92,6 @@ export default {
         },
     },
     methods: {
-        // update(catName) {
-        //     // overall total to make sure adds up to 24
-
-        //     var val = catName.value;
-        //     var overall = +val;
-
-        //     // total before cat change
-        //     var prev = 0;
-
-        //     for (var cat1 of this.categories) {
-        //         if (cat1.name != catName.name) {
-        //             prev += +cat1.value;
-        //         }
-        //     }
-            
-        //     // total after cat change
-        //     var total = 24 - val;
-
-        //     for (var cat2 of this.categories) {
-        //         // if not changed cat
-        //         if (cat2.name != catName.name) {
-        //             // get % of total * new total
-        //             if (cat2.value != 0) {
-        //                 cat2.value = Math.floor(cat2.value/prev * total);
-        //                 overall = overall + cat2.value;
-        //             }
-        //             else {
-        //                 cat2.value = Math.floor(total/5);
-        //                 overall = overall + cat2.value;
-        //             }
-
-        //         }
-        //     }
-
-        //     var valCheck = overall - 24;
-        //     if (valCheck != 0) {
-        //         // making 24
-
-        //         // not enough hrs
-        //         if (valCheck < 0) {
-        //             this.categories[0].value = +this.categories[0].value - (overall - 24)
-        //         }
-        //         // run through, edit next cat w/ enough hrs
-        //         else {
-        //             for (cat2 of this.categories) {
-        //                 if (cat2.value >= valCheck) {
-        //                     cat2.value -= valCheck;
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // },
         save() {
             // Save to firebase
             console.log(this.categories);
@@ -152,9 +103,10 @@ export default {
 
             if (overall == 24) {
                 this.store.dispatch('updateProfileGoals', this.categories);
+                this.$refs.savedModal.openModal();
             }
             else {
-                alert("Make sure that your goals add up to 24hrs!")
+                this.$refs.alertModal.openModal("Make sure that your goals add up to 24hrs!");
             }
         },
         set() {
@@ -188,6 +140,11 @@ export default {
             this.categories = doc;
        }); 
     }, 
+
+    components: {
+        AlertModal, // Register the AlertModal component
+        SavedModal,
+    },
 
 }
 </script>
