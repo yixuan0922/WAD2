@@ -8,8 +8,13 @@
 </template>
 <script>
 import {auth} from "./firebase/firebaseInit";
+import {useStore} from 'vuex';
 
 export default {
+  setup() {
+    const store = useStore()
+    return {store}
+  },
   name: "app", 
   components: {},
   data() {
@@ -20,11 +25,11 @@ export default {
   created(){
     auth.onAuthStateChanged((user) => {
       //user is a true or false statement to state if user has signed in or not
-      this.$store.commit('updateUser', user);
+      this.store.commit('updateUser', user);
       if (user){
-        this.$store.dispatch("getCurrentUser");
+        this.store.dispatch("getCurrentUser");
         // this.$store.dispatch("getCalEvent");
-        console.log(this.$store.state);
+        console.log(this.store.state);
       }
     })
     this.checkRoute();
