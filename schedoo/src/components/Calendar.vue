@@ -602,6 +602,9 @@ const toggleFilters = () => {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+
 .calendar-app-sidebar {
   width: 360px;
   line-height: 1.5;
@@ -650,6 +653,7 @@ const toggleFilters = () => {
   position: relative;
   overflow-x: hidden;
   width: 100%;
+  font-family: "poppins", sans-serif;
 }
 
 .app-calendar {
