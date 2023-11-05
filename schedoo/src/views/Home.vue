@@ -335,7 +335,7 @@ input[type="button"][value="0"] {
   right:0; 
   padding-top: 20px; 
   position: absolute; 
-  background-color:orange; 
+  background-color:#bdbdbd; 
   height: 100%;
   visibility: hidden;
   overflow: hidden; /* Hide overflowing content */
