@@ -63,16 +63,16 @@ import {RouterLink, RouterView} from 'vue-router';
 
         <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 40px">
           <ul class="navbar-nav mx-auto">
-              <li class="nav-item">
+              <li class="nav-item centerLinks">
               <!-- <a class="nav-link active">My Calendar</a> -->
               <router-link class="nav-link" :to="{name: 'Calendar'}"
               style="color: black; text-decoration: none;"
               >My Calendar</router-link>
               </li>
-              <li class="nav-item">
+              <li class="nav-item centerLinks">
               <a class="nav-link active" href="#">Insights</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item centerLinks">
               <a class="nav-link active" href="#">Focus</a>
               </li>
           </ul>
@@ -198,6 +198,10 @@ li {
       border-radius: 50%; /* Makes the button circular */
       font-size: small;
     }
+
+.centerLinks:hover {
+  color: darkgrey;
+}
 
 .profile {
   position: relative;

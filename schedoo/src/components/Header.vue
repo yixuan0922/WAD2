@@ -28,7 +28,7 @@ import {RouterLink, RouterView} from 'vue-router';
           
           >SCHEDOO</h1>
           <p class="subtitle">
-            Keep 
+            Stay 
             <span id="typing"
             style="text-decoration: underline;
             font-family: 'Poppins', sans-serif;"
@@ -94,7 +94,7 @@ export default {
 
         // Typing animation
         const typed = new Typed("#typing", {
-            strings: ["Calm", "Amazing", "Organised", "On Time", "Focused"],
+            strings: ["ahead of deadlines", "in balance of study & life", "calm and organised", "consistent!"],
             typeSpeed: 100,
             backSpeed: 100,
             loop: true
