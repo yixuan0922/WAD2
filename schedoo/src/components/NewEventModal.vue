@@ -6,7 +6,7 @@
       <b>Start:</b>  {{ event.start }} <br/>
       <b>End:</b>  {{ event.end }} <br/>
     </fieldset>
-    <fieldset>
+    <fieldset></fieldset>
         <legend>Add event</legend>
         <div class="container">
           <div class="row">
@@ -196,6 +196,7 @@
           </div>
         </div>
       </div>
+    
 
       <!-- Buttons -->
       <div class="row" style="justify-content: flex-end; margin-top: 10px">
@@ -228,8 +229,6 @@
           Add
         </button>
       </div>
-    </fieldset>
-  </div>
 </template>
 
 <script>
