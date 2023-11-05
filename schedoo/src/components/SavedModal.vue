@@ -33,6 +33,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
   .saved-modal {
+    font-family: "poppins", sans-serif;
     position: fixed;
     top: 0;
     left: 0;
