@@ -115,13 +115,13 @@ export default {
     }, 1000);
 
     const lineData = [
-      { x: "Monday", y: 10 },
-      { x: "Tuesday", y: 20 },
-      { x: "Wednesday", y: 15 },
-      { x: "Thursday", y: 20 },
-      { x: "Friday", y: 30 },
-      { x: "Saturday", y: 20 },
-      { x: "Sunday", y: 10 },
+      { x: "Monday", y: 1 },
+      { x: "Tuesday", y: 2 },
+      { x: "Wednesday", y: 5 },
+      { x: "Thursday", y: 2 },
+      { x: "Friday", y: 3 },
+      { x: "Saturday", y: 2 },
+      { x: "Sunday", y: 1 },
     ];
 
     const lineChart = document.getElementById("line-chart");
