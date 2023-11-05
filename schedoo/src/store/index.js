@@ -19,6 +19,7 @@ export default createStore({
   },
   getters: {
     EVENTS: state => state.events, 
+    userGoals: (state) => state.userGoals,
   },
   mutations: {
     // Events
