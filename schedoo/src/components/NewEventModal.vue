@@ -214,18 +214,7 @@
                 {{ invitee.email }}
               </div>
               <p>{{ addInviteeErr }}</p>
-              <button
-                @click="recommendTimeSlots"
-                :disabled="!this.$store.state.invitees.length"
-              >
-                Find Timeslot
-              </button>
-              <div class="mb-3">
-                <label for="recommendations" class="form-label"
-                  >Recommendations</label
-                >
-                <div id="recommendations"></div>
-              </div>
+              
             </div>
             <!-- <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
             <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div> -->
@@ -235,6 +224,20 @@
 
       <!-- Buttons -->
       <div class="row" style="justify-content: flex-end; margin-top: 10px">
+        <button col-3
+          @click="recommendTimeSlots"
+          :disabled="!this.$store.state.invitees.length"
+        >
+          Find Timeslot
+        </button>
+        <div class="mb-3">
+          <label for="recommendations" class="form-label"
+            >Recommendations</label
+          >
+          <div id="recommendations"></div>
+        </div>
+
+
         <button
           class="col-2 btn btn-light"
           style="width: 66px; margin-right: 10px"
@@ -550,7 +553,7 @@ export default {
         // Display recommendations in Bootstrap cards
         randomRecommendations.forEach((recommendation) => {
           const col = document.createElement("div");
-          col.className = "col-md-4"; // Use the grid system for columns (Bootstrap 4)
+          col.className = "col"; // Use the grid system for columns (Bootstrap 4)
           col.innerHTML = `
                         <div class="card mb-3">
                             <div class="card-body">
@@ -568,8 +571,6 @@ export default {
           "No available time slots found within the preferred time range";
       }
     },
-
-    
   },
 
   props: {
@@ -639,9 +640,12 @@ export default {
 };
 
 function isWithinTimeRange(time, startTime, endTime) {
-            const timeStr = time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            return timeStr >= startTime && timeStr <= endTime;
-        }
+  const timeStr = time.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return timeStr >= startTime && timeStr <= endTime;
+}
 
 function formatDate(date) {
   // YYYY-MM-DD
