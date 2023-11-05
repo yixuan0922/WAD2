@@ -14,11 +14,11 @@ import Insights from '../components/Insights.vue';
 import store from '@/store/index.js';
 
 const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: HomeView
-  },
+  // {
+  //   path: "/",
+  //   name: "home",
+  //   component: HomeView
+  // },
   {
     path: "/about",
     name: "about",

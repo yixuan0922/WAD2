@@ -16,10 +16,15 @@
               </div>
 
               <!-- Add navigation links -->
-              <div class="row">
+              <div class="row" v-if="this.insightsPage">
+                <!-- <input type="button" class="col-6" id="insights" placeholder="My Insights"> -->
+                <router-link to="" class="col-6" id="insightsPage" :class="[this.insightsPage ? 'boxClicked' : 'boxNotClicked']">Insights</router-link>
+                <router-link to="/home/focus" class="col-6" id="focusPage" v-on:click="checkPage" :class="[this.insightsPage ? 'boxNotClicked' : 'boxClicked']">Focus Mode</router-link>
+              </div>
+              <div class="row" v-if="!this.insightsPage">
                 <!-- <input type="button" class="col-6" id="insights" placeholder="My Insights"> -->
                 <router-link to="/home/insights" class="col-6" id="insightsPage" v-on:click="checkPage" :class="[this.insightsPage ? 'boxClicked' : 'boxNotClicked']">Insights</router-link>
-                <router-link to="/home/focus" class="col-6" id="focusPage" v-on:click="checkPage" :class="[this.insightsPage ? 'boxNotClicked' : 'boxClicked']">Focus Mode</router-link>
+                <router-link to="" class="col-6" id="focusPage" :class="[this.insightsPage ? 'boxNotClicked' : 'boxClicked']">Focus Mode</router-link>
               </div>
               <Insights v-if="pageLoad"/>
             </div>
