@@ -49,7 +49,7 @@
     align-items: center;
     z-index: 9999;
     border-radius: 13px;
-  } */
+  } 
   
   .modal-content {
     /* background-color: #fff;
