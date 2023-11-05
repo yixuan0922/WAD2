@@ -61,7 +61,7 @@ import {RouterLink, RouterView} from 'vue-router';
       </span>
 
 
-        <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 40px">
+        <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 40px; transform: translateX(-50px);">
           <ul class="navbar-nav mx-auto">
               <li class="nav-item centerLinks">
               <!-- <a class="nav-link active">My Calendar</a> -->
@@ -185,6 +185,11 @@ export default {
     font-family: system-ui;
     letter-spacing: 0.05em;
     transform: translateY(-3px);
+    transition: color 0.1s;
+}
+
+.nav-link:hover {
+  color: #656565 !important; /* Color to change to on hover */
 }
 
 li {
@@ -198,10 +203,6 @@ li {
       border-radius: 50%; /* Makes the button circular */
       font-size: small;
     }
-
-.centerLinks:hover {
-  color: darkgrey;
-}
 
 .profile {
   position: relative;
