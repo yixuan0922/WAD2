@@ -1,50 +1,25 @@
 <template>
   <div>
-    <fieldset class="container">
-      <legend class="row" style="margin-bottom: 20px; width: 100%">
-        <h1 style="text-align: left">Add Event</h1>
-      </legend>
-      <!-- <b>ID:</b>{{ event.id }} <br/> -->
-      <!-- <b>Start:</b> {{ event.start }} <br />
-      <b>End:</b> {{ event.end }} <br /> -->
-      <!-- </fieldset>
-    <fieldset> -->
-      <!-- <legend>Add event</legend> -->
-      <div class="row" style="text-align: start">
-        <div class="col-lg-6">
-          <div class="row mb-3">
-            <div class="col-sm-6">
-              <select
-                id="category"
-                v-model="category"
-                placeholder="Select a category"
-              >
-                <option value="event">Event</option>
-                <option value="class">Class</option>
-                <option value="exams">Exams</option>
-                <option value="invites">Invites</option>
-              </select>
-            </div>
-            <div class="col-sm-6">
-              <input
-                id="taskName"
-                type="text"
-                class="form-control"
-                placeholder="Enter a task name"
-                v-model="title"
-              />
-            </div>
+    <fieldset>
+      <legend>Event details</legend>
+      <b>ID:</b>{{ event.id }} <br/>
+      <b>Start:</b>  {{ event.start }} <br/>
+      <b>End:</b>  {{ event.end }} <br/>
+    </fieldset>
+    <fieldset>
+        <legend>Add event</legend>
+        <div class="container">
+          <div class="row">
+            Category: 
+            <select v-model="category">
+              <option value="event">Event</option>
+              <option value="class">Class</option>
+              <option value="exams">Exams</option>
+              <option value="invites">Invites</option>
+            </select>
           </div>
-
-          <div class="mb-3">
-            <label for="agenda" class="form-label">Agenda</label><br />
-            <textarea
-              id="agenda"
-              name="agenda"
-              class="form-control"
-              placeholder="Enter agenda of task"
-              style="height: 108px; width: 100%"
-            ></textarea>
+          <div class='row'> 
+            Event Title: <input type="text" v-model="title">
           </div>
 
           <div class="mb-3">
@@ -304,18 +279,20 @@ export default {
         let [startHours, startMinutes] = this.startTime.split(":");
         let [endHours, endMinutes] = this.endTime.split(":");
 
-        start.setHours(startHours, startMinutes);
-        end.setHours(endHours, endMinutes);
-      }
+                start.setHours(startHours, startMinutes);
+                end.setHours(endHours, endMinutes);
+            }
 
-      let event = {
-        id: new Date().getTime(),
-        title: this.title,
-        start: start,
-        end: end,
-        allDay: this.allDay,
-        invitees: [],
-      };
+            
+
+            let event = {
+                id: (new Date()).getTime(),
+                title: this.title,
+                start: start,
+                end: end,
+                allDay: this.allDay,
+                invitees: [],
+            };
 
       for (let invitee of this.$store.state.invitees) {
         let inviteeData = {
