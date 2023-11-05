@@ -126,7 +126,7 @@
   
         // Task Board
         columns: [
-          { title: 'To Do', tasks: [] },
+          { title: 'To Do', tasks: [{id: '0', text:'WAD2'},{id: '1', text:'sleep'}] },
           { title: 'In Progress', tasks: [] },
           { title: 'Done', tasks: [] },
         ],
@@ -163,6 +163,19 @@
           }
           return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
       },
+      displayAllTasks(){
+        // @yi xuan, return all tasks of the DAY from firebase
+
+        // loop thru all tasks in 'to-do' firebase
+        // push to 'to-do' tasks [] array 
+        // --> this.columns.find(column => column.title === 'To Do').tasks.push(task)
+        // push to this.displayTasks [] array
+        // --> this.columns.find(column => column.title === 'To Do').tasks.push(task);
+
+        // repeat for 'in progress' and 'done'
+        
+        return null
+      }
     },
     methods: {
       clickReadyBtn(){
@@ -304,6 +317,8 @@
           
           this.newTaskText = ''; // Clear the input field
           
+          // @yi xuan, push task to firebase for the DAY
+
           // add to displayTasks
           var toDo = this.columns.find(column => column.title === 'To Do').tasks;
           this.displayTasks.push(toDo[toDo.length - 1].text);
