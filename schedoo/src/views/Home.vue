@@ -1,9 +1,9 @@
 <template>
   <div>
     <Nav/>
-    <div class="container-fluid col-lg-12 px-5 scrollable-container" style="padding-top: 70px;">
+    <div class="container-fluid col-lg-12 px-5 scrollable-container" style="padding-top: 50px;">
         <div class="row">
-          <div class="col-lg-9">
+          <div class="col-lg-12">
             <!-- Header -->
             <div class="row">
               <div v-if="insightsPage">
@@ -30,21 +30,32 @@
             </div>
             <router-view/>
           </div>
-          <!-- Fixed right side of dashboard -->
-          <div class="col-lg-3">
-            <!-- Time, Calculator -->
-            <div
-              class="shadow-5 p-3"
-              style="height: 100px; content-justify: center; align-items: center;background-color: #EDEDED; border-radius: 15px;"
-            >
-              <div id="current-time" class="datetime" style="font-size: 30px;">{{ runningTime }}</div>
-              <p> {{currentDayOfWeek}}, {{ currentDate }}</p>
 
-              <div>
-                <!-- <div class="weather">
-                  <h1 class="temp">22°C</h1>
-                </div> -->
+
+          <!-- Fixed right side of dashboard -->
+          <button class="round-btn" v-if="!sidebarShown" @click="toggleSidebar">
+            &lt;  &gt;
+          </button>
+          <div class="sidebar" :class="{ 'shown' : sidebarShown}">
+            <!-- Time, Calculator -->
+            <div class="row">
+              <div
+                class="shadow-5 p-3 col-8 offset-1"
+                style="height: 100px; content-justify: center; align-items: center;background-color: #EDEDED; border-radius: 15px"
+              >
+                  <div id="current-time" class="datetime" style="font-size: 30px;">{{ runningTime }}</div>
+                  <p> {{currentDayOfWeek}}, {{ currentDate }}</p>
+                  
+                  <!-- <div class="weather">
+                    <h1 class="temp">22°C</h1>
+                  </div> -->
+
+                  
+                  
               </div>
+              <button class="col-1 offset-1" style="height:30px; width: 30px; border-radius: 50%; text-align: center;" @click="toggleSidebar" v-if="sidebarShown">
+                <p style="transform: translateY(-5px);">&#215;</p>
+              </button>
             </div>
             <!-- Event list -->
             <!-- <Fullcalendar
@@ -63,6 +74,8 @@
               <!-- </div> -->
             </div>
           </div>
+
+
         </div>
         
           
@@ -117,6 +130,7 @@ export default {
       showCalculator: false,
       insightsPage: true,
       pageLoad: true,
+      sidebarShown: false,
     };
   },
 
@@ -161,10 +175,23 @@ export default {
       }
       this.insightsPage = !this.insightsPage;
 
+    },
+
+    toggleSidebar() {
+      this.sidebarShown = !this.sidebarShown;
+    },
+
+    applyStyles() {
+      // Get the <html> element
+      const htmlElement = document.querySelector('html');
+
+      // Apply the styles
+      htmlElement.style.overflow = 'hidden';
     }
   },
 
   mounted() {
+    this.applyStyles();
     this.checkWeather();
 
     let time = document.getElementById("current-time");
@@ -303,4 +330,32 @@ input[type="button"][value="0"] {
   padding-top:40px;
 }
 
+.sidebar {
+  width: 0px; 
+  right:0; 
+  padding-top: 20px; 
+  position: absolute; 
+  background-color:orange; 
+  height: 100%;
+  visibility: hidden;
+  overflow: hidden; /* Hide overflowing content */
+  transition: width 0.1s ease-in-out; /* Use the width property for the transition */
+}
+
+.shown {
+  width: 300px;
+  visibility: visible;
+}
+
+.round-btn {
+  width: 50px;
+  height: 50px;
+  white-space: nowarp;
+  background-color: #15173c;
+  color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 100px;
+  right: -25px;
+}
 </style>
