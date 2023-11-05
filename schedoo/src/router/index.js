@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
@@ -12,6 +11,7 @@ import Home from '../views/Home.vue';
 import Focus from '../components/FocusTracker.vue';
 import Insights from '../components/Insights.vue';
 // import Calendar from '../components/Calendar.vue';
+import store from '@/store/index.js';
 
 const routes = [
   {
@@ -52,7 +52,14 @@ const routes = [
     path: "/calendar",
     name: "Calendar",
     component: CalendarView,
-  }, 
+    beforeEnter: (to, from , next) => {
+      if (store.state.profileId){
+        next();
+      } else {
+        next('/login')
+      }
+    }
+  },
   {
     path: "/create-event",
     name: "CrEvent",
