@@ -33,6 +33,14 @@
 import Plotly from "plotly.js-dist-min";
 
 export default {
+  created() {
+    this.$store.dispatch('fetchProfileGoals');
+  },
+  computed: {
+    userGoals(){
+      return this.$store.getters.userGoals;
+    }
+  },
   data() {
     return {
       date: new Date(),
@@ -178,19 +186,23 @@ export default {
 
     // Plotly.newPlot('pieChart', donutData, donutLayout)
 
+    //fetching data for profileGoals
+    
+
     var goals = {
       x: ["Personal", "Study", "CCA", "Classes", "Work", "Meetings"],
-      y: [20, 14, 23, 30, 30, 40],
+      y: this.$store.getters.userGoals,
       name: "Goals",
       type: "bar",
       marker: {
         color: '#F6a192'
-      }
+      },
+      orientation: 'v'
     };
 
     var actual = {
       x: ["Personal", "Study", "CCA", "Classes", "Work", "Meetings"],
-      y: [12, 18, 29, 30, 20, 40],
+      y: [2, 1, 4, 2, 5, 4],
       name: "Actual",
       type: "bar",
       marker :{
