@@ -39,10 +39,8 @@
   <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
-  p, button {
-    font-family: 'Poppins', sans-serif;
-  }
   .alert-modal {
+    font-family: 'Poppins', sans-serif;
     position: fixed;
     top: 0;
     left: 0;
