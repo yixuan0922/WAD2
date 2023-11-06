@@ -22,6 +22,7 @@ export default createStore({
     EVENTS: state => state.events, 
     userGoals: (state) => state.userGoals,
     ALLEVENTS: state => state.allEvents,
+
   },
   mutations: {
     // Events
@@ -934,6 +935,17 @@ export default createStore({
       const dbResults = await getDoc(userDoc);
       return dbResults.data().goals;
     },
+
+    // async fetchDailyTasks(_, dailyTasks, day) {
+    //   const currentUserId = auth.currentUser.uid;
+    //   const database = collection(db, "users");
+    //   const userDoc = doc(database, currentUserId);
+    //   const calDailyCollection = collection(userDoc, "dailyTasks");
+
+    //   // create 
+
+
+    // }
   },
   modules: {},
 });

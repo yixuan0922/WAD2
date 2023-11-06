@@ -6,7 +6,7 @@
                 <div class="col-lg-8" style="position: relative;">
                   <!-- Task Board -->
                   <div class="kanban-board row">
-                    <div class="column" style="width: 100%; height: 460px; display: block; overflow: auto;" v-for="(column, columnIndex) in columns" :key="columnIndex">
+                    <div class="column" style="width: 100%; height: 460px; display: block; overflow: auto;" v-for="(column, columnIndex) in dailyTasks" :key="columnIndex">
                       <div class="column-header" :class="column.title.toLowerCase()" style="display: flex; justify-content: center; align-items: center;">{{ column.title }}</div>
                       <draggable
                       class="column-content" 
@@ -107,9 +107,15 @@
   <script>
   import draggable from 'vuedraggable';
   //import 'font-awesome/css/font-awesome.css';
+  import {computed} from 'vue';
+  import {useStore} from 'vuex';
   
   
   export default {
+    setup() {
+      const store = useStore();
+      return {store}
+    },
     components: {
       draggable,
     },
@@ -123,13 +129,15 @@
         timerInterval: null,
         isRunning: false,
         continueCheck: false,
+        dailyTasks: computed(() => this.store.getters['DailyTasks']),
+        
   
         // Task Board
-        columns: [
-          { title: 'To Do', tasks: [{id: '0', text:'WAD2'},{id: '1', text:'sleep'}] },
-          { title: 'In Progress', tasks: [] },
-          { title: 'Done', tasks: [] },
-        ],
+        // dailyTasks: [
+        //   { title: 'To Do', tasks: [{id: '0', text:'WAD2'},{id: '1', text:'sleep'}] },
+        //   { title: 'In Progress', tasks: [] },
+        //   { title: 'Done', tasks: [] },
+        // ],
         draggingTask: null,
         newTaskText: '', // To store the text of the new task
         displayTasks: []
@@ -284,10 +292,10 @@
       onDragEnd(targetColumnIndex) {
         if (this.draggingTask !== null && targetColumnIndex !== this.draggingTask) {
           // Move the task to the target column
-          const taskToMove = this.columns[this.draggingTask].tasks.shift();
+          const taskToMove = this.dailyTasks[this.draggingTask].tasks.shift();
   
           // Add the task to the target column
-          this.columns[targetColumnIndex].tasks.push(taskToMove);
+          this.dailyTasks[targetColumnIndex].tasks.push(taskToMove);
   
           this.draggingTask = null; // Reset the source column index
   
@@ -295,7 +303,7 @@
           this.$forceUpdate(); // This is necessary to update the UI
         }
         // remove from displayTasks dropdown if task is in 'Done' category
-        var list1 = this.columns.find(column => column.title === 'Done').tasks;
+        var list1 = this.dailyTasks.find(column => column.title === 'Done').tasks;
         if(list1.length > 0){
           var list2 = this.displayTasks;
           list1.forEach(item => {
@@ -308,7 +316,7 @@
       },
       addNewTask() {
         if (this.newTaskText != ''){
-          const todoColumn = this.columns.find(column => column.title === 'To Do');
+          const todoColumn = this.dailyTasks.find(column => column.title === 'To Do');
           const newTask = {
             id: Date.now(), // Using timestamp as a unique ID
             text: this.newTaskText,
@@ -320,14 +328,14 @@
           // @yi xuan, push task to firebase for the DAY
 
           // add to displayTasks
-          var toDo = this.columns.find(column => column.title === 'To Do').tasks;
+          var toDo = this.dailyTasks.find(column => column.title === 'To Do').tasks;
           this.displayTasks.push(toDo[toDo.length - 1].text);
         }
       },
       removeTask(columnIndex, text){
         // remove from task board
         this.draggingTask = columnIndex;
-        this.columns[this.draggingTask].tasks.shift();
+        this.dailyTasks[this.draggingTask].tasks.shift();
         this.$forceUpdate();
         // remove from dropdown
         var index = this.displayTasks.indexOf(text);
@@ -336,6 +344,9 @@
     },
     beforeUnmount() {
       clearInterval(this.timerInterval);
+    },
+    mounted() {
+    // this.store.dispatch("fetchDailyTasks", day);
     },
   };
     window.addEventListener('beforeunload', function (e) {
