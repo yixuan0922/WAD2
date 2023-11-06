@@ -1,6 +1,6 @@
 <template>
   <div>
-    <fieldset class="container">
+    <fieldset id="eventModal" class="container" style="overflow: auto;">
       <legend class="row" style="margin-bottom: 20px; width: 100%">
         <h1 style="text-align: left">Add Event</h1>
       </legend>
@@ -235,7 +235,7 @@
       </div>
 
       <!-- Buttons -->
-      <div class="row" style="justify-content: flex-end; margin-top: 10px">
+      <div class="row" style="justify-content: flex-end; margin-top: 10px; padding: 0px;">
         <button col-3
           @click="recommendTimeSlots"
           :disabled="!this.$store.state.invitees.length"
@@ -580,6 +580,7 @@ export default {
                     `;
 
           recommendationsContainer.appendChild(col);
+          
         });
       } else {
         recommendationsContainer.textContent =
