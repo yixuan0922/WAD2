@@ -595,15 +595,25 @@ export default {
           const col = document.createElement("div");
           // col.className = "col-md-4"; // Use the grid system for columns (Bootstrap 4)
           col.className = "col"; // Use the grid system for columns (Bootstrap 4)
+          // col.innerHTML = `
+          //               <div class="card" style="transform: translateY(-100px);">
+          //                   <div class="card-body" >
+          //                       <h5 class="card-title" style="color: black;">Recommended Time Slot</h5>
+          //                       <p class="card-text" style="color: black;">${recommendation}</p>
+          //                       <button class="btn btn-primary" onclick="selectTimeSlot('${recommendation}')">Select</button>
+          //                   </div>
+          //               </div>
+          //           `;
           col.innerHTML = `
-                        <div class="card" style="transform: translateY(-100px);">
-                            <div class="card-body" >
-                                <h5 class="card-title" style="color: black;">Recommended Time Slot</h5>
-                                <p class="card-text" style="color: black;">${recommendation}</p>
-                                <button class="btn btn-primary" onclick="selectTimeSlot('${recommendation}')">Select</button>
-                            </div>
-                        </div>
-                    `;
+              <div class="card" style="transform: translateY(-100px);">
+                  <div class="card-body" >
+                      <h5 class="card-title" style="color: black;">Recommended Time Slot</h5>
+                      <p class="card-text mt-0 mb-2" style="color: black;">${recommendation}</p>
+                      <p></p>
+                      <p></p>
+                  </div>
+              </div>
+          `;
 
           recommendationsContainer.appendChild(col);
           
