@@ -2,14 +2,14 @@
   <section>
     <div class="form-box">
       <div class="form-value">
-        <form action="">
-          <h2 class="header">Login</h2>
+        <form action="" autocomplete="off">
+          <h2 class="login">Login</h2>
           <div class="inputbox">
             <ion-icon name="mail-outline"></ion-icon>
             <input type="email" required />
             <label for="">Email</label>
           </div>
-          <div class="inputbox">
+          <div class="inputbox" id="password">
             <ion-icon name="lock-closed-outline"></ion-icon>
             <input type="password" required />
             <label for="">Password</label>
@@ -48,7 +48,7 @@
   </section>
 </template>
 
-<script>
+<!-- <script>
 import { auth } from "../firebase/firebaseInit";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -84,6 +84,41 @@ export default {
     },
   },
 };
+</script> -->
+<script>
+
+import {auth} from "../firebase/firebaseInit";
+import { signInWithEmailAndPassword,} from 'firebase/auth';
+// import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+
+export default {
+    name: 'Login',
+    data() {
+        return ({
+            email: "",
+            password: "",
+            error: "", 
+            errorMsg: "",
+        })
+    },
+    methods: {
+      signIn() {
+        signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+          this.error = false;
+          this.errorMessage = '';
+          const user = userCredential.user;
+          console.log(user.uid);
+          this.$router.push({name: 'Landing'});
+        }).catch((err) => {
+          this.error = true;
+          this.errorMsg = err.message
+        });
+      }, 
+  
+    }
+
+}
 </script>
 
 <style lang="scss">
@@ -93,6 +128,9 @@ export default {
   font-family: "poppins", sans-serif;
 }
 
+#password {
+  margin-bottom: 5px;
+}
 section {
   display: flex;
   justify-content: center;
@@ -115,14 +153,11 @@ section {
   backdrop-filter: blur(15px);
 }
 
-h2 {
-  text-align: center;
-}
-
-.header {
+.login {
   color: white;
   font-size: 2em;
   font-weight: bold;
+  text-align: center;
 }
 
 .inputbox {
@@ -172,6 +207,7 @@ input:valid ~ label {
   color: white;
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 }
 
 .forget label input {
