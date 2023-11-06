@@ -1,6 +1,6 @@
 <template>
   <div>
-    <fieldset id="eventModal" class="container">
+    <fieldset class="container modal-container" :class="{ 'no-scroll': !isScrollable }">
       <legend class="row" style="margin-bottom: 20px; width: 100%">
         <h1 style="text-align: left">Add Event</h1>
       </legend>
@@ -75,7 +75,7 @@
 
         <!-- right column -->
         <div class="col-lg-6">
-          <div class="mb-3">
+          <div class="mb-3"  style="margin-right:0;">
             <!-- All day toggle -->
             <p type="text" class="form-control" style="padding-top: 8.5px">
               All Day:
@@ -260,7 +260,7 @@
         </button>
         <button
           class="col-2 btn btn-primary buttonSave"
-          style="width: 66px"
+          style="width: 66px; margin-right: 12px"
           @click="addEvent"
         >
           Add
@@ -287,6 +287,7 @@ export default {
     addInviteeErr: "",
     category: "event",
     selectedCoord: {},
+    isScrollable: false, // Add a flag to determine scrollability,
   }),
   methods: {
     clearError() {
@@ -571,8 +572,8 @@ export default {
           // col.className = "col-md-4"; // Use the grid system for columns (Bootstrap 4)
           col.className = "col"; // Use the grid system for columns (Bootstrap 4)
           col.innerHTML = `
-                        <div class="card">
-                            <div class="card-body">
+                        <div class="card" style="transform: translateY(-100px);">
+                            <div class="card-body" >
                                 <h5 class="card-title" style="color: black;">Recommended Time Slot</h5>
                                 <p class="card-text" style="color: black;">${recommendation}</p>
                                 <button class="btn btn-primary" onclick="selectTimeSlot('${recommendation}')">Select</button>
@@ -586,6 +587,17 @@ export default {
       } else {
         recommendationsContainer.textContent =
           "No available time slots found within the preferred time range";
+      }
+    },
+
+    toggleScrollability() {
+      const modal = document.querySelector('.modal-container');
+      if (modal.scrollHeight > window.innerHeight) {
+        this.isScrollable = true;
+        modal.classList.remove('no-scroll');
+      } else {
+        this.isScrollable = false;
+        modal.classList.add('no-scroll');
       }
     },
   },
@@ -602,6 +614,7 @@ export default {
     this.endTime = formatTime(this.event.end);
     this.allDay = Boolean(this.event.allDay);
     this.$store.state.invitees = [];
+    this.toggleScrollability();
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -836,5 +849,17 @@ input[type="text"] {
 
 .emails.emails-input input:focus {
   outline: none;
+}
+
+.modal-container{
+  max-width: 100%;
+  max-height: 80vh;
+  overflow-x:hidden;
+  overflow-y: auto;
+  margin: 0 auto;
+}
+
+.modal-container.no-scroll{
+  overflow-y:auto;
 }
 </style>
