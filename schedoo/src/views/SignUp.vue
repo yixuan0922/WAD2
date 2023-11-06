@@ -6,33 +6,33 @@
                     <h2 class="header">Sign Up</h2>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="text" required>
+                        <input type="text" required v-model='firstName'>
                         <label for="">First Name</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="text" required>
+                        <input type="text" required v-model='lastName'>
                         <label for="">Last Name</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="text" required>
+                        <input type="text" required v-model='username'>
                         <label for="">UserName</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" required>
+                        <input type="email" required v-model='email'>
                         <label for="">Email</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" class="password" required>
+                        <input type="password" class="password" required v-model='password'>
                         <label for="">Password</label>
                     </div>
     
                     <div v-show="error" class="error">{{ this.errorMsg }}</div>
 
-                    <button @click.prevent="signUp">Sign Up</button>
+                    <button @click.prevent="register">Sign Up</button>
                 </form>
             </div>
         </div>
@@ -42,37 +42,78 @@
 
 <script>
 
-import {auth} from "../firebase/firebaseInit";
-import { signInWithEmailAndPassword } from "firebase/auth";
-
+// import * as firebase from "firebase/app";
+// import firebase from "firebase/app";
+// import "firebase/auth"; // Import auth module here
+import { collection, doc, setDoc } from "firebase/firestore";
+import {db, auth} from "../firebase/firebaseInit";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 export default {
-    name: 'Login',
+    name: 'Register',
     data() {
-        return ({
-            email: "",
-            password: "",
-            error: "", 
-            errorMsg: "",
-        })
+        return {
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        password: "",
+        error: "", 
+        errorMsg: "",
+        };
     },
-    methods: {
-      signIn() {
-        signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
-          this.error = false;
-          this.errorMessage = '';
-          const user = userCredential.user;
-          console.log(user.uid);
-          this.$router.push({name: 'Landing'});
-        }).catch((err) => {
-          this.error = true;
-          this.errorMsg = err.message
-        });
-      }
-    }
-}
+  methods: {
+    async register(){
+        if (
+            this.email != "" &&
+            this.password != "" &&
+            this.firstName != "" &&
+            this.lastName != "" &&
+            this.username != ""
+        ) {
+            this.error = false;
+            this.errorMsg = "";
+
+            createUserWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+                const user = userCredential.user;
+                const database = collection(db, "users");
+                const userDoc = doc(database, user.uid);
+                setDoc(userDoc, {
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    username: this.username,
+                    email: this.email,
+                })
+                this.$router.push({ name: "Login" })
+                // setTimeout(this.$router.push({ name: "Login" }), 3000);
+            }).catch((err) => {
+                this.error = true;
+                this.errorMsg = err.message;
+            })
+            // const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
+            // const user = userCredential.user;
+            // const dataBase = collection(db, "users");
+            // const userDoc = doc(dataBase, user.uid);
+            // await setDoc(userDoc, {
+            //     firstName: this.firstName,
+            //     lastName: this.lastName,
+            //     username: this.username,
+            //     email: this.email,
+            // });
+            // this.$router.push({ name: "Landing" });
+            // return; 
+        }
+        else {
+        this.error= true;
+        this.errorMsg = "Please fill in all fields";
+        return;
+        }
+        return;
+    },
+    },
+};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 * {
     margin: 0;
     padding: 0;

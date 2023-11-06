@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingView from '../views/LandingView.vue';
 import Login from '../views/Login2.vue';
-import Register from '../views/Register.vue';
+import Register from '../views/SignUp.vue';
 import ForgetPassword from '../views/ForgetPassword.vue';
 import Settings from '../views/SettingsView.vue';
 // import CreateEvent from '/src/components/CreateEvent.vue';
