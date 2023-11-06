@@ -349,10 +349,10 @@
     // this.store.dispatch("fetchDailyTasks", day);
     },
   };
-    window.addEventListener('beforeunload', function (e) {
-        e.preventDefault();
-        e.returnValue = '';
-    });
+    // window.addEventListener('beforeunload', function (e) {
+    //     e.preventDefault();
+    //     e.returnValue = '';
+    // });
     
   </script>
   
