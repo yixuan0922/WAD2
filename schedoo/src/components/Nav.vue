@@ -1,106 +1,146 @@
 <script setup>
 /* eslint-disable */
 
-import { auth } from '@/firebase/firebaseInit';
-import {RouterLink, RouterView} from 'vue-router';
+import { auth } from "@/firebase/firebaseInit";
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f7dfc2"
->
+  <nav
+    class="navbar navbar-expand-lg navbar-light"
+    style="background-color: #f7dfc2"
+  >
     <div class="container">
-        <!-- <a class="navbar-brand" id="navBarLogo" href="#"></a> -->
-          <router-link class="nav-link" :to="{name: 'Landing'}"><img src="@/assets/navschedoo.png" height="40"></router-link>
+      <!-- <a class="navbar-brand" id="navBarLogo" href="#"></a> -->
+      <router-link class="nav-link" :to="{ name: 'Landing' }"
+        ><img src="@/assets/navschedoo.png" height="40"
+      /></router-link>
 
-
-
-        <button class="navbar-toggler" type="button" 
-        data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-        aria-controls="navbarSupportedContent" aria-expanded="false" 
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
         aria-label="Toggle navigation"
-        style="position: absolute; top: 10px; right: 100px;">
+        style="position: absolute; top: 10px; right: 100px"
+      >
         <span class="navbar-toggler-icon"></span>
-        </button>
+      </button>
 
-        <span  class="navbar-text" >
-        <div v-if="(this.$store.state.user)" class="profile pButton" ref="profile" @click="toggle" style="position: absolute; top: 7px; right: 30px;">
-        {{this.$store.state.profileInitials}}
-        <div class="profile-menu" id="profileMenu" hidden>
-              <div class="info">
-                  <p class="initials">{{this.$store.state.profileInitials}}</p>
-                  <div class="right">
-                      <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
-                      <p>{{this.$store.state.profileUsername}} </p>
-                      <p>{{this.$store.state.profileEmail}} </p>
-                  </div>
+      <span class="navbar-text">
+        <div
+          v-if="this.$store.state.user"
+          class="profile pButton"
+          ref="profile"
+          @click="toggle"
+          style="position: absolute; top: 7px; right: 30px"
+        >
+          {{ this.$store.state.profileInitials }}
+          <div class="profile-menu" id="profileMenu" hidden>
+            <div class="info">
+              <p class="initials">{{ this.$store.state.profileInitials }}</p>
+              <div class="right">
+                <p>
+                  {{ this.$store.state.profileFirstName }}
+                  {{ this.$store.state.profileLastName }}
+                </p>
+                <p>{{ this.$store.state.profileUsername }}</p>
+                <p>{{ this.$store.state.profileEmail }}</p>
               </div>
-              <div class="options">
-                  <div class="option">
-                      <router-link class-="option" :to="{name: 'Settings'}"
-                      style="color: black; text-decoration: none;"
-                      >
-                          <userIcon class="icon"/>
-                          <p
-                          style="padding-top: 10px"
-                          >Profile</p>
-                      </router-link>
-                  </div>
-                  <div @click="signOut" class="option">
-                      <router-link class="option" to="#"
-                      style="color: black; text-decoration: none"
-                      >
-                          <!-- <userIcon class="icon"/> -->
-                          <p
-                          >Sign Out</p>
-                      </router-link>
-                  </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <router-link
+                  class-="option"
+                  :to="{ name: 'Settings' }"
+                  style="color: black; text-decoration: none"
+                >
+                  <userIcon class="icon" />
+                  <p style="padding-top: 10px">Profile</p>
+                </router-link>
               </div>
+              <div @click="signOut" class="option">
+                <router-link
+                  class="option"
+                  to="#"
+                  style="color: black; text-decoration: none"
+                >
+                  <!-- <userIcon class="icon"/> -->
+                  <p>Sign Out</p>
+                </router-link>
+              </div>
+            </div>
           </div>
-
-      </div>
+        </div>
       </span>
 
-
-        <div v-if="(this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 40px; transform: translateX(-50px);">
-          <ul class="navbar-nav mx-auto">
-              <li class="nav-item centerLinks">
-              <!-- <a class="nav-link active">My Calendar</a> -->
-              <router-link class="nav-link" :to="{name: 'Calendar'}"
-              style="color: black; text-decoration: none;"
-              >My Calendar</router-link>
-              </li>
-              <li class="nav-item centerLinks">
-              <a class="nav-link active" href="#">Insights</a>
-              </li>
-              <li class="nav-item centerLinks">
-              <a class="nav-link active" href="#">Focus</a>
-              </li>
-          </ul>
-          <!-- <span class="navbar-text" style="right: 5%">
+      <div
+        v-if="this.$store.state.user"
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+        style="height: 40px"
+      >
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <!-- <a class="nav-link active">My Calendar</a> -->
+            <router-link
+              class="nav-link"
+              :to="{ name: 'Calendar' }"
+              style="color: black; text-decoration: none"
+              >My Calendar</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <!-- <a class="nav-link active" href="#">Insights</a> -->
+            <router-link
+              class="nav-link"
+              :to="{ name: 'Insights' }"
+              :class="{ active: insightsPage }"
+              style="color: black; text-decoration: none"
+              >Home</router-link
+            >
+          </li>
+          <!-- <li class="nav-item">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'Focus' }"
+              :class="{ active: !insightsPage }"
+              style="color: black; text-decoration: none"
+              >Focus</router-link
+            >
+          </li> -->
+        </ul>
+        <!-- <span class="navbar-text" style="right: 5%">
               <router-link @click='signOut' class="nav-link" to="#"
               style="color: black; text-decoration: none;"
               >Sign Out</router-link>
           </span> -->
-        </div>
+      </div>
 
-
-
-        <div v-if="(!this.$store.state.user)" class="collapse navbar-collapse" id="navbarSupportedContent"
-        style="height: 40px">
-          <ul class="navbar-nav mx-auto">
-              <li class="nav-item">
-              <a class="nav-link active" @click="toAbout">About Us</a>
-              </li>
-          </ul>
-          <span  class="navbar-text" style="right: 5%">
-              <router-link class="nav-link" :to="{name: 'Login'}"
-              style="color: black; text-decoration: none;"
-              >Login</router-link>
-          </span>
-        </div>
+      <div
+        v-if="!this.$store.state.user"
+        class="collapse navbar-collapse"
+        id="navbarSupportedContent"
+        style="height: 40px"
+      >
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active" @click="toAbout">About Us</a>
+          </li>
+        </ul>
+        <span class="navbar-text" style="right: 5%">
+          <router-link
+            class="nav-link"
+            :to="{ name: 'Login' }"
+            style="color: black; text-decoration: none"
+            >Login</router-link
+          >
+        </span>
+      </div>
     </div>
-</nav>
-
+  </nav>
 </template>
 
 <script>
@@ -110,7 +150,7 @@ export default {
     return {
       hidden: true,
       loggedin: false,
-    }
+    };
   },
   // ready: function () {
   //   checkAuth();
@@ -132,7 +172,6 @@ export default {
       // window.location.reload();
       window.location.href = "/login";
     },
-
 
     toAbout() {
       console.log("Button clicked"); // Check if this message is logged
@@ -159,37 +198,30 @@ export default {
     //     this.loggedin = false;
     //   }
     // }
-  }, 
+  },
   computed: {
     user() {
       return this.$store.state.user;
-    }
-  }
-
+    },
+  },
 };
-
 </script>
 
 <style scoped>
 .navbar {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 10;
-    min-height: 50px;
-    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  min-height: 50px;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
 }
 .nav-link {
-    font-weight: bold;
-    font-size: medium;
-    font-family: system-ui;
-    letter-spacing: 0.05em;
-    transform: translateY(-3px);
-    transition: color 0.1s;
-}
-
-.nav-link:hover {
-  color: #656565 !important; /* Color to change to on hover */
+  font-weight: bold;
+  font-size: medium;
+  font-family: system-ui;
+  letter-spacing: 0.05em;
+  transform: translateY(-3px);
 }
 
 li {
@@ -198,11 +230,11 @@ li {
 }
 
 .circular-button {
-      width: 40px; /* Set the width and height to the same value to make it circular */
-      height: 40px;
-      border-radius: 50%; /* Makes the button circular */
-      font-size: small;
-    }
+  width: 40px; /* Set the width and height to the same value to make it circular */
+  height: 40px;
+  border-radius: 50%; /* Makes the button circular */
+  font-size: small;
+}
 
 .profile {
   position: relative;
@@ -226,11 +258,12 @@ li {
     position: absolute;
     top: 60px;
     right: 0px;
-    width:260px;
+    width: 260px;
     background-color: #e9b58d;
     color: black !important;
     font-weight: bold;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border-radius: 5%;
 
     .info {
@@ -263,12 +296,11 @@ li {
           font-size: 14px;
         }
 
-        p:nth-child(2), 
+        p:nth-child(2),
         p:nth-child(3) {
           font-size: 12px;
         }
       }
-
     }
   }
 }

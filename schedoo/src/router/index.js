@@ -69,10 +69,12 @@ const routes = [
     component: Home,
     children: [
       {
+        name: "Insights",
         path: 'insights',
         component: Insights
       },
       {
+        name: "Focus",
         path: 'focus',
         component: Focus
       }]

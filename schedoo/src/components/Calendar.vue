@@ -148,22 +148,53 @@
             </div>
           </div>
           <hr />
-          <div class="invite-container">
             <h2 class="header">Pending Invites</h2>
-            <ul>
-              <li
-                v-for="(event, index) in this.$store.state.pendingEvents"
-                :key="index"
-              >
-                {{ event.title }} <br />
-                {{ event.invitorEmail }} <br />
-                {{ event.start }} <br />
-                {{ event.end }}
-                <button @click="acceptInvite(event)">Accept</button>
-                <button @click="declineInvite(event)">Decline</button>
-              </li>
-            </ul>
-          </div>
+            <div class="invite-container">
+              <div class="inviteList" v-for="(event, index) in this.$store.state.pendingEvents"
+
+                :key="index">
+                <InviteCard :event="event" @decline="declineInvite(event)" @accept="acceptInvite(event)"></InviteCard>             
+                <!-- <div class="card container">
+                  <div class="card-body row">
+                    <div class="img container col-2">
+                      <img
+                        src="https://api-private.atlassian.com/users/5f116c2970b8a90025c6efa9/avatar?initials=public"
+                      />
+                    </div>
+                    <div class="text col">
+                      <h6 class="row title">
+                        {{ event.title }}
+                      </h6>
+                      <h1 class="row email">
+                        {{ event.invitorEmail }}
+                      </h1>
+                      <p class="card-text row">
+                        {{ eventStart }} to {{ eventEnd }}
+                      </p>
+                    </div>
+                  </div>
+                  <hr class="cardDivider" />
+                  <div class="card-body action">
+                    <button @click="acceptInvite(event)">Accept</button>
+                    <button class="decline" @click="declineInvite(event)">Decline</button>
+                  </div>
+                </div>
+              </div> -->
+              <!-- <ul>
+                <li
+                  v-for="(event, index) in this.$store.state.pendingEvents"
+                  :key="index"
+                >
+                  {{ event.title }} <br />
+                  {{ event.invitorEmail }} <br />
+                  {{ event.start }} <br />
+                  {{ event.end }}
+                  <button @click="acceptInvite(event)">Accept</button>
+                  <button @click="declineInvite(event)">Decline</button>
+                </li>
+              </ul> -->
+            </div>
+            </div>
         </div>
       </div>
     </div>
@@ -192,6 +223,7 @@ import AcceptInvite from '../components/AcceptInvite.vue';
 // import { Calendar } from '@fullcalendar/core';
 import Modal from "@/components/ModalView.vue";
 import DropZone from "@/components/DropZone.vue";
+import InviteCard from "@/components/InviteCard.vue";
 
 const store = useStore();
 
@@ -477,10 +509,8 @@ const upload = () => {
 };
 
 const acceptInvite = (event) => {
-  console.log("acceptInvite", event.start);
   toggleModal(AcceptInvite, {
     text: "This is from the component",
-    // event: arg.event
     event: {
       id: event.id,
       title: event.title,
@@ -488,13 +518,10 @@ const acceptInvite = (event) => {
       end: new Date(event.end),
       allDay: event.allDay,
       invitees: event.invitees,
-
       invitorId: event.invitorId, 
       invitorEmail: event.invitorEmail,
     },
   });
-
-  // store.dispatch("acceptInvite", event);
 };
 
 const declineInvite = (event) => {
@@ -635,6 +662,9 @@ const showFilters = ref(false);
 const toggleFilters = () => {
   showFilters.value = !showFilters.value;
 }
+
+
+
 </script>
 
 <style>
@@ -646,12 +676,13 @@ const toggleFilters = () => {
   line-height: 1.5;
   background: #ededed;
   border-right: 1px solid #d3e2e8;
-  height: 100vh;
+  /* height: 100%; */
   transition: width 0.3s;
 }
 
 .calendar-app-sidebar-section {
   padding: 1.1em;
+  overflow-y: scroll;
 }
 
 .calendar-app-main {
@@ -690,6 +721,7 @@ const toggleFilters = () => {
   overflow-x: hidden;
   width: 100%;
   font-family: "poppins", sans-serif;
+  margin-top: 50px;
 }
 
 .app-calendar {
@@ -868,6 +900,120 @@ hr {
   }
   div.fc-view-harness.fc-view-harness-active {
     height: 175px !important;
+  }
+  InviteCard {
+    width: 250px;
+  }
+}
+
+
+.fc-view-harness {
+  background: #fff !important;
+}
+
+.fc-theme-bootstrap5 .fc-scrollgrid {
+  border-radius: 10px;
+}
+
+.fc-theme-bootstrap5-shaded {
+    background-color: #ebc6b5;
+}
+
+.invite-container {
+  width: 320px;
+  height: 490px;
+  overflow-y: scroll;
+}
+
+.fc-listWeek-view .fc-view .fc-list .fc-list-sticky {
+  height: 500px;
+}
+
+.fc-view-harness .fc-view-harness-active {
+  height: 500px !important;
+}
+
+
+.card {
+  width: 300px;
+  margin: auto;
+  padding-bottom: 15px;
+  margin-bottom: 8px;
+  padding: 0 !important;
+}
+
+.img img {
+  width: 30px;
+  height: 30px;
+  justify-content: center !important;
+}
+
+.img.container.col-2 {
+  display: flex;
+  padding-right: 5px;
+}
+.card-body {
+  width: 100%;
+  padding: 15px !important;
+  margin: auto;
+}
+
+.text {
+  margin-left: 10px;
+  text-align: left;
+}
+
+.title, .email {
+  position: absolute;
+  font-size: 18px;
+  margin-bottom: 2px;
+  font-weight: bold !important;
+  color: black;
+}
+
+.title {
+  transform: translateY(-20px);
+
+}
+
+.email {
+  font-size: 12px;
+}
+
+.card-text {
+  font-size: 14px;
+  color: gray;
+  transform: translateY(30px);
+}
+
+.cardDivider {
+  margin-top: 0;
+  margin-bottom: 3px;
+}
+
+.action {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 30px !important;
+}
+
+.action button {
+  margin: 0;
+  border-radius: 20px;
+  padding: 3px 18px;
+  justify-content: space-around;
+}
+
+.decline {
+  background-color: whitesmoke;
+  border: 2px solid #2c3e50;
+  color: #2c3e50;
+}
+
+@media (max-width:1000px) {
+  .card {
+    width: 250px;
+    transform: translateX(-25px);
   }
 }
 </style>
