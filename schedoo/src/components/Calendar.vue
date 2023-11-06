@@ -114,9 +114,9 @@
           <hr />
             <h2 class="header">Pending Invites</h2>
             <div class="invite-container">
-              <div class="inviteList">
-                <InviteCard></InviteCard> 
-                <InviteCard></InviteCard>            
+              <div class="inviteList" v-for="(event, index) in this.$store.state.pendingEvents"
+                :key="index">
+                <InviteCard :event="event"></InviteCard>             
               </div>
               <!-- <ul>
                 <li
@@ -156,7 +156,8 @@ import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 // import Modal from '../components/ModalView.vue'
 import EditEventModal from "../components/EditEventModal.vue";
 import NewEventModal from "../components/NewEventModal.vue";
-// import AcceptInvite from '../components/AcceptInvite.vue';
+
+
 // import CommentsModal from '../components/CommentsModal.vue'
 // import { Calendar } from '@fullcalendar/core';
 import Modal from "@/components/ModalView.vue";
@@ -839,6 +840,9 @@ hr {
   }
   div.fc-view-harness.fc-view-harness-active {
     height: 175px !important;
+  }
+  InviteCard {
+    width: 250px;
   }
 }
 
