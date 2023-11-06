@@ -84,14 +84,13 @@
                             </div>
                         </div>
 
-                        <!-- Repeat toggle -->
+                        <!-- Repeat toggle
                         <p type="text" class="form-control" style="padding-top: 8.5px">Repeat
                             <label class="switch" style="float: right; margin-right: 16px; padding-bottom: 4px;">
                                 <input id="toggleRepeat" type="checkbox" checked>
                                 <span class="slider round"></span>
                             </label>
-                        </p>
-                        
+                        </p> -->
                         <!-- Add Invitees -->
                         <div class="mb-3">
                             <div class="row">
@@ -188,34 +187,34 @@
         });
         },
 
-        locateMe() {
-            var locatorSection = document.getElementById("locator-input-section");
-            locatorSection.classList.add("loading")
-            var dialog = document.getElementById('custom-dialog');
-            dialog.style.display = 'block';
+        // locateMe() {
+        //     var locatorSection = document.getElementById("locator-input-section");
+        //     locatorSection.classList.add("loading")
+        //     var dialog = document.getElementById('custom-dialog');
+        //     dialog.style.display = 'block';
             
-        },
+        // },
 
-        allow() {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var dialog = document.getElementById('custom-dialog');
-                var lat = position.coords.latitude;
-                var long = position.coords.longitude;
-                dialog.style.display = 'none';
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var address = JSON.parse(this.responseText)
-                        var input = document.getElementById("location");
-                        input.value = address.results[0].formatted_address
-                    }
-                };
-                xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8", true);
-                xhttp.send();
-                var locatorSection = document.getElementById("locator-input-section");
-                locatorSection.classList.remove("loading");
-            })
-        },
+        // allow() {
+        //     navigator.geolocation.getCurrentPosition(function (position) {
+        //         var dialog = document.getElementById('custom-dialog');
+        //         var lat = position.coords.latitude;
+        //         var long = position.coords.longitude;
+        //         dialog.style.display = 'none';
+        //         var xhttp = new XMLHttpRequest();
+        //         xhttp.onreadystatechange = function () {
+        //             if (this.readyState == 4 && this.status == 200) {
+        //                 var address = JSON.parse(this.responseText)
+        //                 var input = document.getElementById("location");
+        //                 input.value = address.results[0].formatted_address
+        //             }
+        //         };
+        //         xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8", true);
+        //         xhttp.send();
+        //         var locatorSection = document.getElementById("locator-input-section");
+        //         locatorSection.classList.remove("loading");
+        //     })
+        // },
 
         block() {
             var locatorSection = document.getElementById("locator-input-section");
@@ -232,13 +231,13 @@
             locatorSection.classList.remove("loading");
         },
 
-        autoComplete(){
-            var input = document.getElementById("location");
-            var options = {
-                componentRestrictions: { country: "sg" }
-            };
-            new window.google.maps.places.Autocomplete(input, options);
-        },
+        // autoComplete(){
+        //     var input = document.getElementById("location");
+        //     var options = {
+        //         componentRestrictions: { country: "sg" }
+        //     };
+        //     new window.google.maps.places.Autocomplete(input, options);
+        // },
 
         categoryClick(){
             // For Category Dropdown
@@ -251,24 +250,24 @@
     };
         
     // Recommendation 
-    document.addEventListener("click", (event) => {
-        var emailInput = document.getElementById('emails-input');
-        var userSuggestion = document.getElementById('userSuggestion');
-        let targetEl = event.target; // clicked element      
-        do {
-            if(targetEl == emailInput) {
-                // user clicks input
-                userSuggestion.style.display = 'flex';
-                return;
-            }
-            // Go up the DOM
-            targetEl = targetEl.parentNode;
-        } while (targetEl);
-            // This is a click outside.      
-            if (userSuggestion != null){
-                userSuggestion.style.display = 'none';
-            }
-    });
+    // document.addEventListener("click", (event) => {
+    //     var emailInput = document.getElementById('emails-input');
+    //     var userSuggestion = document.getElementById('userSuggestion');
+    //     let targetEl = event.target; // clicked element      
+    //     do {
+    //         if(targetEl == emailInput) {
+    //             // user clicks input
+    //             userSuggestion.style.display = 'flex';
+    //             return;
+    //         }
+    //         // Go up the DOM
+    //         targetEl = targetEl.parentNode;
+    //     } while (targetEl);
+    //         // This is a click outside.      
+    //         if (userSuggestion != null){
+    //             userSuggestion.style.display = 'none';
+    //         }
+    // });
 </script>
 
 <style>

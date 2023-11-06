@@ -107,7 +107,7 @@
   <script>
   import draggable from 'vuedraggable';
   //import 'font-awesome/css/font-awesome.css';
-  import {computed} from 'vue';
+  // import {computed} from 'vue';
   import {useStore} from 'vuex';
   
   
@@ -129,15 +129,13 @@
         timerInterval: null,
         isRunning: false,
         continueCheck: false,
-        dailyTasks: computed(() => this.store.getters['DailyTasks']),
-        
-  
+        // dailyTasks: computed(() => this.store.getters['DailyTasks']),
         // Task Board
-        // dailyTasks: [
-        //   { title: 'To Do', tasks: [{id: '0', text:'WAD2'},{id: '1', text:'sleep'}] },
-        //   { title: 'In Progress', tasks: [] },
-        //   { title: 'Done', tasks: [] },
-        // ],
+        dailyTasks: [
+          { title: 'To Do', tasks: [] },
+          { title: 'In Progress', tasks: [] },
+          { title: 'Done', tasks: [] },
+        ],
         draggingTask: null,
         newTaskText: '', // To store the text of the new task
         displayTasks: []
@@ -349,10 +347,10 @@
     // this.store.dispatch("fetchDailyTasks", day);
     },
   };
-    window.addEventListener('beforeunload', function (e) {
-        e.preventDefault();
-        e.returnValue = '';
-    });
+    // window.addEventListener('beforeunload', function (e) {
+    //     e.preventDefault();
+    //     e.returnValue = '';
+    // });
     
   </script>
   
