@@ -215,11 +215,11 @@
         >
           Find Timeslot
         </button>
-        <div class="mb-3">
+        <div class="mb-3" v-if="category === 'event'">
           <label for="recommendations" class="form-label"
             >Recommendations</label
           >
-          <div id="recommendations" v-if="category === 'event'"></div>
+          <div id="recommendations"></div>
         </div>
       </div>
       <div class="row" style="justify-content: flex-end; margin-top: 10px; padding: 0px;">
