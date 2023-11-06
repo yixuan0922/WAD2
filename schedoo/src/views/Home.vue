@@ -47,10 +47,10 @@
               </div>
             </div>
             <!-- Event list -->
-            <!-- <Fullcalendar
-              class="app-calendar-sidebar"
-              v-bind:options="calendarSidebarOptions"
-            /> -->
+            <div class="container">
+              <FullCalendarComponent class="app-calendar-sidebar" 
+              v-bind:options="calendarSidebarOptions"/>
+            </div>
 
             <!-- Spotify -->
             <div class="row" style="margin-top: 20px">
@@ -73,9 +73,13 @@
 <script>
 import Nav from "@/components/Nav.vue";
 import Insights from '../components/Insights.vue';
+import FullCalendarComponent from "@fullcalendar/vue3";
+import {useStore} from 'vuex';
+import { ref , computed} from "vue";
+import ListPlugin from "@fullcalendar/list";
+import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 
 // Calendar
-// import Fullcalendar from "@fullcalendar/vue3";
 // import ListPlugin from "@fullcalendar/list";
 // import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 // import { onMounted, computed } from "vue";
@@ -88,11 +92,11 @@ import Insights from '../components/Insights.vue';
 //   store.dispatch("getPendingEvents");
 // });
 
-// let calendarSidebarOptions = ref({
+// const calendarSidebarOptions = ref({
 //   plugins: [ListPlugin, bootstrap5Plugin],
 //   themeSystem: "bootstrap5",
 //   initialView: "listWeek",
-//   events: computed(() => store.getters["EVENTS"]),
+//   events: computed(() => this.store.getters["ALLEVENTS"]),
 //   headerToolbar: {
 //     left: "",
 //     center: "title",
@@ -101,10 +105,26 @@ import Insights from '../components/Insights.vue';
 // });
 
 export default {
+  setup() {
+    const store = useStore();
+    const calendarSidebarOptions = ref({
+      plugins: [ListPlugin, bootstrap5Plugin],
+      themeSystem: "bootstrap5",
+      initialView: "listWeek",
+      events: computed(() => store.getters["ALLEVENTS"]),
+      headerToolbar: {
+        left: "",
+        center: "title",
+        right: "",
+      },
+    });
+    return {store, calendarSidebarOptions}
+  },
   components:{
     Nav,
     Insights,
-  },
+    FullCalendarComponent
+},
   data() {
     return {
       date: new Date(),
@@ -166,7 +186,7 @@ export default {
 
   mounted() {
     this.checkWeather();
-
+    this.store.dispatch("fetchAllEvents");
     let time = document.getElementById("current-time");
     setInterval(() => {
       let d = new Date();
