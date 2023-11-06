@@ -11,7 +11,7 @@ import Home from '../views/Home.vue';
 import Focus from '../components/FocusTracker.vue';
 import Insights from '../components/Insights.vue';
 // import Calendar from '../components/Calendar.vue';
-import store from '@/store/index.js';
+// import store from '@/store/index.js';
 
 const routes = [
   // {
@@ -52,13 +52,6 @@ const routes = [
     path: "/calendar",
     name: "Calendar",
     component: CalendarView,
-    beforeEnter: (to, from , next) => {
-      if (store.state.profileId){
-        next();
-      } else {
-        next('/login')
-      }
-    }
   },
   {
     path: "/create-event",

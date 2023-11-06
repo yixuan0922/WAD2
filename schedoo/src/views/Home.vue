@@ -59,10 +59,10 @@
               </button>
             </div>
             <!-- Event list -->
-            <!-- <Fullcalendar
-              class="app-calendar-sidebar"
-              v-bind:options="calendarSidebarOptions"
-            /> -->
+            <div class="container">
+              <FullCalendarComponent class="app-calendar-sidebar" 
+              v-bind:options="calendarSidebarOptions"/>
+            </div>
 
             <!-- Spotify -->
             <div class="row" style="margin-top: 20px">
@@ -71,7 +71,7 @@
                 type="application/json+oembed"
                 href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
               />
-              <div v-html="spotifyEmbedHtml" style="padding-left: 0px; padding-right: 0px;"></div>
+              <div v-html="spotifyEmbedHtml"></div>
               <!-- </div> -->
             </div>
           </div>
@@ -87,9 +87,13 @@
 <script>
 import Nav from "@/components/Nav.vue";
 import Insights from '../components/Insights.vue';
+import FullCalendarComponent from "@fullcalendar/vue3";
+import {useStore} from 'vuex';
+import { ref , computed} from "vue";
+import ListPlugin from "@fullcalendar/list";
+import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 
 // Calendar
-// import Fullcalendar from "@fullcalendar/vue3";
 // import ListPlugin from "@fullcalendar/list";
 // import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 // import { onMounted, computed } from "vue";
@@ -102,11 +106,11 @@ import Insights from '../components/Insights.vue';
 //   store.dispatch("getPendingEvents");
 // });
 
-// let calendarSidebarOptions = ref({
+// const calendarSidebarOptions = ref({
 //   plugins: [ListPlugin, bootstrap5Plugin],
 //   themeSystem: "bootstrap5",
 //   initialView: "listWeek",
-//   events: computed(() => store.getters["EVENTS"]),
+//   events: computed(() => this.store.getters["ALLEVENTS"]),
 //   headerToolbar: {
 //     left: "",
 //     center: "title",
@@ -115,10 +119,27 @@ import Insights from '../components/Insights.vue';
 // });
 
 export default {
+  setup() {
+    const store = useStore();
+    const calendarSidebarOptions = ref({
+      plugins: [ListPlugin, bootstrap5Plugin],
+      themeSystem: "bootstrap5",
+      initialView: "listWeek",
+      events: computed(() => store.getters["ALLEVENTS"]),
+      headerToolbar: {
+        left: "",
+        center: "title",
+        right: "",
+        sidebarShown: false,
+      },
+    });
+    return {store, calendarSidebarOptions}
+  },
   components:{
     Nav,
     Insights,
-  },
+    FullCalendarComponent
+},
   data() {
     return {
       date: new Date(),
@@ -208,6 +229,7 @@ export default {
     // Initially, check the window size
     this.checkWindowSize();
 
+    this.store.dispatch("fetchAllEvents");
     let time = document.getElementById("current-time");
     setInterval(() => {
       let d = new Date();
@@ -378,7 +400,6 @@ input[type="button"][value="0"] {
     color: white;
     border-radius: 50%;
     top: 100px;
-    right: -25px;
     visibility: visible;
   }
 }

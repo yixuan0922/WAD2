@@ -16,15 +16,20 @@ export default createStore({
     invitees: [],
     invitee_exist: true,
     pendingEvents: [], 
+    allEvents: [],
   },
   getters: {
     EVENTS: state => state.events, 
     userGoals: (state) => state.userGoals,
+    ALLEVENTS: state => state.allEvents,
   },
   mutations: {
     // Events
     SET_EVENTS(state, events) {
       state.events = events;
+    },
+    SET_ALL_EVENTS(state, events) {
+      state.allEvents = events;
     },
     ADD_EVENT: (state, {event, color}) => {
       console.log('add_event', event.category);
@@ -93,6 +98,176 @@ export default createStore({
 
   },
   actions: {
+    async fetchAllEvents({commit}) {
+      const currentUser = auth.currentUser;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUser.uid);
+      
+      let events = [];
+      
+      const calEventCollection = collection(userDoc, "calEvent");
+      let snapshot = await getDocs(calEventCollection);
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        appData.id = doc.id;
+
+        let color = '#87bba2' // light green ;
+
+        // // 1st set of colors
+        // switch (appData.category) {
+        //   case 'event':
+        //     color = '#ffcbcb'; //pink
+        //     break;
+        //   case 'exam':
+        //     color = '#ffdfba'; // orange
+        //     break;
+        //   case 'class':
+        //     color = '#bae1ff'; // blue
+        //     break;
+        //   case 'invite':
+        //     color = '#baffc9'; // green
+        //     break;
+  
+        //   default:
+        //     color = '#ffcbcb'; 
+        // }
+
+        // 2nd set of colors
+        // switch (appData.category) {
+        //   case 'event':
+        //     color = '#87bba2'; //light green
+        //     break;
+        //   case 'study':
+        //     color = '#009688'; // dark green
+        //     break;
+        //   case 'cca':
+        //     color = '#70c1b3'; // cyan
+        //     break;
+        //   case 'personal':
+        //     color = '#8D6298'; // purple
+        //     break;
+        //   case 'class':
+        //     color = '#a6a2a2'; // brown grey lolipop
+        //     break;
+        //   case 'exam':
+        //     color = '#dec3c3'; // pink
+        //     break;
+        //   case 'invite':
+        //     color = '#4d648d'; // blueberry blue
+        //     break;
+  
+        //   default:
+        //     color = '#87bba2'; 
+        // }
+        
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        
+        events.push(appData);
+      });
+    
+      const calExamCollection = collection(userDoc, "calExam");
+      let snapshotExams = await getDocs(calExamCollection);
+      snapshotExams.forEach(doc => {
+        let appData = doc.data();
+        appData.id = doc.id;
+
+        let color =  '#dec3c3'; // pink
+        
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        events.push(appData);
+      });
+    
+      const calClassCollection = collection(userDoc, "calClass");
+      let snapshotClass = await getDocs(calClassCollection);
+      snapshotClass.forEach(doc => {
+        let appData = doc.data();
+        appData.id = doc.id;
+
+        let color = '#a6a2a2'; // brown grey lolipop
+
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        events.push(appData);
+      });
+      
+
+      
+      const calStudyCollection = collection(userDoc, "calStudy");
+      let snapshotStudy = await getDocs(calStudyCollection);
+      snapshotStudy.forEach(doc => {
+        let appData = doc.data();
+        appData.id = doc.id;
+
+        let color = '#009688'; // dark green
+
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        events.push(appData);
+      });
+      
+
+      
+      const calCCACollection = collection(userDoc, "calCCA");
+      let snapshotCCA = await getDocs(calCCACollection);
+      snapshotCCA.forEach(doc => {
+        let appData = doc.data();
+        appData.id = doc.id;
+
+        let color = '#70c1b3'; // cyan
+
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        events.push(appData);
+      });
+      
+
+      
+      const calPersonalCollection = collection(userDoc, "calPersonal");
+      let snapshotPersonal = await getDocs(calPersonalCollection);
+      snapshotPersonal.forEach(doc => {
+        let appData = doc.data();
+        appData.id = doc.id;
+
+        let color = '#8D6298'; // purple
+
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        events.push(appData);
+      });
+    
+      const calInviteCollection = collection(userDoc, "calInvite");
+      let snapshotInvite = await getDocs(calInviteCollection);
+      for (let inviteDoc of snapshotInvite.docs) {
+        const invitorId = inviteDoc.data().invitorId;
+        const inviteEventId = inviteDoc.data().id;
+    
+        const invitorDoc = doc(database, invitorId);
+        const calEventCollection = collection(invitorDoc, "calEvent");
+        const eventDoc = doc(calEventCollection, inviteEventId);
+    
+        let document = await getDoc(eventDoc);
+        
+        const appData = document.data() || {};
+        appData.id = document.id;
+
+        let color = '#4d648d'; // blueberry blue
+        
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        events.push(appData);
+      }
+      
+      commit('SET_ALL_EVENTS', events);
+    },
     async fetchEvents({commit}, checkedCategories) {
       const currentUser = auth.currentUser;
       const database = collection(db, "users");
