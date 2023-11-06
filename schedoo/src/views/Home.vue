@@ -3,7 +3,7 @@
     <Nav/>
     <div class="container-fluid col-lg-12 px-5 scrollable-container" style="padding-top: 50px;">
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-9">
             <!-- Header -->
             <div class="row">
               <div v-if="insightsPage">
@@ -36,11 +36,12 @@
           <button class="round-btn" v-if="!sidebarShown" @click="toggleSidebar">
             &lt;  &gt;
           </button>
-          <div class="sidebar" :class="{ 'shown' : sidebarShown}">
+          <div class="sidebar col-lg-3" :class="{ 'shown' : sidebarShown}">
             <!-- Time, Calculator -->
             <div class="row">
               <div
-                class="shadow-5 p-3 col-8 offset-1"
+                class="shadow-5 p-3"
+                :class="{ 'col-8 offset-1' : sidebarShown}"
                 style="height: 100px; content-justify: center; align-items: center;background-color: #EDEDED; border-radius: 15px"
               >
                   <div id="current-time" class="datetime" style="font-size: 30px;">{{ runningTime }}</div>
@@ -70,7 +71,7 @@
                 type="application/json+oembed"
                 href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
               />
-              <div v-html="spotifyEmbedHtml"></div>
+              <div v-html="spotifyEmbedHtml" style="padding-left: 0px; padding-right: 0px;"></div>
               <!-- </div> -->
             </div>
           </div>
@@ -181,6 +182,13 @@ export default {
       this.sidebarShown = !this.sidebarShown;
     },
 
+    checkWindowSize() {
+      // Check if the window width is greater than 992px
+      if (window.innerWidth > 992) {
+        this.sidebarShown = false;
+      }
+    },
+
     applyStyles() {
       // Get the <html> element
       const htmlElement = document.querySelector('html');
@@ -193,6 +201,12 @@ export default {
   mounted() {
     this.applyStyles();
     this.checkWeather();
+
+    // Attach an event listener to the window's resize event
+    window.addEventListener('resize', this.checkWindowSize);
+
+    // Initially, check the window size
+    this.checkWindowSize();
 
     let time = document.getElementById("current-time");
     setInterval(() => {
@@ -331,31 +345,43 @@ input[type="button"][value="0"] {
 }
 
 .sidebar {
-  width: 0px; 
-  right:0; 
   padding-top: 20px; 
-  position: absolute; 
-  background-color:#bdbdbd; 
-  height: 100%;
-  visibility: hidden;
-  overflow: hidden; /* Hide overflowing content */
-  transition: width 0.1s ease-in-out; /* Use the width property for the transition */
-}
-
-.shown {
-  width: 300px;
-  visibility: visible;
 }
 
 .round-btn {
-  width: 50px;
-  height: 50px;
-  white-space: nowarp;
-  background-color: #15173c;
-  color: white;
-  border-radius: 50%;
+  visibility: hidden;
+  width: 0px;
   position: absolute;
-  top: 100px;
-  right: -25px;
 }
+
+@media (max-width: 992px) {
+  .sidebar {
+    width: 0px; 
+    right:0; 
+    position: absolute; 
+    visibility: hidden;
+    height: 100%;
+    background-color:#bdbdbd; 
+    overflow: hidden; /* Hide overflowing content */
+    transition: width 0.1s ease-in-out; /* Use the width property for the transition */
+  }
+
+  .shown {
+    width: 300px;
+    visibility: visible;
+  }
+  .round-btn {
+    width: 50px;
+    height: 50px;
+    white-space: nowarp;
+    background-color: #15173c;
+    color: white;
+    border-radius: 50%;
+    top: 100px;
+    right: -25px;
+    visibility: visible;
+  }
+}
+
+
 </style>
