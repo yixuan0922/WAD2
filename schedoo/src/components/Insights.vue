@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container-fluid col-lg-12 px-5 scrollable-container">
-      <div class="col-lg-12" style="margin-top: 20px">
+      <div class="col-lg-12" style="margin-top: 25px">
         <!-- Add Faith's Insights -->
         <div class="row">
           <div
@@ -14,10 +14,10 @@
               border-radius: 15px;
             "
           >
-            <div id="line-chart" style="height: 400px; width: 400px"></div>
+            <div id="line-chart" style="height: 400px; width: 400px; margin-top: 25px;"></div>
           </div>
           <div class="col-lg-6 barcharts-container shadow-3" style="background-color: #FFFFFF; border-radius: 15px; height: 430px">
-                    <div id="barcharts" style="height: 400px; width: 500px;"></div>
+                    <div id="barcharts" style="height: 400px; width: 430px; margin-top: 25px;"></div>
                 </div>
           <!-- <div>
                     <button class="calculatorButton" @click="toggleCalculator">Calculator</button>
