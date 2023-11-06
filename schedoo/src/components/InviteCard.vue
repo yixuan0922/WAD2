@@ -20,32 +20,13 @@
     </div>
     <hr class="cardDivider" />
     <div class="card-body action">
-      <button @click="acceptInvite">Accept</button>
-      <button class="decline" @click="declineInvite">Decline</button>
+      <button @click="accept">Accept</button>
+      <button class="decline" @click="decline">Decline</button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-
-import { markRaw } from "vue";
-import { useStore } from "vuex";
-import AcceptInvite from '../components/AcceptInvite.vue';
-
-
-
-const store = useStore();
-
-const modalActive = ref(false);
-const modalContent = ref(markRaw({ component: null, props: {} }));
-
-
-const toggleModal = (component, props) => {
-  modalContent.value = markRaw({ component, props });
-  modalActive.value = !modalActive.value;
-};
-
 export default {
   props: {
     event: {
@@ -62,69 +43,17 @@ export default {
       return this.event.start.split(" GMT")[0];
     }
   },
-  // methods: {
-  //   acceptInvite() {
-  //     this.$emit("accept-invite", this.event); // Emit an event to notify the parent component
-  //   },
-  //   declineInvite() {
-  //     this.$emit("decline-invite", this.event); // Emit an event to notify the parent component
-  //   },
-  // },
   methods: {
-    acceptInvite() {
-      var event = this.event;
-      console.log("acceptInvite", event.start);
-      toggleModal(AcceptInvite, {
-        text: "This is from the component",
-        event: {
-          id: event.id,
-          title: event.title,
-          start: new Date(event.start),
-          end: new Date(event.end),
-          allDay: event.allDay,
-          invitees: event.invitees,
-          invitorId: event.invitorId, 
-          invitorEmail: event.invitorEmail,
-        },
-      });
+    accept() {
+      this.$emit("accept", this.event); // Emit an event to notify the parent component
     },
-    declineInvite() {
-      var event = this.event;
-      console.log("declineInvite", event);
-      store.dispatch("declineInvite", event);
+    decline() {
+      this.$emit("decline", this.event); // Emit an event to notify the parent component
     },
   },
 };
 
-// // eslint-disable-next-line
-// const acceptInvite = () => {
-//   var event = this.event
-//   console.log("acceptInvite", event.start);
-//   toggleModal(AcceptInvite, {
-//     text: "This is from the component",
-//     // event: arg.event
-//     event: {
-//       id: event.id,
-//       title: event.title,
-//       start: new Date(event.start),
-//       end: new Date(event.end),
-//       allDay: event.allDay,
-//       invitees: event.invitees,
 
-//       invitorId: event.invitorId, 
-//       invitorEmail: event.invitorEmail,
-//     },
-//   });
-
-//   // store.dispatch("acceptInvite", event);
-// };
-
-// // eslint-disable-next-line
-// const declineInvite = () => {
-//   var event = this.event;
-//   console.log("declineInvite", event);
-//   store.dispatch("declineInvite", event);
-// };
 
 </script>
 
