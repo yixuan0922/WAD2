@@ -402,8 +402,8 @@ export default {
       const endDate = formatDate(
         new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000)
       ); //end date of finding available dates and timings
-      const startTime = "08:00"; //start time of finding available timings
-      const endTime = "22:00"; //end time of finding available timings
+      const startTime = "10:00"; //start time of finding available timings
+      const endTime = "20:00"; //end time of finding available timings
       const unavailableSlots = unavailableSlotsInput
         .split(", ")
         .map((slot) => slot.trim());
@@ -490,15 +490,15 @@ export default {
         unavailableSlots, //create function to create array of unavailable slots
         document.getElementById("startDate").value,
         document.getElementById("endDate").value,
-        "08:00", // start of finding available dates and timings
-        "22:00" // end of finding available dates and timings
+        "10:00", // start of finding available dates and timings
+        "20:00" // end of finding available dates and timings
       );
       const meetingDuration =
-        parseInt(document.getElementById("startTime").value, 10) -
-        parseInt(document.getElementById("endTime").value, 10); //math to find the meeting duration
+        ((parseInt(document.getElementById("endTime").value, 10) -
+        parseInt(document.getElementById("startTime").value, 10))) * 60; //math to find the meeting duration
       const minGap = 15; //fixed
-      const startTime = "08:00"; // start of finding available dates and timings
-      const endTime = "22:00"; // end of finding available dates and timings
+      const startTime = "10:00"; // start of finding available dates and timings
+      const endTime = "20:00"; // end of finding available dates and timings
 
       // Extract the date part from the selected date
       const datePart = selectedDate.toISOString().split("T")[0];
