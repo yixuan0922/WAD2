@@ -685,6 +685,7 @@ const toggleFilters = () => {
   overflow-x: hidden;
   width: 100%;
   font-family: "poppins", sans-serif;
+  margin-top: 50px;
 }
 
 .app-calendar {
