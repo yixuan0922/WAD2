@@ -1,29 +1,54 @@
 <template>
   <div>
-    <fieldset>
-      <legend>Event details</legend>
-      <b>ID:</b>{{ event.id }} <br/>
-      <b>Start:</b>  {{ event.start }} <br/>
-      <b>End:</b>  {{ event.end }} <br/>
-    </fieldset>
-    <fieldset></fieldset>
-        <legend>Add event</legend>
-        <div class="container">
-          <div class="row">
-            Category: 
-            <select v-model="category">
-              <option value="event">Event</option>
-              <option value="class">Class</option>
-              <option value="exams">Exams</option>
-              <option value="invites">Invites</option>
-            </select>
-          </div>
-          <div class='row'> 
-            Event Title: <input type="text" v-model="title">
+    <fieldset class="container modal-container" :class="{ 'no-scroll': !isScrollable }">
+      <legend class="row" style="margin-bottom: 20px; width: 100%">
+        <h1 style="text-align: left">Add Event</h1>
+      </legend>
+      <!-- <b>ID:</b>{{ event.id }} <br/> -->
+      <!-- <b>Start:</b> {{ event.start }} <br />
+      <b>End:</b> {{ event.end }} <br /> -->
+      <!-- </fieldset>
+    <fieldset> -->
+      <!-- <legend>Add event</legend> -->
+      <div class="row" style="text-align: start">
+        <div class="col-lg-6">
+          <div class="row mb-3">
+            <div class="col-sm-5">
+              <select
+                id="category"
+                v-model="category"
+                placeholder="Select a category"
+              >
+                <option value="event">Event</option>
+                <option value="study">Study</option>
+                <option value="cca">CCA</option>
+                <option value="personal">Personal</option>
+              </select>
+            </div>
+            <div class="col-sm-7 mt-1">
+              <input
+                id="taskName"
+                type="text"
+                class="form-control"
+                placeholder="Enter an evemt name"
+                v-model="title"
+              />
+            </div>
           </div>
 
           <div class="mb-3">
-            <label for="autocomplete" class="form-label"
+            <label for="agenda" class="form-label">Agenda</label><br />
+            <textarea
+              id="agenda"
+              name="agenda"
+              class="form-control"
+              placeholder="Enter agenda of task"
+              style="height: 108px; width: 100%"
+            ></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="locationAPI" class="form-label"
               >Location or Video Call</label
             ><br />
             <div
@@ -32,17 +57,17 @@
               style="width: 100%"
             >
               <input
-                id="autocomplete"
+                id="locationAPI"
                 type="text"
                 class="form-control"
                 placeholder="Enter Location or Video Call link"
-                ref="location"
+                v-on:keyup="autoComplete()"
               />
               <i
                 aria-hidden="true"
                 class="dot circle outline link icon"
                 id="locator-button"
-                @click="locatorButtonPressed()"
+                @click="locateMe()"
               ></i>
             </div>
           </div>
@@ -50,7 +75,7 @@
 
         <!-- right column -->
         <div class="col-lg-6">
-          <div class="mb-3">
+          <div class="mb-3"  style="margin-right:0;">
             <!-- All day toggle -->
             <p type="text" class="form-control" style="padding-top: 8.5px">
               All Day:
@@ -140,69 +165,53 @@
             </div>
           </div>
 
-          <!-- Repeat toggle -->
-          <!-- <p type="text" class="form-control" style="padding-top: 8.5px">
-            Repeat
-            <label
-              class="switch"
-              style="float: right; margin-right: 16px; padding-bottom: 4px"
-            >
-              <input id="toggleRepeat" type="checkbox" checked />
-              <span class="slider round"></span>
-            </label>
-          </p> -->
-
           <!-- Add Invitees -->
-          <div class="mb-3" v-if="category === 'event'">
+          <div class="mb-3">
             <label for="invitees" class="form-label">Add Invitees</label>
             <br />
             <div class="row mx-auto" style="width: 100%; display: flex">
-              <!-- <div style="height: 100%; display: flex; padding: 0"> -->
               <input
-                class="col"
-                style="border-radius: 5px"
-                id="emails-input"
-                placeholder="Enter email(s) here"
-                type="text"
-                v-model="newInvitee"
-                @input="clearError"
-                @keyup.enter="addInvitee"
-              /><button
-                class="col-2 btn btn-primary"
-                style="
-                  height: 40px;
-                  padding: 6px !important;
-                  justify-content: center;
-                "
-                @click="addInvitee"
-              >
-                +
-              </button>
-              <!-- </div> -->
+                  class="col"
+                  style="border-radius: 5px"
+                  id="emails-input"
+                  placeholder="Enter email(s) here"
+                  type="text"
+                  v-model="newInvitee"
+                  @keyup.enter="addInvitee"
+                /><button
+                  class="col-2 btn btn-primary"
+                  style="
+                    height: 40px;
+                    padding: 6px !important;
+                    justify-content: center;
+                  "
+                  @click="addInvitee"
+                >
+                  +
+                </button>
             </div>
             <br />
             <div class="inviteesEmail">
               <div
-                v-for="(invitee, index) in this.$store.state.invitees"
-                :key="index"
+                v-for="invitee in inviteeList"
+                :key="invitee.index"
               >
-                {{ invitee.email }}
+              <button v-on:click="removeInvitee(invitee)" style="margin-bottom: 3px; background-color: white; color: gray; border: solid gray 1px; border-radius: 20px; height: 34px; width: auto; padding: 2px; padding-left: 7px; padding-right: 7px;">{{ invitee }} <i class="fa-solid fa-xmark" style="color: gray;"></i></button>
               </div>
               <p>{{ addInviteeErr }}</p>
               
             </div>
-            <!-- <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
-            <div class='col col-6'>End: <input type="date" v-model="end"><input type="time" v-model="endTime"></div> -->
           </div>
         </div>
       </div>
-    
 
       <!-- Buttons -->
-      <div class="row" style="justify-content: flex-end; margin-top: 10px">
-        <button col-3
+      <div class="row" v-if="this.inviteeList.length > 0" style="justify-content: flex-end; margin-top: 10px; padding: 0px;">
+        <button 
           @click="recommendTimeSlots"
           :disabled="!this.$store.state.invitees.length"
+          style="width: 80%; margin: auto;"
+          v-if="category === 'event'"
         >
           Find Timeslot
         </button>
@@ -210,10 +219,10 @@
           <label for="recommendations" class="form-label"
             >Recommendations</label
           >
-          <div id="recommendations"></div>
+          <div id="recommendations" v-if="category === 'event'"></div>
         </div>
-
-
+      </div>
+      <div class="row" style="justify-content: flex-end; margin-top: 10px; padding: 0px;">
         <button
           class="col-2 btn btn-light"
           style="width: 66px; margin-right: 10px"
@@ -223,12 +232,29 @@
         </button>
         <button
           class="col-2 btn btn-primary buttonSave"
-          style="width: 66px"
+          style="width: 66px; margin-right: 12px"
           @click="addEvent"
         >
           Add
         </button>
       </div>
+    </fieldset>
+  </div>
+  <div class="createEventValidation"> 
+      <button type="button" class="btn-close" @click="closeDialog()" style="float: right; margin-right: 0px;" aria-label="Close"></button><br> 
+      <div style="text-align: start; top: 0px; color: black;">
+        <h2>Just a second!</h2> 
+        <span v-if="this.requiredEventValidation != ''">{{ this.requiredEventValidation }}</span> <br v-if="this.requiredEventValidation != ''">
+        <span v-if="this.dateValidation != ''"> {{ this.dateValidation }}</span>
+      </div>
+      <button class="btn btn-primary" style="float: right; margin-right: 0px; margin-top:3px;" @click="closeDialog()">Ok</button> 
+  </div>
+  <div id="custom-dialog" class="dialog" style="display: none;">
+      <button type="button" class="btn-close" @click="closeLocationDialog()" style="float: right; margin-right: 0px;" aria-label="Close"></button><br>
+      <p>This file wants to know your location</p>
+      <button class="btn btn-primary" style="margin-right: 4px;" @click="allow()">Allow</button>
+      <button class="btn btn-primary" style="margin-left: 4px;" @click="block()">Block</button>
+  </div>
 </template>
 
 <script>
@@ -248,65 +274,101 @@ export default {
     addInviteeErr: "",
     category: "event",
     selectedCoord: {},
+    isScrollable: false, // Add a flag to determine scrollability,
+    dateValidation: '', //add
+    requiredEventValidation: '', //add
+    inviteeList: [], //add
   }),
   methods: {
-    clearError() {
-      this.addInviteeErr = "";
-    },
     async addInvitee() {
-      if (this.newInvitee) {
-        // console.log(this.newInvitee);
-        // this.invitees.push(this.newInvitee);
+      if (this.newInvitee != '') {
+        this.addInviteeErr = "";
 
-        console.log(this.$store.state.invitees);
-        if (this.$store.state.invitees.includes(this.newInvitee)) {
-          console.log(this.$store.state.invitee_exist);
-          this.addInviteeErr = "Invitee already added";
-        } else {
-          await this.$store.dispatch("checkInvitee", this.newInvitee);
-          if (this.$store.state.invitee_exist == false) {
-            this.addInviteeErr = "Invitee does not exist";
+        // check if invitee already added
+        if (this.inviteeList.includes(this.newInvitee) == true){
+          this.addInviteeErr = 'Invitee already added';
+        }
+
+        // if invitee not added
+        else{
+          // check if email inputted
+          var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+          if (this.newInvitee.match(validRegex)) {
+            // add to firebase
+            this.$store.dispatch("checkInvitee", this.newInvitee);
+            this.inviteeList.push(this.newInvitee);
+          } else{
+            this.addInviteeErr = "Incorrect email format. Try again.";
           }
         }
+        this.newInvitee = "";
       }
+    },
+    // add
+    removeInvitee(invitee){
+      var idx = this.inviteeList.indexOf(invitee);
+      this.inviteeList.splice(idx,1);
+    },
+    // add
+    closeDialog() {
+        var dialog = document.getElementsByClassName('createEventValidation')[0];
+        dialog.style.display = 'none';
     },
     addEvent() {
       let start = new Date(this.start);
       let end = new Date(this.end);
-
       if (!this.allDay) {
         let [startHours, startMinutes] = this.startTime.split(":");
         let [endHours, endMinutes] = this.endTime.split(":");
-
-                start.setHours(startHours, startMinutes);
-                end.setHours(endHours, endMinutes);
-            }
-
-            
-
-            let event = {
-                id: (new Date()).getTime(),
-                title: this.title,
-                start: start,
-                end: end,
-                allDay: this.allDay,
-                invitees: [],
-            };
-
-      for (let invitee of this.$store.state.invitees) {
-        let inviteeData = {
-          id: invitee.id,
-          email: invitee.email,
-          status: "pending",
-        };
-        event.invitees.push(inviteeData);
+        start.setHours(startHours, startMinutes);
+        end.setHours(endHours, endMinutes);
       }
-      console.log("invitees", event.invitees);
-      console.log("event", event);
+      
+      // add
+      // validation: start date < end date
+      if (start >= end){
+        this.dateValidation = 'End date must be after start date';
+      } else{
+        this.dateValidation = '';
+      } 
+      
+      // replace
+      // validation: check mantory fields
+      if (this.title == ''){
+        this.requiredEventValidation = 'Enter an evemt name';
+      } else {
+        this.requiredEventValidation = '';
+      }
+      if (this.dateValidation == '' && this.requiredEventValidation == ''){
+        let event = {
+            id: (new Date()).getTime(),
+            title: this.title,
+            start: start,
+            end: end,
+            allDay: this.allDay,
+            invitees: [],
+            category: this.category
+        };
 
-      // this.$store.commit("ADD_EVENT", event);
-      this.$store.dispatch("addEvent", event);
-      this.$emit("close-modal");
+        for (let invitee of this.$store.state.invitees) {
+          let inviteeData = {
+            id: invitee.id,
+            email: invitee.email,
+            status: "pending",
+          };
+          event.invitees.push(inviteeData);
+        }
+        console.log("invitees", event.invitees);
+        console.log("event", event);
+
+        // this.$store.commit("ADD_EVENT", event);
+        this.$store.dispatch("addEvent", event);
+        this.$emit("close-modal");
+      } else{
+        // if have errors
+        document.getElementsByClassName('createEventValidation')[0].style.display = 'block';
+      }
+      
     },
     getCoord(placeObj) {
       const obj = placeObj.geometry.location;
@@ -364,8 +426,8 @@ export default {
       const endDate = formatDate(
         new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000)
       ); //end date of finding available dates and timings
-      const startTime = "08:00"; //start time of finding available timings
-      const endTime = "22:00"; //end time of finding available timings
+      const startTime = "10:00"; //start time of finding available timings
+      const endTime = "20:00"; //end time of finding available timings
       const unavailableSlots = unavailableSlotsInput
         .split(", ")
         .map((slot) => slot.trim());
@@ -452,15 +514,15 @@ export default {
         unavailableSlots, //create function to create array of unavailable slots
         document.getElementById("startDate").value,
         document.getElementById("endDate").value,
-        "08:00", // start of finding available dates and timings
-        "22:00" // end of finding available dates and timings
+        "10:00", // start of finding available dates and timings
+        "20:00" // end of finding available dates and timings
       );
       const meetingDuration =
-        parseInt(document.getElementById("startTime").value, 10) -
-        parseInt(document.getElementById("endTime").value, 10); //math to find the meeting duration
+        ((parseInt(document.getElementById("endTime").value, 10) -
+        parseInt(document.getElementById("startTime").value, 10))) * 60; //math to find the meeting duration
       const minGap = 15; //fixed
-      const startTime = "08:00"; // start of finding available dates and timings
-      const endTime = "22:00"; // end of finding available dates and timings
+      const startTime = "10:00"; // start of finding available dates and timings
+      const endTime = "20:00"; // end of finding available dates and timings
 
       // Extract the date part from the selected date
       const datePart = selectedDate.toISOString().split("T")[0];
@@ -527,25 +589,98 @@ export default {
 
       if (randomRecommendations.length > 0) {
         // Display recommendations in Bootstrap cards
+        
         randomRecommendations.forEach((recommendation) => {
+          console.log(recommendation)
           const col = document.createElement("div");
+          // col.className = "col-md-4"; // Use the grid system for columns (Bootstrap 4)
           col.className = "col"; // Use the grid system for columns (Bootstrap 4)
           col.innerHTML = `
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Recommended Time Slot</h5>
-                                <p class="card-text">${recommendation}</p>
+                        <div class="card" style="transform: translateY(-100px);">
+                            <div class="card-body" >
+                                <h5 class="card-title" style="color: black;">Recommended Time Slot</h5>
+                                <p class="card-text" style="color: black;">${recommendation}</p>
                                 <button class="btn btn-primary" onclick="selectTimeSlot('${recommendation}')">Select</button>
                             </div>
                         </div>
                     `;
 
           recommendationsContainer.appendChild(col);
+          
         });
       } else {
         recommendationsContainer.textContent =
           "No available time slots found within the preferred time range";
       }
+    },
+
+    toggleScrollability() {
+      const modal = document.querySelector('.modal-container');
+      if (modal.scrollHeight > window.innerHeight) {
+        this.isScrollable = true;
+        modal.classList.remove('no-scroll');
+      } else {
+        this.isScrollable = false;
+        modal.classList.add('no-scroll');
+      }
+    },
+
+    closeLocationDialog(){
+      var dialog = document.getElementById('custom-dialog');
+      dialog.style.display = 'none';
+      var locatorSection = document.getElementById("locator-input-section");
+      locatorSection.classList.remove("loading");
+    },
+    autoComplete(){
+        var input = document.getElementById("locationAPI");
+        var options = {
+            componentRestrictions: { country: "sg" }
+        };
+        new google.maps.places.Autocomplete(input, options);
+    },
+    locateMe() {
+        var locatorSection = document.getElementById("locator-input-section");
+        locatorSection.classList.add("loading")
+        var dialog = document.getElementById('custom-dialog');
+        dialog.style.display = 'block';
+        
+    },
+
+    allow() {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var dialog = document.getElementById('custom-dialog');
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            dialog.style.display = 'none';
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var address = JSON.parse(this.responseText)
+                    var input = document.getElementById("locationAPI");
+                    input.value = address.results[0].formatted_address
+                }
+            };
+            xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8", true);
+            xhttp.send();
+            var locatorSection = document.getElementById("locator-input-section");
+            locatorSection.classList.remove("loading");
+        })
+    },
+
+    block() {
+        var locatorSection = document.getElementById("locator-input-section");
+        locatorSection.classList.remove("loading");
+        alert("The Locator was denied :( Please add your address manually");
+        var dialog = document.getElementById('custom-dialog');
+        dialog.style.display = 'none';
+    },
+    loadScripts(sources) {
+      sources.forEach((src) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.async = true;
+          document.head.appendChild(script);
+      });
     },
   },
 
@@ -561,51 +696,13 @@ export default {
     this.endTime = formatTime(this.event.end);
     this.allDay = Boolean(this.event.allDay);
     this.$store.state.invitees = [];
+    this.toggleScrollability();
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          loader.load().then(async () => {
-            const { Map } = await google.maps.importLibrary("maps");
-
-            const autocomplete = new google.maps.places.Autocomplete(
-              document.getElementById("autocomplete"),
-              {
-                bounds: new google.maps.LatLngBounds(
-                  // current coords
-                  new google.maps.LatLng(
-                    position.coords.latitude,
-                    position.coords.longitude
-                  )
-                ),
-              }
-            );
-
-            autocomplete.addListener("place_changed", () => {
-              // cyx store in firebase pls thanks :)
-              console.log(autocomplete.getPlace());
-              this.getCoord(autocomplete.getPlace());
-            });
-          });
-        },
-        (error) => {
-          console.log(error.message);
-        }
-      );
-    } else {
-      console.log("Your browser does not support Geolocation");
-    }
-
-    const loader = new Loader({
-      apiKey: "AIzaSyDRsyQe3YsYSKVP_AQakrP7nSiZ4wAE7ik",
-      libraries: ["places"],
-    });
-
-    // Load your external scripts dynamically when the component is mounted
-    // this.loadScripts([
-    //   "https://www.googletagmanager.com/gtag/js?id=UA-23581568-13",
-    //   "https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places&callback=Function.prototype",
-    // ]);
+    //Load your external scripts dynamically when the component is mounted
+    this.loadScripts([
+      "https://www.googletagmanager.com/gtag/js?id=UA-23581568-13",
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyAKTrhndkmbAdokRZDs9leVXed6e3lhrf8&libraries=places&callback=Function.prototype",
+    ]);
 
     // Load your stylesheets dynamically
     this.loadStylesheets([
@@ -616,6 +713,9 @@ export default {
 };
 
 function isWithinTimeRange(time, startTime, endTime) {
+        //     const timeStr = time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        //     return timeStr >= startTime && timeStr <= endTime;
+        // }
   const timeStr = time.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
@@ -646,6 +746,19 @@ function formatTime(date) {
 </script>
 
 <style>
+.createEventValidation { 
+    display: none; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    border-radius: 10px; 
+    transform: translate(-50%, -50%); 
+    padding: 20px; 
+    width: 450px; 
+    background: #fff; 
+    border: 1px solid #ccc; 
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+}
 .buttonSave {
   margin-left: 10px;
 }
@@ -792,5 +905,17 @@ input[type="text"] {
 
 .emails.emails-input input:focus {
   outline: none;
+}
+
+.modal-container{
+  max-width: 100%;
+  max-height: 80vh;
+  overflow-x:hidden;
+  overflow-y: auto;
+  margin: 0 auto;
+}
+
+.modal-container.no-scroll{
+  overflow-y:auto;
 }
 </style>
