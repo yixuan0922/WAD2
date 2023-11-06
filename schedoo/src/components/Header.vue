@@ -363,4 +363,7 @@ body {
 b {
   text-decoration: underline;
 }
+.buttons {
+  display: block;
+}
 </style>
