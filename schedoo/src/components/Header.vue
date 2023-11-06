@@ -35,7 +35,9 @@ import {RouterLink, RouterView} from 'vue-router';
             ></span></p>
           <div class="buttons mt-3">
             <button type="button" class="mainBtn">
-              Get Started
+              <router-link class="nav-link" :to="{name: 'Register'}"
+              style=" text-decoration: none;"
+              >Get Started</router-link>
             </button>
             <button 
             class="mainBtn" 
