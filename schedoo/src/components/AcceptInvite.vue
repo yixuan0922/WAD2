@@ -245,7 +245,7 @@ function formatTime(date) {
   }
   .modal .modal-inner[data-v-4935b9f2] {
     border-radius: 5%;
-    padding-bottom: 0px !important;
+    padding-bottom: 20px !important;
     padding-top: 30px !important;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
     background-color: beige;
