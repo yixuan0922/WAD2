@@ -118,7 +118,7 @@
                 <InviteCard></InviteCard> 
                 <InviteCard></InviteCard>            
               </div>
-              <ul>
+              <!-- <ul>
                 <li
                   v-for="(event, index) in this.$store.state.pendingEvents"
                   :key="index"
@@ -130,7 +130,7 @@
                   <button @click="acceptInvite(event)">Accept</button>
                   <button @click="declineInvite(event)">Decline</button>
                 </li>
-              </ul>
+              </ul> -->
             </div>
 
         </div>
@@ -467,15 +467,11 @@ const upload = () => {
 //   // store.dispatch("acceptInvite", event);
 // };
 
-const acceptInvite = (event) => {
-  console.log("acceptInvite", event);
-  store.dispatch("acceptInvite", event);
-};
 
-const declineInvite = (event) => {
-  console.log("declineInvite", event);
-  store.dispatch("declineInvite", event);
-};
+// const declineInvite = (event) => {
+//   console.log("declineInvite", event);
+//   store.dispatch("declineInvite", event);
+// };
 
 async function processExams(examSchedules) {
   for (let eachExam of examSchedules) {
