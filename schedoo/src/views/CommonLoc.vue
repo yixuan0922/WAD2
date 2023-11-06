@@ -4,7 +4,7 @@
     <Nav></Nav>
     <div class="outer-container">
       <div class="inner-container">
-        <div class="col-5 left-side" >
+        <div class="col-5 left-side">
           <div
             class="container row map-outer"
             style="margin-bottom: 15px; z-index: 10"
@@ -12,25 +12,33 @@
             <div id="map" style="margin-bottom: 20px; z-index: 10"></div>
           </div>
 
-          <div class="container row" style="height: 300px; overflow-y: auto;">
+          <div class="container row" style="height: 300px; overflow-y: auto">
             <div
-              v-for="(event, id) in EventList"
-              :key="id"
+              v-for="eventObj in allEvents"
+              :key="eventObj"
               class="col-md-12 col-lg-6"
               style="margin-bottom: 20px"
             >
-              <EventCard @click="getMidCoord(coordList); displayEventDetails()" ></EventCard>
+              <EventCard
+                @click="
+                  getMidCoord(coordList);
+                  displayEventDetails(eventObj);
+                "
+              ></EventCard>
             </div>
           </div>
         </div>
         <div class="col-1"></div>
         <div class="inner-container" style="display: block">
-          <div class="col right-side" style="overflow-y: auto !important; overflow-x: hidden;">
-            <div class="row" style="margin: auto;">
+          <div
+            class="col right-side"
+            style="overflow-y: auto !important; overflow-x: hidden"
+          >
+            <div class="row" style="margin: auto">
               <div
                 v-for="place in placesList"
                 :key="place.name"
-                style="padding-left: 2px;"
+                style="padding-left: 2px"
                 class="place"
               >
                 <div
@@ -54,7 +62,12 @@
                   </div>
                 </div>
               </div>
-              <button @click="setLocation(selectedPlace)" style="width: 80%; margin: auto;">Set Location</button>
+              <button
+                @click="setLocation(selectedPlace)"
+                style="width: 80%; margin: auto"
+              >
+                Set Location
+              </button>
             </div>
           </div>
         </div>
@@ -66,7 +79,7 @@
 <script setup>
 /* eslint-disable no-undef */
 import { Loader } from "@googlemaps/js-api-loader";
-import { onMounted, ref } from "vue";
+import { onMounted, ref} from "vue";
 import Nav from "@/components/Nav.vue";
 import EventCard from "@/components/EventCard.vue";
 import PageLoader from "@/components/PageLoader.vue";
@@ -77,7 +90,7 @@ let placesList = ref([]);
 let map = ref("");
 let selectedPlace = {};
 let imageSource = "";
-let EventList = [(0, 0), (1, 1), (2, 2), (3,3), (4,4)];
+// let EventList = [(0, 0), (1, 1), (2, 2), (3,3), (4,4)];
 let coordList = [{lat: 0, lng: 0}, {lat: 1, lng: 1}, {lat: 1, lng: 1}, {lat: 2, lng: 2}, {lat: 1.5, lng: 1.3}];
 let midCoord = {};
 let isLoaded = false;
@@ -89,30 +102,35 @@ const loader = new Loader({
 
 
 const store = useStore();
+store.dispatch('fetchEventsForComLoc');
 
-let fetchedEvents = Array.from(store.state.eventsComLoc);
-console.log(fetchedEvents);
+const allEvents = store.state.eventsComLoc;
+console.log("test", allEvents);
+
+
 
 onMounted(async () => {
-  // if (navigator.geolocation) {
-  //   try {
-  //     const position = await new Promise((resolve, reject) => {
-  //       navigator.geolocation.getCurrentPosition(resolve, reject);
-  //     });
+  if (navigator.geolocation) {
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
 
-  //     midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // } else {
-  //   console.log("Your browser does not support geolocation API");
-  // }
+      midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
+    } catch (error) {
+      console.error(error.message);
+    }
+  } else {
+    console.log("Your browser does not support geolocation API");
+  }
 
-    await store.dispatch('fetchEventsForComLoc');
+  // fetchEvents();
+
+    // await store.dispatch('fetchEventsForComLoc');
 
 
 
-  let midCoord = { lat: 1.304833, lng: 103.831833 }; // for testing purposes
+  // let midCoord = { lat: 1.304833, lng: 103.831833 }; // for testing purposes
 
   await loader.load();
   const gmap = new google.maps.Map(document.getElementById("map"), {
@@ -229,6 +247,10 @@ function getMidCoord(coordList) {
   console.log(midCoord)
 
   return setMarker(midCoord, map);
+}
+
+function displayEventDetails(eventObj) {
+  console.log(eventObj)
 }
 </script>
 
