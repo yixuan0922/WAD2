@@ -1,6 +1,6 @@
 <template>
   <div>
-    <fieldset id="eventModal" class="container" style="overflow: auto;">
+    <fieldset id="eventModal" class="container">
       <legend class="row" style="margin-bottom: 20px; width: 100%">
         <h1 style="text-align: left">Add Event</h1>
       </legend>
@@ -236,9 +236,10 @@
 
       <!-- Buttons -->
       <div class="row" style="justify-content: flex-end; margin-top: 10px; padding: 0px;">
-        <button col-3
+        <button 
           @click="recommendTimeSlots"
           :disabled="!this.$store.state.invitees.length"
+          style="width: 80%; margin: auto;"
         >
           Find Timeslot
         </button>
