@@ -383,7 +383,8 @@ input[type="button"][value="0"] {
     position: absolute; 
     visibility: hidden;
     height: 100%;
-    background-color:#bdbdbd; 
+    background-color:#fff; 
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
     overflow: hidden; /* Hide overflowing content */
     transition: width 0.1s ease-in-out; /* Use the width property for the transition */
   }
