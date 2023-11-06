@@ -33,7 +33,7 @@ import {RouterLink, RouterView} from 'vue-router';
             style="text-decoration: underline;
             font-family: 'Poppins', sans-serif;"
             ></span></p>
-          <div class="buttons">
+          <div class="buttons mt-3">
             <button type="button" class="mainBtn">
               Get Started
             </button>
@@ -53,14 +53,14 @@ import {RouterLink, RouterView} from 'vue-router';
     <section id="about-us"
     style="background-color: #79C1CB;"
     >
-      <div id="pg2-content" class="row offset-1 col-md-5 col-xs-10" style="position: relative; ">
+      <div id="pg2-content" class="row offset-1 col-md-5 col-sm-10" style="position: relative; ">
         <h1 style="font-family: 'Poppins', sans-serif; margin-bottom: 30px; transform: translate(0,-70px); font-size: xx-large">About Us</h1>
 
         <p class="subtitle" style="font-size: medium; transform: translate(0,-50px);">
           Its time to say goodbye to scheduling headaches and hello to a <b>more organized</b> and <b>connected academic experience</b> with Schedoo.
           <!-- As university students ourselves, we know the troubles of conflicting schedules. This app is just for that. -->
         </p>
-        <p class="subtitle mx-auto" style="font-size: medium; transform: translate(0,-50px);">
+        <p class="subtitle mx-auto mt-3" style="font-size: medium; transform: translate(0,-50px);">
         Invite peers to study sessions, CCAs and social events. <b>Enhance your own productivity</b>.
         </p>
         <!-- <p class="subtitle" style="font-size: medium;">
@@ -68,7 +68,7 @@ import {RouterLink, RouterView} from 'vue-router';
       </p> -->
 
       </div>
-      <div id="icon-float" class="col-4 offset-1 d-none d-md-block" style="position: relative;">
+      <div id="icon-float" class="col-md-4 offset-1 d-none d-md-block" style="position: relative;">
         <!-- <img class="float floating3" src="../assets/icons/icon7.png" width="30%" 
         style="position: absolute;  transform: translate(-150%, -60%);">
         <img class="float floating3" src="../assets/icons/icon6.png" width="30%" 
@@ -109,7 +109,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
@@ -360,4 +360,7 @@ body {
   left: 0;
   top: 50%;
 } */
+b {
+  text-decoration: underline;
+}
 </style>

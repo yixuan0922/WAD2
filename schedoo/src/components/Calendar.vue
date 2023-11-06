@@ -1,130 +1,114 @@
 <template>
   <div class="calendar-app">
-    <div class="calendar-app-main">
+    <!-- <div class="toggleSidebar round-btn" @click="toggleSidebar">&lt;  &gt;</div> -->
+    <div class="calendar-app-main" :class="{ shownMain: isShownMain}">
       <Fullcalendar class="app-calendar" v-bind:options="calendarOptions" />
-      <Modal @close="toggleModal" :modalActive="modalActive">
+      <Modal class="newEvent" @close="toggleModal" :modalActive="modalActive">
         <component
           :is="modalContent.component"
           v-bind="modalContent.props"
           @close-modal="toggleModal"
         ></component>
-      </Modal>
+      </Modal> 
     </div>
-    <div class="calendar-app-sidebar">
+
+    <button class="toggleSidebar round-btn" @click="toggleSidebar">&lt;  &gt;</button>
+    <!-- Sidebar section -->
+    <div class="calendar-app-sidebar"  :class="{ shown: isShown}" >
       <div class="calendar-app-sidebar-section">
         <!-- Your calendar component here -->
-        <button class="newEventButton" @click="newEvent">+ New Event</button>
-        <div class="timetable-header">
-          <p class="header">Upload Timetable</p>
-          <button class="newEventButton" @click="deleteCol">Delete</button>
+        <div class="topBtns" style="white-space: nowrap;">
+          <button class="newEventButton" @click="newEvent">+ New Event</button>
+          <button class="newEventButton" id="timetableToggle" @click="toggleUploadContents" style="margin-left: 5px;">▼ Upload Timetable</button>
         </div>
-        <div class="container">
-          <DropZone
-            class="m-auto"
-            @drop.prevent="drop"
-            @change="selectedFile"
-            :my-file="myFile"
-          ></DropZone>
-          <div class="file-info m-auto p-2">File: {{ myFile.name }}</div>
-          <button class="newEventButton m-auto" @click="upload">Upload</button>
+
+        <!-- Upload timetable -->
+        <div id="timetableUpload">
+          <div id="uploadContents" v-if="isUploadContentsVisible">
+            <div class="timetable-header">
+              <p class="header">Upload Timetable</p>
+              <button class="newEventButton" @click="deleteCol">Delete</button>
+            </div>
+            <div class="container">
+              <DropZone
+                class="m-auto"
+                @drop.prevent="drop"
+                @change="selectedFile"
+                :my-file="myFile"
+                style="width:auto; height: 150px"
+              ></DropZone>
+              <div class="file-info m-auto p-2">File: {{ myFile.name }}</div>
+              <button class="newEventButton m-auto" @click="upload">Upload</button>
+            </div>
+          </div>
+          <hr />
         </div>
-        <hr />
         <!-- <button class="newEventButton m-auto" @click="upload">Upload</button> -->
 
         <div class="container">
           <Fullcalendar
             class="app-calendar-sidebar"
+            
             v-bind:options="calendarSidebarOptions"
           />
           <hr />
           <div class="mb-3 category">
-            <h2 class="header">Filter Categories</h2>
-            <div class="form-check event">
-              <label for="event">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="event"
-                  value="Event"
-                  v-model="state.checkedCategories"
-                />
-                Event</label
-              >
-            </div>
+            <h2 class="header" @click="toggleFilters">
+              <img src="../assets/rightArrow.png" v-if="!showFilters" style="width: 10px">
+              <img src="../assets/downArrow.png" v-if="showFilters" style="width: 10px">
+              Filter Categories</h2>
+            <div class="filterCats" v-if="showFilters">
+              <div class="form-check event">
+                <label for="event">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="event"
+                    value="Event"
+                    v-model="state.checkedCategories"
+                  />
+                  Event</label
+                >
+              </div>
 
-            <div class="form-check exam">
-              <label for="exam">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="exam"
-                  value="Exam"
-                  v-model="state.checkedCategories"
-                />
-                Exam</label
-              >
-            </div>
+              <div class="form-check exam">
+                <label for="exam">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="exam"
+                    value="Exam"
+                    v-model="state.checkedCategories"
+                  />
+                  Exam</label
+                >
+              </div>
 
-            <div class="form-check class">
-              <label for="class">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="class"
-                  value="Class"
-                  v-model="state.checkedCategories"
-                />
-                Class</label
-              >
-            </div>
+              <div class="form-check class">
+                <label for="class">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="class"
+                    value="Class"
+                    v-model="state.checkedCategories"
+                  />
+                  Class</label
+                >
+              </div>
 
-            <div class="form-check invites">
-              <label for="invites">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="invites"
-                  value="Invites"
-                  v-model="state.checkedCategories"
-                />
-                Invites</label
-              >
-            </div>
-            <div class="form-check studies">
-              <label for="studies">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="study"
-                  value="Study"
-                  v-model="state.checkedCategories"
-                />
-                Study</label
-              >
-            </div>
-            <div class="form-check cca">
-              <label for="cca">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="cca"
-                  value="CCA"
-                  v-model="state.checkedCategories"
-                />
-                CCA</label
-              >
-            </div>
-            <div class="form-check personal">
-              <label for="personal">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="personal"
-                  value="Personal"
-                  v-model="state.checkedCategories"
-                />
-                Personal</label
-              >
+              <div class="form-check invites">
+                <label for="invites">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="invites"
+                    value="Invites"
+                    v-model="state.checkedCategories"
+                  />
+                  Invites</label
+                >
+              </div>
             </div>
           </div>
           <hr />
@@ -180,7 +164,7 @@ const modalContent = ref(markRaw({ component: null, props: {} }));
 
 
 const state = reactive({
-  checkedCategories: ["Event", "Exam", "Class", "Invites", "Study", "CCA", "Personal"],
+  checkedCategories: ["Event", "Exam", "Class", "Invites"],
 });
 
 const toggleModal = (component, props) => {
@@ -206,7 +190,6 @@ const newEvent = () => {
     },
   });
 };
-
 
 // const renderEvent = (arg) => {
 //     console.log(arg.el);
@@ -263,7 +246,6 @@ const handleEventClick = (arg) => {
       end: arg.event.end,
       allDay: arg.allDay,
       invitees: arg.event.extendedProps.invitees,
-      category: arg.event.extendedProps.category,
     },
   });
 };
@@ -460,10 +442,9 @@ const upload = () => {
 
 const acceptInvite = (event) => {
   console.log("acceptInvite", event.start);
-  console.log(event.category);
   toggleModal(AcceptInvite, {
     text: "This is from the component",
-    // event
+    // event: arg.event
     event: {
       id: event.id,
       title: event.title,
@@ -474,9 +455,10 @@ const acceptInvite = (event) => {
 
       invitorId: event.invitorId, 
       invitorEmail: event.invitorEmail,
-      category: event.category,
     },
   });
+
+  // store.dispatch("acceptInvite", event);
 };
 
 const declineInvite = (event) => {
@@ -595,19 +577,45 @@ const selectedFile = () => {
 //   deleteCol;
 //   deleteFile();
 // }
+
+
+
+let isUploadContentsVisible = ref(false);
+
+const toggleUploadContents = () => {
+  isUploadContentsVisible.value = !isUploadContentsVisible.value;
+};
+
+const isShown = ref(false);
+const isShownMain = ref(false);
+
+const toggleSidebar = () => {
+  isShown.value = !isShown.value;
+  isShownMain.value = !isShownMain.value;
+};
+
+const showFilters = ref(false);
+
+const toggleFilters = () => {
+  showFilters.value = !showFilters.value;
+}
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+
 .calendar-app-sidebar {
   width: 360px;
   line-height: 1.5;
   background: #ededed;
   border-right: 1px solid #d3e2e8;
+  height: 100vh;
+  transition: width 0.3s;
 }
 
 .calendar-app-sidebar-section {
   padding: 1.1em;
-  
 }
 
 .calendar-app-main {
@@ -616,8 +624,9 @@ const selectedFile = () => {
   padding-right: 2em;
   padding-bottom: 1.5em;
   padding-top: 1.3em;
-  position: sticky;
-  top: 30px;
+  position: relative;
+  width: 100%;
+  /* top: 30px; */
 }
 
 .fc {
@@ -635,14 +644,21 @@ const selectedFile = () => {
   margin-bottom: 10px;
   border-radius: 10px;
   padding: 6px 10px;
+  font-size: small;
+  transform: translateX(-5px);
 }
 
 .calendar-app {
   display: flex;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  font-family: "poppins", sans-serif;
 }
 
 .app-calendar {
   height: 86vh;
+  top: 0;
 }
 
 .fc .fc-daygrid-day.fc-day-today {
@@ -716,9 +732,107 @@ hr {
   text-align: left;
   padding-left: 8px;
   width: 100%;
+  font-size: small;
 }
 
 .form-check:hover {
   background-color: #d3e2e8;
 }
+
+.fc .fc-toolbar-title {
+    font-size: large !important;
+}
+
+.header {
+  font-size: large;
+  /* font-weight: normal; */
+}
+
+/* Initially hide the uploadContents */
+.uploadContents {
+  display: none;
+}
+
+/* Style for the dropdown button */
+.timetableToggle {
+  cursor: pointer;
+}
+
+/* Style for the active dropdown button */
+.timetableToggle.active {
+  background-color: #007bff; /* Change to the color you prefer */
+  color: #fff; /* Change to the color you prefer */
+}
+
+/* Style for the dropdown contents */
+.uploadContents {
+  position: absolute;
+  z-index: 1;
+  background-color: #f9f9f9; /* Change to the color you prefer */
+  border: 1px solid #ddd;
+  padding: 10px;
+  right: 0;
+  top: 100%;
+  width: 200px; /* Adjust the width as needed */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.fc-list-day-text, .fc-list-day-side-text, .fc-list-event-time, .fc-list-event-title {
+  font-size: small;
+}
+
+.round-btn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: grey; /* Dark background color */
+  color: #333; /* Text color */
+  border: none; /* Remove default button border */
+  justify-content: center;
+  align-items: left;
+  /* cursor: pointer; */
+  right:0;
+  top: 50px;
+  transform: translateX(25px);
+  white-space: nowrap;
+  font-size: large;
+  display: flex;
+  visibility: hidden;
+}
+
+/* Add media query for screens below 1000px */
+@media (max-width: 1000px) {
+  .calendar-app-sidebar {
+    width: 0;
+    /* transition: width 0.3s; */
+  }
+  .shown {
+    position: absolute;
+    z-index: 1;
+    visibility: visible;
+    width: 275px;
+    right:0;
+    /* transition: width 0.3s; */
+  }
+  .calendar-app-main {
+    width: calc(100% - 50px); /* 50px is the width of the toggle button */
+    position: relative;
+    z-index: 0;
+  }
+  .round-btn {
+    visibility: visible;
+    z-index: 2;
+  }
+  .app-calendar {
+    width: 100%;
+  }
+  .shownMain {
+    padding-right: 0 !important;
+  }
+  div.fc-view-harness.fc-view-harness-active {
+    height: 175px !important;
+  }
+}
 </style>
+

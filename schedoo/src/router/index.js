@@ -8,10 +8,17 @@ import Settings from '../views/SettingsView.vue';
 import CalendarView from '../views/CalendarView.vue';
 import CrEvent from '../components/CrEvent.vue';
 import Home from '../views/Home.vue';
+import Focus from '../components/FocusTracker.vue';
+import Insights from '../components/Insights.vue';
 // import Calendar from '../components/Calendar.vue';
-import store from '@/store/index.js';
+// import store from '@/store/index.js';
 
 const routes = [
+  // {
+  //   path: "/",
+  //   name: "home",
+  //   component: HomeView
+  // },
   {
     path: "/about",
     name: "about",
@@ -45,13 +52,6 @@ const routes = [
     path: "/calendar",
     name: "Calendar",
     component: CalendarView,
-    beforeEnter: (to, from , next) => {
-      if (store.state.profileId){
-        next();
-      } else {
-        next('/login')
-      }
-    }
   },
   {
     path: "/create-event",
@@ -67,6 +67,15 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
+    children: [
+      {
+        path: 'insights',
+        component: Insights
+      },
+      {
+        path: 'focus',
+        component: Focus
+      }]
   }
 ];
 
