@@ -33,6 +33,14 @@
                     <div v-show="error" class="error">{{ this.errorMsg }}</div>
 
                     <button @click.prevent="register">Sign Up</button>
+                    <div class="register">
+                        <p>
+                        Already have an account?
+                        <router-link class="register-account" :to="{ name: 'Login' }"
+                            >Login</router-link
+                        >
+                        </p>
+                    </div>
                 </form>
             </div>
         </div>
@@ -132,7 +140,7 @@ section {
 
 .form-box {
     position: relative;
-    width: 400px;
+    width: 450px;
     height: 580px;
     display: flex;
     justify-content: center;
