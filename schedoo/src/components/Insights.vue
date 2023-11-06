@@ -216,7 +216,9 @@ export default {
                       title: "Goals"
                     };
 
-    Plotly.newPlot("barcharts", barData, barLayout);
+    var config ={responsive:true}
+
+    Plotly.newPlot("barcharts", barData, barLayout,config);
   },
 };
 </script>
@@ -338,5 +340,10 @@ input[type="button"][value="0"] {
 }
 .dashboard-content {
   padding-top: 40px;
+}
+
+#line-chart{
+  width: 100%;
+  height: 100%;
 }
 </style>
