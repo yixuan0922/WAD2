@@ -18,7 +18,7 @@
           <!-- <legend>Provide your location</legend> -->
           <div class="container">
             <div class='row location'> 
-              Provide your Location: <input type="text" v-model="location">
+              Provide your Location: <input id="autocomplete" type="text" />
             </div>
           </div>
           <div class="btns mt-5 mb-5">
@@ -50,6 +50,14 @@ import { Loader } from "@googlemaps/js-api-loader";
           category: '',
           selectedCoord: {},
       }),
+      computed: {
+        startEvent() {
+          return this.startTime.split(" GMT")[0];
+        },
+        endEvent() {
+          return this.endTime.split(" GMT")[0];
+        },
+      },
       methods: {
           // updateEvent () {
           //     let start = new Date(this.start);
@@ -88,6 +96,21 @@ import { Loader } from "@googlemaps/js-api-loader";
           //     this.$emit('close-modal');
           // },
 
+          formatDateWithTimeZone(date) {
+            const options = {
+              year: 'numeric',
+              month: 'short',
+              day: '2-digit',
+              weekday: 'short',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false,
+              timeZoneName: 'short',
+              timeZone: 'Asia/Singapore', // Set the time zone to Singapore
+            };
+            return date.toLocaleString('en-US', options);
+          },
           getCoord(placeObj) {
             const obj = placeObj.geometry.location;
             this.selectedCoord = { lat: obj.lat(), lng: obj.lng() };
@@ -234,4 +257,9 @@ function formatTime(date) {
   .invitees {
     margin-top: 20px;
   }
+
+  /* Add this CSS to your component or a global stylesheet */
+.pac-container {
+  z-index: 10000; /* Adjust this value to ensure it's higher than your modal's z-index */
+}
   </style>
