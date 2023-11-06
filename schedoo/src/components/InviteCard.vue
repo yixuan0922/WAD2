@@ -75,6 +75,7 @@ export default {
 .img.container.col-2 {
   display: flex;
   padding-right: 5px;
+  transform: translateX(-10px);
 }
 .card-body {
   width: 100%;
@@ -96,12 +97,13 @@ export default {
 }
 
 .title {
-  transform: translateY(-20px);
+  transform: translateY(-30px);
 
 }
 
 .email {
   font-size: 12px;
+  transform: translateY(-10px);
 }
 
 .card-text {
@@ -125,7 +127,8 @@ export default {
   margin: 0;
   border-radius: 20px;
   padding: 3px 18px;
-  justify-content: space-around;
+  height:30px;
+  /* justify-content: space-around; */
 }
 
 .decline {

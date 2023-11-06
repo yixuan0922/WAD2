@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Nav />
+    <div class="nav-container">
+      <Nav />
+    </div>
     <div class="calendar-content">
       <Calendar class="calendar" />
     </div>
@@ -19,24 +21,21 @@ export default {
     Nav,
     Calendar,
   },
-  mounted() {
-    this.applyStyles();
-  },
-  methods: {
-    applyStyles() {
-      // Get the <html> element
-      const htmlElement = document.querySelector('html');
-
-      // Apply the styles
-      htmlElement.style.overflowY = 'hidden';
-    }
-  }
 };
 </script>
 <style>
-.calendar {
-  margin-top: 50px;
-  overflow-y: auto;
+.nav-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; /* To ensure the navigation is on top */
+}
+
+.calendar-container {
+  margin-top: 50px; /* Adjust the margin to create space for the fixed navigation */
+  overflow-y: scroll;
+  padding-top: 50px; /* Match the margin-top of the calendar to keep the content below the fixed navigation */
 }
 
 </style>

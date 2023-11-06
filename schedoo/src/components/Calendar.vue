@@ -627,8 +627,8 @@ const toggleFilters = () => {
   showFilters.value = !showFilters.value;
 }
 
-// const eventStart = ref(this.event.start.split(" GMT")[0]);
-// const eventEnd = ref(this.event.start.split(" GMT")[0]);
+
+
 </script>
 
 <style>
@@ -640,12 +640,13 @@ const toggleFilters = () => {
   line-height: 1.5;
   background: #ededed;
   border-right: 1px solid #d3e2e8;
-  height: 100vh;
+  /* height: 100%; */
   transition: width 0.3s;
 }
 
 .calendar-app-sidebar-section {
   padding: 1.1em;
+  overflow-y: scroll;
 }
 
 .calendar-app-main {
