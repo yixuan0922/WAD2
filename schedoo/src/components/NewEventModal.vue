@@ -326,7 +326,7 @@ export default {
       
       // add
       // validation: start date < end date
-      if (start >= end){
+      if (start > end){
         this.dateValidation = 'End date must be after start date';
       } else{
         this.dateValidation = '';
