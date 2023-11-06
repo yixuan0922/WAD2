@@ -76,8 +76,9 @@ import Insights from '../components/Insights.vue';
 import FullCalendarComponent from "@fullcalendar/vue3";
 import {useStore} from 'vuex';
 import { ref , computed} from "vue";
-import ListPlugin from "@fullcalendar/list";
+// import ListPlugin from "@fullcalendar/list";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 // Calendar
 // import ListPlugin from "@fullcalendar/list";
@@ -108,13 +109,13 @@ export default {
   setup() {
     const store = useStore();
     const calendarSidebarOptions = ref({
-      plugins: [ListPlugin, bootstrap5Plugin],
+      plugins: [dayGridPlugin, bootstrap5Plugin],
       themeSystem: "bootstrap5",
-      initialView: "listWeek",
+      initialView: "dayGridDay",
       events: computed(() => store.getters["ALLEVENTS"]),
       headerToolbar: {
         left: "",
-        center: "title",
+        center: "",
         right: "",
       },
     });
