@@ -19,7 +19,7 @@
               class="col-md-12 col-lg-6"
               style="margin-bottom: 20px"
             >
-              <EventCard @click="getMidCoord(); displayEventDetails()" ></EventCard>
+              <EventCard @click="getMidCoord(coordList); displayEventDetails()" ></EventCard>
             </div>
           </div>
         </div>
@@ -77,6 +77,7 @@ let map = ref("");
 let selectedPlace = {};
 let imageSource = "";
 let EventList = [(0, 0), (1, 1), (2, 2), (3,3), (4,4)];
+let coordList = [{lat: 0, lng: 0}, {lat: 1, lng: 1}, {lat: 1, lng: 1}, {lat: 2, lng: 2}, {lat: 1.5, lng: 1.3}];
 let midCoord = {};
 let isLoaded = false;
 
@@ -211,7 +212,8 @@ function getMidCoord(coordList) {
   var midLat = latCount / coordList.length;
   var midLong = longCount / coordList.length;
 
-  midCoord = { lat: midLat, long: midLong }
+  midCoord = { lat: midLat, lng: midLong }
+  console.log(midCoord)
 
   return setMarker(midCoord, map);
 }
