@@ -112,7 +112,6 @@
             </div>
           </div>
           <hr />
-          <div class="invite-container">
             <h2 class="header">Pending Invites</h2>
             <div class="invite-container">
               <div class="inviteList">
@@ -133,7 +132,7 @@
                 </li>
               </ul>
             </div>
-          </div>
+
         </div>
       </div>
     </div>
@@ -157,7 +156,7 @@ import bootstrap5Plugin from "@fullcalendar/bootstrap5";
 // import Modal from '../components/ModalView.vue'
 import EditEventModal from "../components/EditEventModal.vue";
 import NewEventModal from "../components/NewEventModal.vue";
-import AcceptInvite from '../components/AcceptInvite.vue';
+// import AcceptInvite from '../components/AcceptInvite.vue';
 // import CommentsModal from '../components/CommentsModal.vue'
 // import { Calendar } from '@fullcalendar/core';
 import Modal from "@/components/ModalView.vue";
