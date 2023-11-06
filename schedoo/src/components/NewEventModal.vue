@@ -1,6 +1,6 @@
 <template>
   <div>
-    <fieldset class="container" style="overflow-y:scroll">
+    <fieldset class="container">
       <legend class="row" style="margin-bottom: 20px; width: 100%">
         <h1 style="text-align: left">Add Event</h1>
       </legend>
