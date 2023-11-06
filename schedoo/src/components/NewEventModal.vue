@@ -1,25 +1,50 @@
 <template>
   <div>
-    <fieldset>
-      <legend>Event details</legend>
-      <b>ID:</b>{{ event.id }} <br/>
-      <b>Start:</b>  {{ event.start }} <br/>
-      <b>End:</b>  {{ event.end }} <br/>
-    </fieldset>
-    <fieldset></fieldset>
-        <legend>Add event</legend>
-        <div class="container">
-          <div class="row">
-            Category: 
-            <select v-model="category">
-              <option value="event">Event</option>
-              <option value="class">Class</option>
-              <option value="exams">Exams</option>
-              <option value="invites">Invites</option>
-            </select>
+    <fieldset class="container" style="overflow-y:scroll">
+      <legend class="row" style="margin-bottom: 20px; width: 100%">
+        <h1 style="text-align: left">Add Event</h1>
+      </legend>
+      <!-- <b>ID:</b>{{ event.id }} <br/> -->
+      <!-- <b>Start:</b> {{ event.start }} <br />
+      <b>End:</b> {{ event.end }} <br /> -->
+      <!-- </fieldset>
+    <fieldset> -->
+      <!-- <legend>Add event</legend> -->
+      <div class="row" style="text-align: start">
+        <div class="col-lg-6">
+          <div class="row mb-3">
+            <div class="col-sm-6">
+              <select
+                id="category"
+                v-model="category"
+                placeholder="Select a category"
+              >
+                <option value="event">Event</option>
+                <option value="class">Class</option>
+                <option value="exams">Exams</option>
+                <option value="invites">Invites</option>
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <input
+                id="taskName"
+                type="text"
+                class="form-control"
+                placeholder="Enter a task name"
+                v-model="title"
+              />
+            </div>
           </div>
-          <div class='row'> 
-            Event Title: <input type="text" v-model="title">
+
+          <div class="mb-3">
+            <label for="agenda" class="form-label">Agenda</label><br />
+            <textarea
+              id="agenda"
+              name="agenda"
+              class="form-control"
+              placeholder="Enter agenda of task"
+              style="height: 108px; width: 100%"
+            ></textarea>
           </div>
 
           <div class="mb-3">
@@ -189,6 +214,18 @@
                 {{ invitee.email }}
               </div>
               <p>{{ addInviteeErr }}</p>
+              <!-- <button
+                @click="recommendTimeSlots"
+                :disabled="!this.$store.state.invitees.length"
+              >
+                Find Timeslot
+              </button>
+              <div class="mb-3">
+                <label for="recommendations" class="form-label"
+                  >Recommendations</label
+                >
+                <div id="recommendations"></div>
+              </div> -->
               
             </div>
             <!-- <div class='col col-6'>Start: <input type="date" v-model="start"><input type="time" v-model="startTime"></div>
@@ -196,7 +233,6 @@
           </div>
         </div>
       </div>
-    
 
       <!-- Buttons -->
       <div class="row" style="justify-content: flex-end; margin-top: 10px">
@@ -229,6 +265,8 @@
           Add
         </button>
       </div>
+    </fieldset>
+  </div>
 </template>
 
 <script>
@@ -278,20 +316,18 @@ export default {
         let [startHours, startMinutes] = this.startTime.split(":");
         let [endHours, endMinutes] = this.endTime.split(":");
 
-                start.setHours(startHours, startMinutes);
-                end.setHours(endHours, endMinutes);
-            }
+        start.setHours(startHours, startMinutes);
+        end.setHours(endHours, endMinutes);
+      }
 
-            
-
-            let event = {
-                id: (new Date()).getTime(),
-                title: this.title,
-                start: start,
-                end: end,
-                allDay: this.allDay,
-                invitees: [],
-            };
+      let event = {
+        id: new Date().getTime(),
+        title: this.title,
+        start: start,
+        end: end,
+        allDay: this.allDay,
+        invitees: [],
+      };
 
       for (let invitee of this.$store.state.invitees) {
         let inviteeData = {
@@ -527,14 +563,17 @@ export default {
 
       if (randomRecommendations.length > 0) {
         // Display recommendations in Bootstrap cards
+        
         randomRecommendations.forEach((recommendation) => {
+          console.log(recommendation)
           const col = document.createElement("div");
+          // col.className = "col-md-4"; // Use the grid system for columns (Bootstrap 4)
           col.className = "col"; // Use the grid system for columns (Bootstrap 4)
           col.innerHTML = `
-                        <div class="card mb-3">
+                        <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Recommended Time Slot</h5>
-                                <p class="card-text">${recommendation}</p>
+                                <h5 class="card-title" style="color: black;">Recommended Time Slot</h5>
+                                <p class="card-text" style="color: black;">${recommendation}</p>
                                 <button class="btn btn-primary" onclick="selectTimeSlot('${recommendation}')">Select</button>
                             </div>
                         </div>
@@ -616,6 +655,9 @@ export default {
 };
 
 function isWithinTimeRange(time, startTime, endTime) {
+        //     const timeStr = time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        //     return timeStr >= startTime && timeStr <= endTime;
+        // }
   const timeStr = time.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
