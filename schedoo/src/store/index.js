@@ -17,12 +17,13 @@ export default createStore({
     invitee_exist: true,
     pendingEvents: [], 
     allEvents: [],
+    eventsComLoc: [],
   },
   getters: {
     EVENTS: state => state.events, 
     userGoals: (state) => state.userGoals,
     ALLEVENTS: state => state.allEvents,
-
+    EVENTS_COM_LOC: state => state.eventsComLoc,
   },
   mutations: {
     // Events
@@ -32,6 +33,12 @@ export default createStore({
     SET_ALL_EVENTS(state, events) {
       state.allEvents = events;
     },
+    SET_EVENTS_FOR_COM_LOC(state, events) {
+      console.log('events',events);
+      state.eventsComLoc = events;
+      console.log('state', state.eventsComLoc);
+    },
+
     ADD_EVENT: (state, {event, color}) => {
       console.log('add_event', event.category);
       event.color = color;
@@ -446,6 +453,30 @@ export default createStore({
       }
 
       commit('SET_EVENTS', events);
+    },
+    async fetchEventsForComLoc({commit}) {
+      const currentUser = auth.currentUser;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUser.uid);
+      
+      let events = [];
+      const calEventCollection = collection(userDoc, "calEvent");
+      let snapshot = await getDocs(calEventCollection);
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        appData.id = doc.id;
+
+        let color = '#87bba2' // light green ;
+        
+        appData.color = color;
+        appData.start = new Date(appData.start);
+        appData.end = new Date(appData.end);
+        
+        events.push(appData);
+      });
+
+      console.log(events);
+      commit('SET_EVENTS_FOR_COM_LOC', events);
     },
   
     async getCurrentUser({commit}) {
@@ -946,6 +977,7 @@ export default createStore({
 
 
     // }
+
   },
   modules: {},
 });

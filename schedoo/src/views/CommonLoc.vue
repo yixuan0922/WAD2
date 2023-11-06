@@ -70,6 +70,7 @@ import { onMounted, ref } from "vue";
 import Nav from "@/components/Nav.vue";
 import EventCard from "@/components/EventCard.vue";
 import PageLoader from "@/components/PageLoader.vue";
+import {useStore} from 'vuex';
 
 
 let placesList = ref([]);
@@ -86,20 +87,32 @@ const loader = new Loader({
   libraries: ["places", "marker"],
 });
 
-onMounted(async () => {
-  if (navigator.geolocation) {
-    try {
-      const position = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
 
-      midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
-    } catch (error) {
-      console.error(error.message);
-    }
-  } else {
-    console.log("Your browser does not support geolocation API");
-  }
+const store = useStore();
+
+let fetchedEvents = Array.from(store.state.eventsComLoc);
+console.log(fetchedEvents);
+
+onMounted(async () => {
+  // if (navigator.geolocation) {
+  //   try {
+  //     const position = await new Promise((resolve, reject) => {
+  //       navigator.geolocation.getCurrentPosition(resolve, reject);
+  //     });
+
+  //     midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // } else {
+  //   console.log("Your browser does not support geolocation API");
+  // }
+
+    await store.dispatch('fetchEventsForComLoc');
+
+
+
+  let midCoord = { lat: 1.304833, lng: 103.831833 }; // for testing purposes
 
   await loader.load();
   const gmap = new google.maps.Map(document.getElementById("map"), {
