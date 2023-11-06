@@ -114,19 +114,25 @@
           <hr />
           <div class="invite-container">
             <h2 class="header">Pending Invites</h2>
-            <ul>
-              <li
-                v-for="(event, index) in this.$store.state.pendingEvents"
-                :key="index"
-              >
-                {{ event.title }} <br />
-                {{ event.invitorEmail }} <br />
-                {{ event.start }} <br />
-                {{ event.end }}
-                <button @click="acceptInvite(event)">Accept</button>
-                <button @click="declineInvite(event)">Decline</button>
-              </li>
-            </ul>
+            <div class="invite-container">
+              <div class="inviteList">
+                <InviteCard></InviteCard> 
+                <InviteCard></InviteCard>            
+              </div>
+              <ul>
+                <li
+                  v-for="(event, index) in this.$store.state.pendingEvents"
+                  :key="index"
+                >
+                  {{ event.title }} <br />
+                  {{ event.invitorEmail }} <br />
+                  {{ event.start }} <br />
+                  {{ event.end }}
+                  <button @click="acceptInvite(event)">Accept</button>
+                  <button @click="declineInvite(event)">Decline</button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -156,6 +162,7 @@ import AcceptInvite from '../components/AcceptInvite.vue';
 // import { Calendar } from '@fullcalendar/core';
 import Modal from "@/components/ModalView.vue";
 import DropZone from "@/components/DropZone.vue";
+import InviteCard from "@/components/InviteCard.vue";
 
 const store = useStore();
 
@@ -440,25 +447,30 @@ const upload = () => {
     });
 };
 
+// const acceptInvite = (event) => {
+//   console.log("acceptInvite", event.start);
+//   toggleModal(AcceptInvite, {
+//     text: "This is from the component",
+//     // event: arg.event
+//     event: {
+//       id: event.id,
+//       title: event.title,
+//       start: new Date(event.start),
+//       end: new Date(event.end),
+//       allDay: event.allDay,
+//       invitees: event.invitees,
+
+//       invitorId: event.invitorId, 
+//       invitorEmail: event.invitorEmail,
+//     },
+//   });
+
+//   // store.dispatch("acceptInvite", event);
+// };
+
 const acceptInvite = (event) => {
-  console.log("acceptInvite", event.start);
-  toggleModal(AcceptInvite, {
-    text: "This is from the component",
-    // event: arg.event
-    event: {
-      id: event.id,
-      title: event.title,
-      start: new Date(event.start),
-      end: new Date(event.end),
-      allDay: event.allDay,
-      invitees: event.invitees,
-
-      invitorId: event.invitorId, 
-      invitorEmail: event.invitorEmail,
-    },
-  });
-
-  // store.dispatch("acceptInvite", event);
+  console.log("acceptInvite", event);
+  store.dispatch("acceptInvite", event);
 };
 
 const declineInvite = (event) => {
@@ -833,6 +845,33 @@ hr {
   div.fc-view-harness.fc-view-harness-active {
     height: 175px !important;
   }
+}
+
+
+.fc-view-harness {
+  background: #fff !important;
+}
+
+.fc-theme-bootstrap5 .fc-scrollgrid {
+  border-radius: 10px;
+}
+
+.fc-theme-bootstrap5-shaded {
+    background-color: #ebc6b5;
+}
+
+.invite-container {
+  width: 320px;
+  height: 490px;
+  overflow-y: scroll;
+}
+
+.fc-listWeek-view .fc-view .fc-list .fc-list-sticky {
+  height: 500px;
+}
+
+.fc-view-harness .fc-view-harness-active {
+  height: 500px !important;
 }
 </style>
 
