@@ -31,6 +31,8 @@
   </template>
   
   <script>
+/* eslint-disable */
+import { Loader } from "@googlemaps/js-api-loader";
 
   
   export default {
@@ -46,6 +48,7 @@
           invitorEmail: '', 
           location:'',
           category: '',
+          selectedCoord: {},
       }),
       methods: {
           // updateEvent () {
@@ -85,6 +88,12 @@
           //     this.$emit('close-modal');
           // },
 
+          getCoord(placeObj) {
+            const obj = placeObj.geometry.location;
+            this.selectedCoord = { lat: obj.lat(), lng: obj.lng() };
+            this.location = placeObj.name;
+            console.log(this.selectedCoord, this.location);
+          },
           load () {
             // console.log(this.location);
             const currUserId = this.$store.state.profileId;
@@ -144,7 +153,45 @@
 
     this.category = this.event.category;
     console.log(this.category);
-  }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          loader.load().then(async () => {
+            const { Map } = await google.maps.importLibrary("maps");
+
+            const autocomplete = new google.maps.places.Autocomplete(
+              document.getElementById("autocomplete"),
+              {
+                bounds: new google.maps.LatLngBounds(
+                  // current coords
+                  new google.maps.LatLng(
+                    position.coords.latitude,
+                    position.coords.longitude
+                  )
+                ),
+              }
+            );
+
+            autocomplete.addListener("place_changed", () => {
+              // cyx store in firebase pls thanks :)
+              console.log(autocomplete.getPlace());
+              this.getCoord(autocomplete.getPlace());
+            });
+          });
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+    } else {
+      console.log("Your browser does not support Geolocation");
+    }
+
+    const loader = new Loader({
+      apiKey: "AIzaSyDRsyQe3YsYSKVP_AQakrP7nSiZ4wAE7ik",
+      libraries: ["places"],
+    });
+  },
 };
 
 function formatDate(date) {
