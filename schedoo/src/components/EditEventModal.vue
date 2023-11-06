@@ -106,6 +106,7 @@
       event: Object
     },mounted() {
         this.id = this.event.id;
+        this.title = this.event.title;
         this.start = formatDate(this.event.start);
         this.end = formatDate(this.event.end);
         this.startTime = formatTime(this.event.start);
