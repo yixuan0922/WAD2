@@ -24,6 +24,18 @@
                     <Calculator v-if="showCalculator"/>
                     </div> -->
         </div>
+        <!-- add a button -->
+        <div class="row">
+          <div class="col-lg-12">
+            <button
+              class="btn btn-primary"
+              style="margin-top: 20px"
+              @click="check"
+            >
+              HELLO
+            </button>
+          </div>
+          </div>
       </div>
     </div>
   </div>
@@ -31,15 +43,27 @@
 
 <script>
 import Plotly from "plotly.js-dist-min";
+// import {useStore} from 'vuex';
+// import {computed} from 'vue';
+import { mapState } from 'vuex';
 
 export default {
+  // setup() {
+  //   const store = useStore();
+  //   let events = computed( () => store.getters['ALLEVENTS']);
+  //   return {store, events}
+
+  // },
   created() {
     this.$store.dispatch('fetchProfileGoals');
   },
   computed: {
     userGoals(){
       return this.$store.getters.userGoals;
-    }
+    }, 
+    ...mapState({
+      allEvents: state => state.allEvents
+    }),
   },
   data() {
     return {
@@ -103,9 +127,13 @@ export default {
     checkPage() {
       this.insightsPage = !this.insightsPage;
     },
+    check() {
+      console.log(this.allEvents);
+    }
   },
 
   mounted() {
+    this.$store.dispatch("fetchAllEvents");
     this.checkWeather();
 
     let time = document.getElementById("current-time");
@@ -216,9 +244,7 @@ export default {
                       title: "Goals"
                     };
 
-    var config ={responsive:true}
-
-    Plotly.newPlot("barcharts", barData, barLayout,config);
+    Plotly.newPlot("barcharts", barData, barLayout);
   },
 };
 </script>
