@@ -2,10 +2,15 @@
   <router-view></router-view>
 </template>
 <script>
-import { auth } from "./firebase/firebaseInit";
+import {auth} from "./firebase/firebaseInit";
+import {useStore} from 'vuex';
 
 export default {
-  name: "app",
+  setup() {
+    const store = useStore()
+    return {store}
+  },
+  name: "app", 
   components: {},
   data() {
     return {
@@ -15,11 +20,18 @@ export default {
   created() {
     auth.onAuthStateChanged((user) => {
       //user is a true or false statement to state if user has signed in or not
+<<<<<<< HEAD
       this.$store.commit("updateUser", user);
       if (user) {
         this.$store.dispatch("getCurrentUser");
         // this.$store.dispatch("getCalEvent");
         console.log(this.$store.state);
+=======
+      this.store.commit('updateUser', user);
+      if (user){
+        this.store.dispatch("getCurrentUser");
+        console.log(this.store.state);
+>>>>>>> dev
       }
     });
     this.checkRoute();
