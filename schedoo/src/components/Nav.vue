@@ -70,10 +70,16 @@ import {RouterLink, RouterView} from 'vue-router';
               >My Calendar</router-link>
               </li>
               <li class="nav-item">
-              <a class="nav-link active" href="#">Insights</a>
+              <!-- <a class="nav-link active" href="#">Insights</a> -->
+              <router-link class="nav-link" :to="{ name: 'Insights' }"
+              style="color: black; text-decoration: none;"
+              >Insights</router-link>
               </li>
               <li class="nav-item">
-              <a class="nav-link active" href="#">Focus</a>
+              <!-- <a class="nav-link active" href="#">Focus</a> -->
+              <router-link class="nav-link" :to="{ name: 'Focus' }"
+              style="color: black; text-decoration: none;"
+              >Focus</router-link>
               </li>
           </ul>
           <!-- <span class="navbar-text" style="right: 5%">
