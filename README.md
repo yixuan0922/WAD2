@@ -14,8 +14,9 @@ cd schedoo
 - Vue
 - Firebase
 - FullCalendar
-- OpenAPI
 - Plotly
+- I-frame
+
 
 ## Demo Accounts
 
