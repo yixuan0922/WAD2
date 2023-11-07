@@ -43,17 +43,18 @@
 
 <script>
 import Plotly from "plotly.js-dist-min";
-// import {useStore} from 'vuex';
+import {useStore} from 'vuex';
 // import {computed} from 'vue';
-import { mapState } from 'vuex';
+// import { mapState } from 'vuex';
+
 
 export default {
-  // setup() {
-  //   const store = useStore();
-  //   let events = computed( () => store.getters['ALLEVENTS']);
-  //   return {store, events}
+  setup() {
+    const store = useStore();
+    return {store};
 
-  // },
+
+  },
   created() {
     this.$store.dispatch('fetchProfileGoals');
   },
@@ -61,9 +62,9 @@ export default {
     userGoals(){
       return this.$store.getters.userGoals;
     }, 
-    ...mapState({
-      allEvents: state => state.allEvents
-    }),
+    allEvents() {
+      return this.$store.state.allEvents;
+    }
   },
   data() {
     return {
@@ -101,6 +102,8 @@ export default {
       } catch (error) {
         console.error(error);
       }
+
+      this.calculate();
     },
 
     insertNum(num) {
@@ -127,14 +130,15 @@ export default {
     checkPage() {
       this.insightsPage = !this.insightsPage;
     },
-    check() {
+    calculate() {
       console.log(this.allEvents);
     }
   },
 
-  mounted() {
-    this.$store.dispatch("fetchAllEvents");
+  async mounted() {
+    await this.$store.dispatch("fetchAllEvents");
     this.checkWeather();
+    this.calculate();
 
     let time = document.getElementById("current-time");
     setInterval(() => {

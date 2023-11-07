@@ -29,6 +29,7 @@
     "core-js": "^3.8.3",
     "firebase": "^10.4.0",
     "firebase-tools": "^12.5.4",
+    "font-awesome": "^4.7.0",
     "gsap": "^3.12.2",
     "plotly": "^1.0.6",
     "plotly.js-dist": "^2.27.0",
