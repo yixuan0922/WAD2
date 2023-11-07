@@ -20,6 +20,11 @@
             <div class='row location'> 
               Provide your Location: <input id="autocomplete" type="text" />
             </div>
+            <div class="row location">
+              Provide your coords: 
+              <input id="coords lat" type="text" v-model="selectedCoord.lat" />
+              <input id="coords lng" type="text" v-model="selectedCoord.lng" />
+            </div>
           </div>
           <div class="btns mt-5 mb-5">
             <button class='buttonSave btn btn-success' @click="load">Load</button>
@@ -123,6 +128,7 @@ import { Loader } from "@googlemaps/js-api-loader";
             for (let invitee in this.invitees){
               if (this.invitees[invitee].id == currUserId ){
                 this.invitees[invitee].location = this.location;
+                this.invitees[invitee].coords = this.selectedCoord;
               };
             }
 
@@ -176,6 +182,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 
     this.category = this.event.category;
     console.log(this.category);
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
