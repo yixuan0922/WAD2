@@ -99,7 +99,7 @@ import { RouterLink, RouterView } from "vue-router";
               :to="{ name: 'Insights' }"
               :class="{ active: insightsPage }"
               style="color: black; text-decoration: none"
-              >Home</router-link
+              >Dashboard</router-link
             >
           </li>
           <!-- <li class="nav-item">
