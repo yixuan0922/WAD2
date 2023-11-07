@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       isExpanded: false,
-      midCoord: {}
+      midCoord: {},
     };
   },
   methods: {
@@ -50,24 +50,22 @@ export default {
       this.isExpanded = !this.isExpanded;
     },
     getMidCoord(inviteeList, userCoord) {
-      if (inviteeList.length == 0) {
-        this.midCoord = userCoord;
-      } else {
-        var latCount = userCoord.lat;
-        var longCount = userCoord.lng;
-        for (var invitee of inviteeList) {
-          
+      var latCount = userCoord.lat;
+      var longCount = userCoord.lng;
+      var acceptedCount = 1;
+      for (var invitee of inviteeList) {
+        if (invitee.coords != null) {
           var coord = invitee.coords;
           latCount += coord.lat;
           longCount += coord.lng;
+          acceptedCount += 1
         }
-
-        var midLat = latCount / (inviteeList.length + 1);
-        var midLong = longCount / (inviteeList.length + 1);
-
-        this.midCoord = { lat: midLat, lng: midLong };
-        console.log(this.midCoord);
       }
+
+      var midLat = latCount / acceptedCount;
+      var midLong = longCount / acceptedCount;
+
+      this.midCoord = { lat: midLat, lng: midLong };
       console.log(this.midCoord);
     },
   },
