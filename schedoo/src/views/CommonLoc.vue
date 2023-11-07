@@ -28,6 +28,8 @@
                 :invitees="eventObj.invitees"
                 :userCoord="userCoord"
                 @midcoord="setMidCoord"
+                @toggleexpanded="toggleExpanded(eventObj)"
+                :expanded="expandedEvent === eventObj"
               ></EventCard>
             </div>
           </div>
@@ -97,6 +99,7 @@ let allEvents = [];
 let userCoord = {};
 let midCoord = {};
 let isLoaded = false;
+let expandedEvent = null;
 
 const loader = new Loader({
   apiKey: process.env.VUE_APP_GOOGLE_API_KEY,
@@ -196,7 +199,7 @@ async function centerMap() {
   });
 
   return setMarker(midCoord, map);
-};
+}
 
 function recenterMap(coord, name, address, map) {
   map.setCenter({ lat: coord.lat(), lng: coord.lng() });
@@ -271,14 +274,20 @@ function checkPhoto(place) {
 
 //retrieves event data and calc mid coord
 function setMidCoord(coord) {
-  midCoord = coord
+  midCoord = coord;
   console.log(midCoord);
   centerMap(midCoord);
 }
 
-// function displayEventDetails(eventObj) {
-//   console.log(eventObj);
-// }
+function toggleExpanded(eventObj) {
+  if (expandedEvent === eventObj) {
+    // If the same card is clicked again, collapse it
+    expandedEvent = null;
+  } else {
+    // Expand the clicked card and collapse the previously expanded card
+    expandedEvent = eventObj;
+  }
+}
 </script>
 
 <style>

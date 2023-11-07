@@ -1,24 +1,23 @@
 <template>
-  <div class="card" :class="{ 'pink-border': isExpanded }">
+  <div
+    class="card"
+    :class="{ 'pink-border': expanded }"
+    @click="
+      toggleExpanded();
+      getMidCoord(invitees, userCoord)
+    "
+  >
     <div class="card-body">
       <div class="title-row">
         <h6 class="card-title event-title">{{ title }}</h6>
-        <p
-          class="expand"
-          @click="
-            expand();
-            getMidCoord(invitees, userCoord);
-          "
-        >
-          Expand
-        </p>
+        <p class="expand">Expand</p>
       </div>
       <div class="row">
         <b class="card-subtitle">
           {{ startDate }} {{ startTime }} to {{ endDate }} {{ endTime }}
         </b>
       </div>
-      <div class="row" v-if="isExpanded">
+      <div class="row" v-if="expanded">
         <p class="invitees">Invitees:</p>
         <p class="invitees" v-for="invitee in invitees" :key="invitee">
           {{ invitee.email }} - {{ invitee.status }}
@@ -38,16 +37,17 @@ export default {
     endDate: String,
     invitees: Array,
     userCoord: Object,
+    expanded: Boolean,
   },
   data() {
     return {
-      isExpanded: false,
+      // expanded: false,
       // midCoord: {},
     };
   },
   methods: {
-    expand() {
-      this.isExpanded = !this.isExpanded;
+    toggleExpanded() {
+      this.$emit('toggleexpanded'); // Emit the event to toggle expanded state
     },
     getMidCoord(inviteeList, userCoord) {
       var latCount = userCoord.lat;
@@ -58,7 +58,7 @@ export default {
           var coord = invitee.coords;
           latCount += coord.lat;
           longCount += coord.lng;
-          acceptedCount += 1
+          acceptedCount += 1;
         }
       }
 
@@ -67,7 +67,7 @@ export default {
 
       var midCoord = { lat: midLat, lng: midLong };
       console.log(midCoord);
-      this.$emit('midcoord', midCoord);
+      this.$emit("midcoord", midCoord);
     },
   },
 };
