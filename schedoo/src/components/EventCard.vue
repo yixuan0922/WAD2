@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       isExpanded: false,
-      midCoord: {},
+      // midCoord: {},
     };
   },
   methods: {
@@ -65,8 +65,9 @@ export default {
       var midLat = latCount / acceptedCount;
       var midLong = longCount / acceptedCount;
 
-      this.midCoord = { lat: midLat, lng: midLong };
-      console.log(this.midCoord);
+      var midCoord = { lat: midLat, lng: midLong };
+      console.log(midCoord);
+      this.$emit('midcoord', midCoord);
     },
   },
 };

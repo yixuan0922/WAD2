@@ -20,17 +20,14 @@
               style="margin-bottom: 20px"
             >
               <EventCard
-                @click="
-                  getMidCoord(coordList);
-                  displayEventDetails(eventObj);
-                "
                 :title="eventObj.title"
                 :startTime="eventObj.start.toLocaleTimeString()"
                 :startDate="eventObj.start.toLocaleDateString()"
                 :endTime="eventObj.end.toLocaleTimeString()"
                 :endDate="eventObj.end.toLocaleDateString()"
                 :invitees="eventObj.invitees"
-                :userCoord="midCoord"
+                :userCoord="userCoord"
+                @midcoord="setMidCoord"
               ></EventCard>
             </div>
           </div>
@@ -97,13 +94,7 @@ let map = ref("");
 let selectedPlace = {};
 let imageSource = "";
 let allEvents = [];
-let coordList = [
-  { lat: 0, lng: 0 },
-  { lat: 1, lng: 1 },
-  { lat: 1, lng: 1 },
-  { lat: 2, lng: 2 },
-  { lat: 1.5, lng: 1.3 },
-];
+let userCoord = {};
 let midCoord = {};
 let isLoaded = false;
 
@@ -121,7 +112,7 @@ onMounted(async () => {
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
 
-      midCoord = {
+      userCoord = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
@@ -152,6 +143,35 @@ onMounted(async () => {
 
   await loader.load();
   const gmap = new google.maps.Map(document.getElementById("map"), {
+    center: userCoord,
+    zoom: 20,
+    mapId: "10ea632fd8840396",
+  });
+
+  map = gmap;
+
+  var request = {
+    location: userCoord,
+    radius: "500",
+    type: ["meal_takeaway"],
+    rankby: "distance",
+  };
+
+  const service = new google.maps.places.PlacesService(map);
+
+  service.nearbySearch(request, (results, status) => {
+    if (status !== "OK" || !results) return;
+    placesList.value = results;
+    console.log(placesList.value);
+    isLoaded = true;
+  });
+
+  return setMarker(userCoord, map);
+});
+
+async function centerMap() {
+  await loader.load();
+  const gmap = new google.maps.Map(document.getElementById("map"), {
     center: midCoord,
     zoom: 20,
     mapId: "10ea632fd8840396",
@@ -176,7 +196,7 @@ onMounted(async () => {
   });
 
   return setMarker(midCoord, map);
-});
+};
 
 function recenterMap(coord, name, address, map) {
   map.setCenter({ lat: coord.lat(), lng: coord.lng() });
@@ -250,26 +270,15 @@ function checkPhoto(place) {
 }
 
 //retrieves event data and calc mid coord
-function getMidCoord(coordList) {
-  var latCount = 0;
-  var longCount = 0;
-  for (var coord of coordList) {
-    latCount += coord.lat;
-    longCount += coord.lng;
-  }
-
-  var midLat = latCount / coordList.length;
-  var midLong = longCount / coordList.length;
-
-  midCoord = { lat: midLat, lng: midLong };
+function setMidCoord(coord) {
+  midCoord = coord
   console.log(midCoord);
-
-  return setMarker(midCoord, map);
+  centerMap(midCoord);
 }
 
-function displayEventDetails(eventObj) {
-  console.log(eventObj);
-}
+// function displayEventDetails(eventObj) {
+//   console.log(eventObj);
+// }
 </script>
 
 <style>
