@@ -106,7 +106,7 @@
   
   <script>
   import draggable from 'vuedraggable';
-  //import 'font-awesome/css/font-awesome.css';
+  import 'font-awesome/css/font-awesome.css';
   // import {computed} from 'vue';
   import {useStore} from 'vuex';
   
