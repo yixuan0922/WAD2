@@ -7,7 +7,11 @@
       <b>End:</b> {{ event.end }} <br />
       <b>ID:</b> {{ event.id }} <br />
       <b>Invitees</b> -->
-
+      <ul>
+        <li v-for="(invitee, index) in event.invitees" :key="index">
+          {{ invitee.email + "(" + invitee.status + ")" + invitee.location }}
+        </li>
+      </ul>
       <br />
     </fieldset>
 
@@ -27,7 +31,8 @@
       <div class="row" style="text-align: start">
         <div class="col-lg-6">
           <div class="row mb-3">
-            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+            </div>
             <div class="col-sm-12">
               <input
                 id="taskName"
@@ -39,18 +44,14 @@
           </div>
 
           <div class="mb-3">
-            <!-- <label for="agenda" class="form-label">Agenda</label><br />
+            <label for="agenda" class="form-label">Agenda</label><br />
             <textarea
               id="agenda"
               name="agenda"
               class="form-control"
               placeholder="Enter agenda of task"
               style="height: 108px; width: 100%"
-            ></textarea> -->
-            <b>Invitees:</b>
-            <p v-for="(invitee, index) in event.invitees" :key="index">
-              {{ invitee.email + " - (" + invitee.status + ")" }}
-            </p>
+            ></textarea>
           </div>
 
           <div class="mb-3">
@@ -278,6 +279,10 @@
 </template>
 
 <script>
+// import { Store } from 'vuex';
+/* eslint-disable */
+import { Loader } from "@googlemaps/js-api-loader";
+
 export default {
   data: () => ({
     title: "",
@@ -382,5 +387,161 @@ function formatTime(date) {
 <style>
 .buttonSave {
   margin-left: 10px;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  color: darkcyan;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.form-control,
+#category,
+input[type="text"] {
+  height: 40px;
+  border-color: DEDEDF;
+  padding: auto;
+  color: #808080;
+}
+
+#category {
+  background-color: DodgerBlue;
+  border-radius: 6px;
+  max-height: 100%;
+  margin-top: 3px;
+  color: white;
+}
+
+/* For "All-day" and "Repeat" toggle button */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 34px;
+}
+
+#toggleAllDay {
+  position: relative;
+  opacity: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+/* Circle icon */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+#toggleAllDay:checked + .slider {
+  background-color: #2196f3;
+}
+
+#toggleAllDay:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+#toggleAllDay:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(16px);
+}
+
+#toggleRepeat:checked + .slider {
+  background-color: #2196f3;
+}
+
+#toggleRepeat:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+#toggleRepeat:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(16px);
+}
+
+/* Blue rounded-border rectangle */
+.slider.round {
+  border-radius: 34px;
+  height: 22px;
+  width: 40px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* For Date Time Picker */
+#startDate,
+#endDate,
+#startTime,
+#endTime {
+  border: none;
+  height: 30px;
+}
+
+#startDate,
+#endDate,
+#startTime,
+#endTime:focus {
+  border: none;
+}
+
+/* add invitees */
+/* .emails.emails-input {
+      max-height: inherit;
+      border-radius: 0.25rem;
+      background: #fff;
+      border: 1px solid #c3c2cf;
+      box-sizing: border-box;
+      line-height: 1.5rem;
+      cursor: text;
+      overflow: auto;
+    } */
+
+.emails.emails-input input {
+  border: 0;
+  line-height: inherit;
+}
+
+.emails.emails-input input::placeholder,
+.emails.emails-input input::-ms-input-placeholder,
+.emails.emails-input input:-ms-input-placeholder {
+  color: #c3c2cf;
+  opacity: 1;
+}
+
+.emails.emails-input input:focus {
+  outline: none;
+}
+
+.modal-container {
+  max-width: 100%;
+  max-height: 80vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0 auto;
+}
+
+.modal-container.no-scroll {
+  overflow-y: auto;
 }
 </style>

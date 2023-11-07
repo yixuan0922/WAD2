@@ -2,16 +2,16 @@
   <section>
     <div class="form-box">
       <div class="form-value">
-        <form action="">
-          <h2 class="header">Login</h2>
+        <form action="" autocomplete="off">
+          <h2 class="login">Login</h2>
           <div class="inputbox">
             <ion-icon name="mail-outline"></ion-icon>
-            <input type="email" required />
+            <input type="email" required v-model='email'/>
             <label for="">Email</label>
           </div>
-          <div class="inputbox">
+          <div class="inputbox" id="password">
             <ion-icon name="lock-closed-outline"></ion-icon>
-            <input type="password" required />
+            <input type="password" required v-model='password'/>
             <label for="">Password</label>
           </div>
 
@@ -19,7 +19,7 @@
 
           <div class="forget">
             <label for="">
-              <input type="checkbox" /> Remember Me
+              <input type="checkbox" /> Remember Me |
               <router-link
                 class="forget-password"
                 :to="{ name: 'ForgetPassword' }"
@@ -39,19 +39,19 @@
 
           <hr />
 
-          <button @click.prevent="handleGoogle" class="google">
+          <!-- <button @click.prevent="handleGoogle" class="google">
             Sign In With Google
-          </button>
+          </button> -->
         </form>
       </div>
     </div>
   </section>
 </template>
 
-<script>
+<!-- <script>
 import { auth } from "../firebase/firebaseInit";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export default {
   name: "Login",
@@ -65,41 +65,77 @@ export default {
   },
   methods: {
     signIn() {
-      signInWithEmailAndPassword(auth, this.email, this.password)
-        .then((userCredential) => {
-          this.error = false;
-          this.errorMessage = "";
-          const user = userCredential.user;
-          console.log(user.uid);
-          this.$router.push({ name: "Landing" });
-        })
-        .catch((err) => {
-          this.error = true;
-          this.errorMsg = err.message;
-        });
-    },
-    async handleGoogle() {
-      const provider = await new GoogleAuthProvider();
-      return signInWithPopup(auth, provider);
-    },
+      signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+        this.error = false;
+        this.errorMessage = '';
+        const user = userCredential.user;
+        console.log(user.uid);
+        this.$router.push({name: 'Landing'});
+      }).catch((err) => {
+        this.error = true;
+        this.errorMsg = err.message
+      });
+    }, 
+    // async handleGoogle() {
+    //   const provider = await new GoogleAuthProvider();
+    //   return signInWithPopup(auth, provider);
+    // },
   },
 };
+</script> -->
+<script>
+
+import {auth} from "../firebase/firebaseInit";
+import { signInWithEmailAndPassword,} from 'firebase/auth';
+// import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+
+export default {
+    name: 'Login',
+    data() {
+        return ({
+            email: "",
+            password: "",
+            error: "", 
+            errorMsg: "",
+        })
+    },
+    methods: {
+      signIn() {
+        signInWithEmailAndPassword(auth, this.email, this.password).then((userCredential) => {
+          this.error = false;
+          this.errorMessage = '';
+          const user = userCredential.user;
+          console.log(user.uid);
+          this.$router.push({name: 'Landing'});
+        }).catch((err) => {
+          this.error = true;
+          this.errorMsg = err.message
+        });
+      }, 
+  
+    }
+
+}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;
   font-family: "poppins", sans-serif;
 }
 
+#password {
+  margin-bottom: 5px;
+}
 section {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background: url("https://images.unsplash.com/photo-1695748216442-5eaad91860f2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2744&q=80");
+  background: url("@/assets/bkgrndImg.png");
 }
 
 .form-box {
@@ -115,14 +151,11 @@ section {
   backdrop-filter: blur(15px);
 }
 
-h2 {
-  text-align: center;
-}
-
-.header {
+.login {
   color: white;
   font-size: 2em;
   font-weight: bold;
+  text-align: center;
 }
 
 .inputbox {
@@ -172,6 +205,7 @@ input:valid ~ label {
   color: white;
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 }
 
 .forget label input {

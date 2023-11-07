@@ -1,34 +1,115 @@
 <template>
   <div>
-    <Nav/>
-    <div class="container-fluid col-lg-12 px-5 scrollable-container" style="padding-top: 50px;">
-        <div class="row">
-          <div class="col-lg-9">
-            <!-- Header -->
-            <div class="row">
-              <div v-if="insightsPage">
-                <h4 style="position: relative; font-weight: bold; text-align: start; margin-top: 20px">Welcome to your dashboard.</h4>
-                <p style="position: relative; text-align: start; margin-bottom: 5px;">Manage your study-life balance all in this page.</p>
-              </div>
-              <div v-if="!insightsPage">
-                <h4 style="position: relative; font-weight: bold; text-align: start; margin-top: 20px">Welcome to your deep focus tracker.</h4>
-                <p style="position: relative; text-align: start; margin-bottom: 5px;">There is no better time to start than now. You got this!</p>
-              </div>
-
-              <!-- Add navigation links -->
-              <div class="row" v-if="this.insightsPage">
-                <!-- <input type="button" class="col-6" id="insights" placeholder="My Insights"> -->
-                <router-link to="" class="col-6" id="insightsPage" :class="[this.insightsPage ? 'boxClicked' : 'boxNotClicked']">Insights</router-link>
-                <router-link to="/home/focus" class="col-6" id="focusPage" v-on:click="checkPage" :class="[this.insightsPage ? 'boxNotClicked' : 'boxClicked']">Focus Mode</router-link>
-              </div>
-              <div class="row" v-if="!this.insightsPage">
-                <!-- <input type="button" class="col-6" id="insights" placeholder="My Insights"> -->
-                <router-link to="/home/insights" class="col-6" id="insightsPage" v-on:click="checkPage" :class="[this.insightsPage ? 'boxClicked' : 'boxNotClicked']">Insights</router-link>
-                <router-link to="" class="col-6" id="focusPage" :class="[this.insightsPage ? 'boxNotClicked' : 'boxClicked']">Focus Mode</router-link>
-              </div>
-              <Insights v-if="pageLoad"/>
+    <Nav />
+    <div
+      class="container-fluid col-lg-12 px-5 scrollable-container"
+      style="padding-top: 50px"
+    >
+      <div class="row">
+        <div class="col-lg-9">
+          <!-- Header -->
+          <div class="row" v-if="insightsPage">
+            <div>
+              <h4
+                style="
+                  position: relative;
+                  font-weight: bold;
+                  text-align: start;
+                  margin-top: 20px;
+                "
+              >
+                Welcome to your dashboard.
+              </h4>
+              <p
+                style="
+                  position: relative;
+                  text-align: start;
+                  margin-bottom: 5px;
+                "
+              >
+                Manage your study-life balance all in this page.
+              </p>
             </div>
-            <router-view/>
+            <!-- Add navigation links -->
+            <div class="row">
+              <!-- <input type="button" class="col-6" id="insights" placeholder="My Insights"> -->
+              <router-link
+                to=""
+                class="col-6"
+                id="insightsPage"
+                :class="{
+                  boxClicked: insightsPage,
+                  boxNotClicked: !insightsPage,
+                  active: insightsPage
+                }"
+                @click="switchToInsights"
+                >Insights</router-link
+              >
+              <router-link
+                to="/home/focus"
+                class="col-6"
+                id="focusPage"
+                :class="{
+                  boxClicked: !insightsPage,
+                  boxNotClicked: insightsPage,
+                  active: !insightsPage
+                }"
+                @click="switchToFocus"
+                >Focus Mode</router-link
+              >
+            </div>
+          </div>
+          <div class="row" v-if="!insightsPage">
+            <div>
+              <h4
+                style="
+                  position: relative;
+                  font-weight: bold;
+                  text-align: start;
+                  margin-top: 20px;
+                "
+              >
+                Welcome to your deep focus tracker.
+              </h4>
+              <p
+                style="
+                  position: relative;
+                  text-align: start;
+                  margin-bottom: 5px;
+                "
+              >
+                There is no better time to start than now. You got this!
+              </p>
+            </div>
+            <div class="row">
+              <!-- <input type="button" class="col-6" id="insights" placeholder="My Insights"> -->
+              <router-link
+                to="/home/insights"
+                class="col-6"
+                id="insightsPage"
+                :class="{
+                  boxClicked: insightsPage,
+                  boxNotClicked: !insightsPage,
+                  active: insightsPage
+                }"
+                @click="switchToInsights"
+                >Insights</router-link
+              >
+              <router-link
+                to="/home/focus"
+                class="col-6"
+                id="focusPage"
+                :class="{
+                  boxClicked: !insightsPage,
+                  boxNotClicked: insightsPage,
+                  active: !insightsPage
+                }"
+                @click="switchToFocus"
+                >Focus Mode</router-link
+              >
+            </div>
+            </div>
+            <router-view  v-if="pageLoad" />
           </div>
 
 
@@ -64,34 +145,31 @@
               v-bind:options="calendarSidebarOptions"/>
             </div>
 
-            <!-- Spotify -->
-            <div class="row" style="margin-top: 20px">
-              <link
-                rel="alternate"
-                type="application/json+oembed"
-                href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
-              />
-              <div v-html="spotifyEmbedHtml"></div>
-              <!-- </div> -->
-            </div>
+          <!-- Spotify -->
+          <div class="row" style="margin-top: 20px">
+            <link
+              rel="alternate"
+              type="application/json+oembed"
+              href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
+            />
+            <div v-html="spotifyEmbedHtml"></div>
+            <!-- </div> -->
           </div>
-
-
         </div>
-        
-          
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Nav from "@/components/Nav.vue";
-import Insights from '../components/Insights.vue';
+// import Insights from '../components/Insights.vue';
 import FullCalendarComponent from "@fullcalendar/vue3";
-import {useStore} from 'vuex';
-import { ref , computed} from "vue";
-import ListPlugin from "@fullcalendar/list";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
+// import ListPlugin from "@fullcalendar/list";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
+import dayGridPlugin from "@fullcalendar/daygrid";
 
 // Calendar
 // import ListPlugin from "@fullcalendar/list";
@@ -122,29 +200,37 @@ export default {
   setup() {
     const store = useStore();
     const calendarSidebarOptions = ref({
-      plugins: [ListPlugin, bootstrap5Plugin],
+      plugins: [dayGridPlugin, bootstrap5Plugin],
       themeSystem: "bootstrap5",
-      initialView: "listWeek",
+      initialView: "dayGridDay",
       events: computed(() => store.getters["ALLEVENTS"]),
       headerToolbar: {
         left: "",
-        center: "title",
+        center: "",
         right: "",
         sidebarShown: false,
       },
     });
-    return {store, calendarSidebarOptions}
+    return { store, calendarSidebarOptions };
   },
-  components:{
+  components: {
     Nav,
-    Insights,
-    FullCalendarComponent
-},
+    // Insights,
+    FullCalendarComponent,
+  },
   data() {
     return {
       date: new Date(),
       currentDate: new Date().toLocaleDateString(),
-      currentDayOfWeek: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][new Date().getDay()],
+      currentDayOfWeek: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ][new Date().getDay()],
       weather: {
         temp: null, // Initialize with null or a default value
       },
@@ -156,7 +242,22 @@ export default {
     };
   },
 
+  beforeRouteEnter(to, from, next) {
+    // This guard is called just before the "Focus" component is created
+    // You can modify variables here
+    next(vm => {
+      // Access the Vue component instance (vm) and modify its variables
+      vm.someVariable = 'New Value'; // Modify your variable here
+    });
+  },
+
   methods: {
+    switchToInsights() {
+      this.insightsPage = true;
+    },
+    switchToFocus() {
+      this.insightsPage = false;
+    },
     async checkWeather() {
       const apiKey = "0448f72af4824d5ad3d358a845efaa01";
       const apiUrl =
@@ -176,24 +277,24 @@ export default {
     toggleCalculator() {
       this.showCalculator = !this.showCalculator;
     },
-    checkPage(){
+    checkPage() {
       this.pageLoad = false;
       if (this.insightsPage == false) {
-        var insights = document.getElementById('insightsPage');
-        insights.style.color = 'black';
-        insights.style.borderBottom = 'solid #000000 2px';
+        var insights = document.getElementById("insightsPage");
+        insights.style.color = "black";
+        insights.style.borderBottom = "solid #000000 2px";
 
-        var focus = document.getElementById('focusPage');
-        focus.style.color = 'gray';
-        focus.style.borderBottom = 'solid gray 1px';
-      }else{
-        focus = document.getElementById('focusPage');
-        focus.style.color = 'black';
-        focus.style.borderBottom = 'solid #000000 2px';
+        var focus = document.getElementById("focusPage");
+        focus.style.color = "gray";
+        focus.style.borderBottom = "solid gray 1px";
+      } else {
+        focus = document.getElementById("focusPage");
+        focus.style.color = "black";
+        focus.style.borderBottom = "solid #000000 2px";
 
-        insights = document.getElementById('insightsPage');
-        insights.style.color = 'gray';
-        insights.style.borderBottom = 'solid gray 1px';
+        insights = document.getElementById("insightsPage");
+        insights.style.color = "gray";
+        insights.style.borderBottom = "solid gray 1px";
       }
       this.insightsPage = !this.insightsPage;
 
@@ -244,7 +345,7 @@ export default {
 
 body {
   // background: #e1e7ec;
-  background: #F8F9FD;
+  background: #f8f9fd;
   font-family: "Bitter", serif;
 }
 
@@ -253,17 +354,23 @@ body {
 }
 
 //others
-.boxClicked{
-  background-color: transparent; text-decoration: none !important; color: black; border-bottom: solid #000000 2px;
+.boxClicked {
+  background-color: transparent;
+  text-decoration: none !important;
+  color: black;
+  border-bottom: solid #000000 2px;
 }
 
-.boxNotClicked{
-  background-color: transparent; text-decoration: none !important; color: gray; border-bottom: solid gray 1px;
+.boxNotClicked {
+  background-color: transparent;
+  text-decoration: none !important;
+  color: gray;
+  border-bottom: solid gray 1px;
 }
-#insights{
-  background-color: transparent; 
-  border: none; 
-  border-bottom: 1px #000000; 
+#insights {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px #000000;
   color: black;
 }
 
@@ -318,7 +425,6 @@ body {
   padding: 40px 20px;
   position: relative;
   border-radius: 8px;
-
 }
 .display {
   width: 100%;
@@ -362,8 +468,8 @@ input[type="button"]#equal {
 input[type="button"][value="0"] {
   grid-column: span 2;
 }
-.dashboard-content{
-  padding-top:40px;
+.dashboard-content {
+  padding-top: 40px;
 }
 
 .sidebar {
