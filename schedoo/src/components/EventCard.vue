@@ -17,7 +17,11 @@
   </template>
 
   
-  <script></script>
+  <script>
+export default {
+  props: ['title', 'start', 'end']
+}
+  </script>
   
   <style>
   .card {

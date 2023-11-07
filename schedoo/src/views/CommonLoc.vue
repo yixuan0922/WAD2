@@ -19,12 +19,20 @@
               class="col-md-12 col-lg-6"
               style="margin-bottom: 20px"
             >
-              <EventCard
+            <div>
+              {{ eventObj.title }}
+              <button 
+              @click="
+              getMidCoord(coordList);
+              displayEventDetails(eventObj);
+            ">EVENT</button>
+            </div>
+              <!-- <EventCard
                 @click="
                   getMidCoord(coordList);
                   displayEventDetails(eventObj);
                 "
-              ></EventCard>
+              ></EventCard> -->
             </div>
           </div>
         </div>
@@ -81,7 +89,7 @@
 import { Loader } from "@googlemaps/js-api-loader";
 import { onMounted, ref} from "vue";
 import Nav from "@/components/Nav.vue";
-import EventCard from "@/components/EventCard.vue";
+// import EventCard from "@/components/EventCard.vue";
 import PageLoader from "@/components/PageLoader.vue";
 import {useStore} from 'vuex';
 
@@ -110,19 +118,19 @@ console.log("test", allEvents);
 
 
 onMounted(async () => {
-  if (navigator.geolocation) {
-    try {
-      const position = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
+  // if (navigator.geolocation) {
+  //   try {
+  //     const position = await new Promise((resolve, reject) => {
+  //       navigator.geolocation.getCurrentPosition(resolve, reject);
+  //     });
 
-      midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
-    } catch (error) {
-      console.error(error.message);
-    }
-  } else {
-    console.log("Your browser does not support geolocation API");
-  }
+  //     midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // } else {
+  //   console.log("Your browser does not support geolocation API");
+  // }
 
   // fetchEvents();
 
@@ -130,7 +138,7 @@ onMounted(async () => {
 
 
 
-  // let midCoord = { lat: 1.304833, lng: 103.831833 }; // for testing purposes
+  let midCoord = { lat: 1.304833, lng: 103.831833 }; // for testing purposes
 
   await loader.load();
   const gmap = new google.maps.Map(document.getElementById("map"), {
