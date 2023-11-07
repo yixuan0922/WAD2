@@ -526,30 +526,33 @@ export default {
           (currentTime.getHours() === endHour &&
             currentTime.getMinutes() < endMinute)
         ) {
-          const nextTime = new Date(
-            currentTime.getTime() + meetingDuration * 60000
-          );
-          const currentTimeStr = `${datePart}: ${currentTime.getHours()}:${String(
-            currentTime.getMinutes()
-          ).padStart(2, "0")}`;
+          // const nextTime = new Date(
+          //   currentTime.getTime() + meetingDuration * 60000
+          // );
+          const nextTime= new Date(currentTime);
+          nextTime.setMinutes(nextTime.getMinutes() + meetingDuration);
 
-          if (
-            nextTime.getHours() < endHour ||
-            (nextTime.getHours() === endHour &&
-              nextTime.getMinutes() <= endMinute)
-          ) {
-            // Check if the current time is within the preferred time range
-            console.log(currentTime + startTime + endTime);
+          // const currentTimeStr = `${datePart}: ${currentTime.getHours()}:${String(
+          //   currentTime.getMinutes()
+          // ).padStart(2, "0")}`;
+
+          // if (
+          //   nextTime.getHours() < endHour ||
+          //   (nextTime.getHours() === endHour &&
+          //     nextTime.getMinutes() <= endMinute)
+          // ) {
+          //   // Check if the current time is within the preferred time range
+          //   console.log(currentTime + startTime + endTime);
             if (isWithinTimeRange(currentTime, startTime, endTime)) {
-              console.log(recommendations);
+              const currentTimeStr = `${datePart}: ${currentTime.getHours()}:${String(currentTime.getMinutes()).padStart(2, "0")}`;
               recommendations.push(
-                `${currentTimeStr} - ${nextTime.getHours()}:${String(
-                  nextTime.getMinutes()
-                ).padStart(2, "0")}`
+                `${currentTimeStr} - ${formatTime(nextTime)}`
+                // `${currentTimeStr} - ${nextTime.getHours()}:${String(
+                //   nextTime.getMinutes()
+                // ).padStart(2, "0")}`
               );
             }
-          }
-          currentTime = new Date(currentTime.getTime() + 60000 * minGap);
+          currentTime = new Date(currentTime.getTime() + minGap * 60000);
         }
       }
 
