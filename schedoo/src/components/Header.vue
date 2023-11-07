@@ -24,18 +24,20 @@ import {RouterLink, RouterView} from 'vue-router';
 
         <!-- pg1 content -->
         <div id="pg1-content">
-          <h1 class="title" 
+          <h1 class="headerTitle" 
           
           >SCHEDOO</h1>
           <p class="subtitle">
-            Keep 
+            Stay 
             <span id="typing"
             style="text-decoration: underline;
             font-family: 'Poppins', sans-serif;"
             ></span></p>
           <div class="buttons mt-3">
             <button type="button" class="mainBtn">
-              Get Started
+              <router-link class="nav-link" :to="{name: 'Register'}"
+              style=" text-decoration: none;"
+              >Get Started</router-link>
             </button>
             <button 
             class="mainBtn" 
@@ -94,7 +96,7 @@ export default {
 
         // Typing animation
         const typed = new Typed("#typing", {
-            strings: ["Calm", "Amazing", "Organised", "On Time", "Focused"],
+            strings: ["ahead of deadlines", "in balance of study & life", "calm and organised", "consistent!"],
             typeSpeed: 100,
             backSpeed: 100,
             loop: true
@@ -218,7 +220,7 @@ export default {
 }
 
 /* Title  & Subtitles*/
-.title {
+.headerTitle {
     font-size: 500%;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;;
@@ -362,5 +364,8 @@ body {
 } */
 b {
   text-decoration: underline;
+}
+.buttons {
+  display: block;
 }
 </style>

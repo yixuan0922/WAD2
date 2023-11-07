@@ -20,10 +20,21 @@ export default {
     Header,
   },
   mounted () {
+    this.applyStyles();
+
     const store = useStore();
     store.dispatch('getPendingEvents').then(result => {
       console.log('getPendingEvents', result);
     })
   },
+  methods: {
+    applyStyles() {
+      // Get the <html> element
+      const htmlElement = document.querySelector('html');
+
+      // Apply the styles
+      htmlElement.style.overflowX = 'hidden';
+    }
+  }
 };
 </script>

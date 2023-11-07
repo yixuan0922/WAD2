@@ -118,8 +118,8 @@
             class="shadow-5 p-3"
             style="
               height: 100px;
-              content-justify: center;
-              align-items: center;
+              content-justify: center !important;
+              align-items: center !important;
               background-color: #ededed;
               border-radius: 15px;
             "

@@ -967,17 +967,49 @@ export default createStore({
       return dbResults.data().goals;
     },
 
-    // async fetchDailyTasks(_, dailyTasks, day) {
-    //   const currentUserId = auth.currentUser.uid;
-    //   const database = collection(db, "users");
-    //   const userDoc = doc(database, currentUserId);
-    //   const calDailyCollection = collection(userDoc, "dailyTasks");
+    async fetchDailyTasks(_, day) {
+      const currentUserId = auth.currentUser.uid;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUserId);
+      const calDailyCollection = collection(userDoc, "dailyTasks");
+    
+      const dailyTasksDoc = doc(calDailyCollection, day);
+      let dailyTasksSnapshot = await getDoc(dailyTasksDoc);
+    
+      if (!dailyTasksSnapshot.exists()) {
+        // The document does not exist, create it
+        await setDoc(dailyTasksDoc, {
+          'To Do': [],
+          'In Progress': [],
+          'Done': [],
+        });
+    
+        // Get the document again after creating it
+        dailyTasksSnapshot = await getDoc(dailyTasksDoc);
+      }
+    
+      console.log(dailyTasksSnapshot.data());
+    
+      return dailyTasksSnapshot.data();
+    },
+    
+    async updateDailyTasks({commit}, dailyTasks, day){
+      const currentUser = auth.currentUser;
+      const database = collection(db, "users");
+      const userDoc = doc(database, currentUser.uid);
+      const calDailyCollection = collection(userDoc, "dailyTasks");
+      const dailyTasksDoc = doc(calDailyCollection, String(day));
 
-    //   // create 
+      console.log(dailyTasksDoc);
+      console.log('dailytasks', dailyTasks);
 
 
-    // }
 
+      // await setDoc(dailyTasksDoc, dailyTasks).then(()=> console.log('daily tasks updated')).catch((error) => console.error(error.msg));
+
+      commit("UPDATE_DAILYTASKS", dailyTasks);
+    },
+    
   },
   modules: {},
 });
