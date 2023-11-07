@@ -15,24 +15,23 @@
           <div class="container row" style="height: 300px; overflow-y: auto">
             <div
               v-for="eventObj in allEvents"
-              :key="eventObj"
+              :key="eventObj.title"
               class="col-md-12 col-lg-6"
               style="margin-bottom: 20px"
             >
-            <div>
-              {{ eventObj.title }}
-              <button 
-              @click="
-              getMidCoord(coordList);
-              displayEventDetails(eventObj);
-            ">EVENT</button>
-            </div>
-              <!-- <EventCard
+              <EventCard
                 @click="
                   getMidCoord(coordList);
                   displayEventDetails(eventObj);
                 "
-              ></EventCard> -->
+                :title="eventObj.title"
+                :startTime="eventObj.start.toLocaleTimeString()"
+                :startDate="eventObj.start.toLocaleDateString()"
+                :endTime="eventObj.end.toLocaleTimeString()"
+                :endDate="eventObj.end.toLocaleDateString()"
+                :invitees="eventObj.invitees"
+                :userCoord="midCoord"
+              ></EventCard>
             </div>
           </div>
         </div>
@@ -87,19 +86,24 @@
 <script setup>
 /* eslint-disable no-undef */
 import { Loader } from "@googlemaps/js-api-loader";
-import { onMounted, ref} from "vue";
+import { onMounted, ref } from "vue";
 import Nav from "@/components/Nav.vue";
-// import EventCard from "@/components/EventCard.vue";
+import EventCard from "@/components/EventCard.vue";
 import PageLoader from "@/components/PageLoader.vue";
-import {useStore} from 'vuex';
-
+import { useStore } from "vuex";
 
 let placesList = ref([]);
 let map = ref("");
 let selectedPlace = {};
 let imageSource = "";
-// let EventList = [(0, 0), (1, 1), (2, 2), (3,3), (4,4)];
-let coordList = [{lat: 0, lng: 0}, {lat: 1, lng: 1}, {lat: 1, lng: 1}, {lat: 2, lng: 2}, {lat: 1.5, lng: 1.3}];
+let allEvents = [];
+let coordList = [
+  { lat: 0, lng: 0 },
+  { lat: 1, lng: 1 },
+  { lat: 1, lng: 1 },
+  { lat: 2, lng: 2 },
+  { lat: 1.5, lng: 1.3 },
+];
 let midCoord = {};
 let isLoaded = false;
 
@@ -108,37 +112,43 @@ const loader = new Loader({
   libraries: ["places", "marker"],
 });
 
-
 const store = useStore();
-store.dispatch('fetchEventsForComLoc');
-
-const allEvents = store.state.eventsComLoc;
-console.log("test", allEvents);
-
-
 
 onMounted(async () => {
-  // if (navigator.geolocation) {
-  //   try {
-  //     const position = await new Promise((resolve, reject) => {
-  //       navigator.geolocation.getCurrentPosition(resolve, reject);
-  //     });
+  if (navigator.geolocation) {
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
 
-  //     midCoord = { lat: position.coords.latitude, lng: position.coords.longitude };
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // } else {
-  //   console.log("Your browser does not support geolocation API");
-  // }
+      midCoord = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+    } catch (error) {
+      console.error(error.message);
+    }
+  } else {
+    console.log("Your browser does not support geolocation API");
+  }
 
   // fetchEvents();
 
-    // await store.dispatch('fetchEventsForComLoc');
+  // await store.dispatch('fetchEventsForComLoc');\
+  await store.dispatch("fetchEventsForComLoc");
+  allEvents = store.state.eventsComLoc;
+  console.log(allEvents[1]);
+  // console.log(allEvents[0].start.toLocaleTimeString());
+  // console.log(allEvents[0].end.toLocaleDateString());
 
+  // allEvents.value = store.state.eventsComLoc;
+  // console.log("test", allEvents.value);
 
+  // const allEvents = store.state.eventsComLoc;
+  // const plainArray = Array.from(allEvents.value);
+  // console.log("test", allEvents, allEvents.value, plainArray);
 
-  let midCoord = { lat: 1.304833, lng: 103.831833 }; // for testing purposes
+  // let midCoord = { lat: 1.304833, lng: 103.831833 }; // for testing purposes
 
   await loader.load();
   const gmap = new google.maps.Map(document.getElementById("map"), {
@@ -162,7 +172,7 @@ onMounted(async () => {
     if (status !== "OK" || !results) return;
     placesList.value = results;
     console.log(placesList.value);
-    isLoaded = true
+    isLoaded = true;
   });
 
   return setMarker(midCoord, map);
@@ -251,14 +261,14 @@ function getMidCoord(coordList) {
   var midLat = latCount / coordList.length;
   var midLong = longCount / coordList.length;
 
-  midCoord = { lat: midLat, lng: midLong }
-  console.log(midCoord)
+  midCoord = { lat: midLat, lng: midLong };
+  console.log(midCoord);
 
   return setMarker(midCoord, map);
 }
 
 function displayEventDetails(eventObj) {
-  console.log(eventObj)
+  console.log(eventObj);
 }
 </script>
 
