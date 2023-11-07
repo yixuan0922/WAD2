@@ -102,6 +102,16 @@ import { RouterLink, RouterView } from "vue-router";
               >Dashboard</router-link
             >
           </li>
+          <li class="nav-item">
+            <!-- <a class="nav-link active">My Calendar</a> -->
+            <router-link
+              class="nav-link"
+              :to="{ name: 'Events' }"
+              style="color: black; text-decoration: none"
+              >My Events</router-link
+            >
+          </li>
+          
           <!-- <li class="nav-item">
             <router-link
               class="nav-link"

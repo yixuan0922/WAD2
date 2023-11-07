@@ -10,6 +10,7 @@ import CrEvent from '../components/CrEvent.vue';
 import Home from '../views/Home.vue';
 import Focus from '../components/FocusTracker.vue';
 import Insights from '../components/Insights.vue';
+import CommonLoc from '../components/CommonLoc.vue';
 // import Calendar from '../components/Calendar.vue';
 // import store from '@/store/index.js';
 
@@ -32,6 +33,11 @@ const routes = [
     path: "/landing",
     name: "Landing",
     component: LandingView,
+  },
+  {
+    path: "/events",
+    name: "Events",
+    component: CommonLoc,
   },
   {
     path: "/login",
