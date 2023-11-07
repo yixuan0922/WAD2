@@ -138,6 +138,9 @@ export default {
         // Get the goals from firebase //use to dispatch
        this.store.dispatch('fetchProfileGoals').then(doc => {
             this.categories = doc;
+            if (!this.categories) {
+                this.set();
+            }
        }); 
     }, 
 
