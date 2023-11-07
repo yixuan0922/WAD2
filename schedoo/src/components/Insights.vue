@@ -25,7 +25,7 @@
                     </div> -->
         </div>
         <!-- add a button -->
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-12">
             <button
               class="btn btn-primary"
@@ -35,7 +35,7 @@
               HELLO
             </button>
           </div>
-          </div>
+          </div> -->
       </div>
     </div>
   </div>
