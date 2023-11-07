@@ -24,7 +24,7 @@ import {RouterLink, RouterView} from 'vue-router';
 
         <!-- pg1 content -->
         <div id="pg1-content">
-          <h1 class="title" 
+          <h1 class="headerTitle" 
           
           >SCHEDOO</h1>
           <p class="subtitle">
@@ -220,7 +220,7 @@ export default {
 }
 
 /* Title  & Subtitles*/
-.title {
+.headerTitle {
     font-size: 500%;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;;

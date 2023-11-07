@@ -26,7 +26,7 @@
                         </p>
                     </div>
                     <div class="row">
-                        <input type="range" min="0" max="24" v-model="cat.value" class="slider" style="margin-left:5%; margin-right:5%; width: 90%">
+                        <input type="range" min="0" max="24" v-model="cat.value" class="slider" style="margin-left:5%; margin-right:5%; width: 90%;">
                     </div>
                 </div>
 
@@ -138,6 +138,9 @@ export default {
         // Get the goals from firebase //use to dispatch
        this.store.dispatch('fetchProfileGoals').then(doc => {
             this.categories = doc;
+            if (!this.categories) {
+                this.set();
+            }
        }); 
     }, 
 
@@ -173,7 +176,7 @@ p {
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
     border-radius: 25px;
-    transform: translateX(-23px);
+    transform: translateX(15px);
     
 }
 
