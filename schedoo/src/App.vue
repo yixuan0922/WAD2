@@ -30,6 +30,9 @@ export default {
         this.store.dispatch("getCurrentUser");
         console.log(this.store.state);
       }
+      else {
+        this.$router.push({name: 'Login'});
+      }
     })
     this.checkRoute();
     // console.log(auth.currentUser);

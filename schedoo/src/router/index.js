@@ -15,11 +15,11 @@ import CommonLoc from '../components/CommonLoc.vue';
 // import store from '@/store/index.js';
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "home",
-  //   component: HomeView
-  // },
+  {
+    path: "/",
+    name: "Login",
+    component: Login,
+  },
   {
     path: "/about",
     name: "about",
