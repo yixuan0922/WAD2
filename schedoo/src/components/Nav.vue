@@ -38,40 +38,40 @@ import { RouterLink, RouterView } from "vue-router";
           style="position: absolute; top: 7px; right: 30px"
         >
           {{ this.$store.state.profileInitials }}
-          <div class="profile-menu" id="profileMenu" hidden>
-            <div class="info">
-              <p class="initials">{{ this.$store.state.profileInitials }}</p>
-              <div class="right">
-                <p>
-                  {{ this.$store.state.profileFirstName }}
-                  {{ this.$store.state.profileLastName }}
-                </p>
-                <p>{{ this.$store.state.profileUsername }}</p>
-                <p>{{ this.$store.state.profileEmail }}</p>
-              </div>
-            </div>
-            <div class="options">
-              <div class="option">
-                <router-link
-                  class-="option"
-                  :to="{ name: 'Settings' }"
-                  style="color: black; text-decoration: none"
-                >
-                  <userIcon class="icon" />
-                  <p style="padding-top: 10px">Profile</p>
-                </router-link>
-              </div>
-              <div @click="signOut" class="option">
-                <router-link
-                  class="option"
-                  to="#"
-                  style="color: black; text-decoration: none"
-                >
-                  <!-- <userIcon class="icon"/> -->
-                  <p>Sign Out</p>
-                </router-link>
-              </div>
-            </div>
+          <div class="profile-menu" id="profileMenu" hidden> 
+            <div class="info"> 
+              <!-- <p class="initials">{{ this.$store.state.profileInitials }}</p> --> 
+              <div style="text-align: left"> 
+                <h6 style="font-weight: bold;"> 
+                  Signed in as {{ this.$store.state.profileFirstName }} 
+                  {{ this.$store.state.profileLastName }} 
+                </h6> 
+                <p><i class="fa-solid fa-at" style="margin-right: 10px;"></i>{{ this.$store.state.profileUsername }}</p> 
+                <p><i class="fa fa-envelope" style="margin-right: 10px;" aria-hidden="true"></i>{{ this.$store.state.profileEmail }}</p> 
+              </div> 
+            </div> 
+            <div class="options"> 
+              <div class="option"> 
+                <router-link 
+                  class-="option" 
+                  :to="{ name: 'Settings' }" 
+                  style="color: black; text-decoration: none" 
+                > 
+                  <userIcon class="icon" /> 
+                  <p style="padding-top: 10px">Profile</p> 
+                </router-link> 
+              </div> 
+              <div @click="signOut" class="option"> 
+                <router-link 
+                  class="option" 
+                  to="#" 
+                  style="color: black; text-decoration: none" 
+                > 
+                  <!-- <userIcon class="icon"/> --> 
+                  <p>Sign Out</p> 
+                </router-link> 
+              </div> 
+            </div> 
           </div>
         </div>
       </span>
@@ -254,17 +254,18 @@ li {
   color: #ffff;
   background-color: #303030;
 
-  .profile-menu {
-    position: absolute;
-    top: 60px;
-    right: 0px;
-    width: 260px;
-    background-color: #e9b58d;
-    color: black !important;
-    font-weight: bold;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border-radius: 5%;
+  .profile-menu { 
+    position: absolute; 
+    top: 60px; 
+    right: 0px; 
+    width: 260px; 
+    background-color: #E9B58D; 
+    color: black !important; 
+    font-weight: bold; 
+    box-shadow: 0 8px 8px -1px rgba(0, 0, 0, 0.1), 
+      0 8px 8px -1px rgba(0, 0, 0, 0.06); 
+    border-radius: 5%; 
+    padding: 5px;
 
     .info {
       display: flex;
