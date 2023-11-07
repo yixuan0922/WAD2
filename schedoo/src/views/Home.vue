@@ -125,7 +125,7 @@
                 :class="{ 'col-8 offset-1' : sidebarShown}"
                 style="height: 100px; content-justify: center; align-items: center;background-color: #EDEDED; border-radius: 15px"
               >
-                  <div id="current-time" class="datetime" style="font-size: 30px;">{{ runningTime }}</div>
+                  <div id="current-time" class="datetime" style="font-size: 28px;">{{ runningTime }}</div>
                   <p> {{currentDayOfWeek}}, {{ currentDate }}</p>
                   
                   <!-- <div class="weather">
@@ -139,22 +139,25 @@
                 <p style="transform: translateY(-5px);">&#215;</p>
               </button>
             </div>
-            <!-- Event list -->
-            <div class="container">
-              <FullCalendarComponent class="app-calendar-sidebar" 
-              v-bind:options="calendarSidebarOptions"/>
-            </div>
 
-          <!-- Spotify -->
-          <div class="row" style="margin-top: 20px">
-            <link
-              rel="alternate"
-              type="application/json+oembed"
-              href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
-            />
-            <div v-html="spotifyEmbedHtml"></div>
+            <!-- Event list -->
+            <!-- <div class="container" > -->
+              <FullCalendarComponent
+                class="app-calendar-sidebar"
+                v-bind:options="calendarSidebarOptions"
+              />
             <!-- </div> -->
-          </div>
+
+            <!-- Spotify -->
+            <div class="row" style="margin-top: 20px">
+              <link
+                rel="alternate"
+                type="application/json+oembed"
+                href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
+              />
+              <div v-html="spotifyEmbedHtml"></div>
+              <!-- </div> -->
+            </div>
         </div>
       </div>
     </div>
@@ -509,7 +512,7 @@ input[type="button"][value="0"] {
     top: 100px;
     visibility: visible;
   }
-}
 
+}
 
 </style>

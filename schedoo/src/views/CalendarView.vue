@@ -29,7 +29,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1; /* To ensure the navigation is on top */
+  z-index: 2; /* To ensure the navigation is on top */
 }
 
 .calendar-container {
