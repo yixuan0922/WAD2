@@ -17,6 +17,7 @@ export default createStore({
     invitee_exist: true,
     pendingEvents: [], 
     allEvents: [],
+    dbDailyTasks: [],
   },
   getters: {
     EVENTS: state => state.events, 
@@ -97,7 +98,16 @@ export default createStore({
       state.profileInitials = state.profileFirstName.match(/(\b\S)?/g).join("") + state.profileLastName.match(/(\b\S)?/g).join("");
     }, 
 
-  },
+    // fetch Daily tasks
+    UPDATE_DAILYTASKS(state, dbDailyTasks) {
+      state.dbDailyTasks = dbDailyTasks;
+    },
+    FETCH_DAILYTASKS(state, dbDailyTasks) {
+      state.dbDailyTasks = dbDailyTasks;
+      console.log(state.dbDailyTasks);
+    },
+
+    },
   actions: {
     async fetchAllEvents({commit}) {
       const currentUser = auth.currentUser;
@@ -936,7 +946,7 @@ export default createStore({
       return dbResults.data().goals;
     },
 
-    async fetchDailyTasks(_, day) {
+    async fetchDailyTasks({commit}, day) {
       const currentUserId = auth.currentUser.uid;
       const database = collection(db, "users");
       const userDoc = doc(database, currentUserId);
@@ -946,6 +956,7 @@ export default createStore({
       let dailyTasksSnapshot = await getDoc(dailyTasksDoc);
     
       if (!dailyTasksSnapshot.exists()) {
+        console.log('No such document');
         // The document does not exist, create it
         await setDoc(dailyTasksDoc, {
           'To Do': [],
@@ -956,10 +967,11 @@ export default createStore({
         // Get the document again after creating it
         dailyTasksSnapshot = await getDoc(dailyTasksDoc);
       }
+
+      let dbDailyTasks = dailyTasksSnapshot.data();
+      console.log(dbDailyTasks);
     
-      console.log(dailyTasksSnapshot.data());
-    
-      return dailyTasksSnapshot.data();
+      commit("FETCH_DAILYTASKS", dbDailyTasks);
     },
     
     async updateDailyTasks({commit}, dailyTasks, day){
@@ -971,8 +983,6 @@ export default createStore({
 
       console.log(dailyTasksDoc);
       console.log('dailytasks', dailyTasks);
-
-
 
       // await setDoc(dailyTasksDoc, dailyTasks).then(()=> console.log('daily tasks updated')).catch((error) => console.error(error.msg));
 

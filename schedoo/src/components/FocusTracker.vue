@@ -138,7 +138,8 @@
         ],
         draggingTask: null,
         newTaskText: '', // To store the text of the new task
-        displayTasks: []
+        displayTasks: [], 
+        dBDailyTasks: [],
       };
     },
     computed: {
@@ -338,13 +339,25 @@
         // remove from dropdown
         var index = this.displayTasks.indexOf(text);
         this.displayTasks.splice(index, 1);
+      },
+      formatDay (){
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are 0 based index in JavaScript
+        const day = ('0' + date.getDate()).slice(-2);
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate;
       }
+
+
     },
     beforeUnmount() {
       clearInterval(this.timerInterval);
     },
-    mounted() {
-    // this.store.dispatch("fetchDailyTasks", day);
+    async mounted() {
+      this.day = this.formatDay();
+      this.dBDailyTasks = await this.store.dispatch("fetchDailyTasks", this.day);
+      console.log(this.dBDailyTasks);
     },
   };
     // window.addEventListener('beforeunload', function (e) {
