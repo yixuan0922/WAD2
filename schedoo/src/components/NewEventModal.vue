@@ -219,7 +219,7 @@
           <label for="recommendations" class="form-label"
             >Recommendations</label
           >
-          <div id="recommendations"></div>
+          <div id="recommendations" class="row"></div>
         </div>
       </div>
       <div class="row" style="justify-content: flex-end; margin-top: 10px; padding: 0px;">
@@ -326,7 +326,7 @@ export default {
       
       // add
       // validation: start date < end date
-      if (start > end){
+      if (start >= end){
         this.dateValidation = 'End date must be after start date';
       } else{
         this.dateValidation = '';
@@ -589,7 +589,7 @@ export default {
 
       if (randomRecommendations.length > 0) {
         // Display recommendations in Bootstrap cards
-        
+        var reccoCount = 1;
         randomRecommendations.forEach((recommendation) => {
           console.log(recommendation)
           const col = document.createElement("div");
@@ -605,15 +605,12 @@ export default {
           //               </div>
           //           `;
           col.innerHTML = `
-              <div class="card" style="transform: translateY(-100px);">
-                  <div class="card-body" >
-                      <h5 class="card-title" style="color: black;">Recommended Time Slot</h5>
-                      <p class="card-text mt-0 mb-2" style="color: black;">${recommendation}</p>
-                      <p></p>
-                      <p></p>
-                  </div>
+              <div class="col-4" style="text-align: center; background-color: white; box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2); width: 100%; border-radius: 10px;">
+                  <h5>Recommendation ${reccoCount}</h5>
+                  <p style="color: black;">${recommendation}</p>
               </div>
           `;
+          reccoCount++;
 
           recommendationsContainer.appendChild(col);
           
